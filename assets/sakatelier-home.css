@@ -752,7 +752,7 @@
    8. NEWSLETTER
    ============================================================ */
 .sak-news {
-  background: var(--sak-charcoal);
+  background: #2b2620 !important;
   padding-block: clamp(64px, 8vw, 104px);
 }
 
@@ -763,7 +763,7 @@
   text-align: center;
 }
 .sak-news .sak-head__eyebrow {
-  color: var(--sak-gold);
+  color: #a98c5f !important;
 }
 .sak-news__heading {
   font-family: var(--sak-serif) !important;
@@ -771,14 +771,14 @@
   font-weight: 500;
   line-height: 1.15;
   text-transform: none;
-  color: var(--sak-cream);
+  color: #fdfbf7 !important;
   margin: 0 0 14px;
 }
 .sak-news__text {
   font-family: var(--sak-sans);
   font-size: 0.9rem;
   line-height: 1.7;
-  color: rgba(247, 243, 236, 0.72);
+  color: rgba(247, 243, 236, 0.72) !important;
   margin: 0 0 30px;
 }
 .sak-news__form {
@@ -792,18 +792,18 @@
   font-family: var(--sak-sans);
   font-size: 0.82rem;
   letter-spacing: 0.03em;
-  color: var(--sak-cream);
-  background: transparent;
-  border: 1px solid rgba(247, 243, 236, 0.34);
+  color: #fdfbf7 !important;
+  background: transparent !important;
+  border: 1px solid rgba(247, 243, 236, 0.34) !important;
   padding: 15px 18px;
   border-radius: 0;
 }
 .sak-news__field::placeholder {
-  color: rgba(247, 243, 236, 0.5);
+  color: rgba(247, 243, 236, 0.5) !important;
 }
 .sak-news__field:focus {
   outline: none;
-  border-color: var(--sak-gold);
+  border-color: #a98c5f !important;
 }
 .sak-news__submit {
   flex: 0 0 auto;
