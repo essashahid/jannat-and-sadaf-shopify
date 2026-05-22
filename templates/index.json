@@ -1,1 +1,134 @@
-{"sections":{"sakatelier_home":{"type":"sakatelier-home-custom","blocks":{"hero_slide_1":{"type":"hero_slide","settings":{"label":"New Collection","heading":"PRET","subheading":"your everyday style fix","button_text":"Shop Now","button_link":""}},"hero_slide_2":{"type":"hero_slide","settings":{"label":"Exclusive","heading":"FORMALS","subheading":"for the occasions that matter","button_text":"Shop Now","button_link":""}},"fabric_1":{"type":"fabric_collection","settings":{"collection_name":"Pret","collection_link":""}},"fabric_2":{"type":"fabric_collection","settings":{"collection_name":"Formals","collection_link":""}},"journal_1":{"type":"journal_article","settings":{"article_image":"shopify:\/\/shop_images\/journal-craft.jpg","article_title":"Behind the Scenes: Our Craft","article_date":"February 2026","article_excerpt":"Discover the artistry and attention to detail behind every piece we create.","article_link":"shopify:\/\/pages\/behind-the-scenes-our-craft"}},"journal_2":{"type":"journal_article","settings":{"article_image":"shopify:\/\/shop_images\/d35b1e61-ea29-4463-9e36-85b5442dac36.jpg","article_title":"Spring Styling Guide","article_date":"February 2026","article_excerpt":"Your complete guide to styling our Spring '26 collection for every occasion.","article_link":"shopify:\/\/pages\/spring-styling-guide"}},"journal_3":{"type":"journal_article","settings":{"article_image":"shopify:\/\/shop_images\/journal-linen.jpg","article_title":"The Art of Linen","article_date":"January 2026","article_excerpt":"Exploring the timeless appeal and modern versatility of our premium linens.","article_link":"shopify:\/\/pages\/the-art-of-linen"}}},"block_order":["hero_slide_1","hero_slide_2","fabric_1","fabric_2","journal_1","journal_2","journal_3"],"name":"Jannat & Sadaf Home","settings":{"show_comparison":false,"comparison_heading":"Featured","comparison_subtitle":"","comparison_label_left":"Noir","comparison_label_right":"Ivory","comparison_product_name":"The Signature Set","comparison_product_price":"PKR 12,500","comparison_button_text":"Shop Now","comparison_button_link":"","show_atelier":true,"atelier_heading":"At the Studio","atelier_subtitle":"handcrafted with love","atelier_button_text":"","atelier_button_link":"","show_bestsellers":false,"bestsellers_heading":"Best Sellers","bestsellers_subtitle":"","bestsellers_collection":"","show_seenon":false,"seenon_heading":"As Seen On","seenon_subtitle":"","show_bts":true,"bts_heading":"Behind The Scenes","bts_subtitle":"the art of our craft","bts_feature_caption":"The finished piece — where craft meets elegance","bts_detail_1":"shopify:\/\/shop_images\/PHOTO-2026-02-16-22-25-39.jpg","bts_description":"Every piece begins as a vision — brought to life through hours of meticulous hand-embroidery, traditional techniques passed down through generations, and an unwavering commitment to perfection.","show_fabrics":true,"fabrics_heading":"Our Collections","fabrics_subtitle":"","fabrics_button_text":"Explore All","fabrics_button_link":"shopify:\/\/collections\/all","show_journal":true,"journal_heading":"In The Journal","journal_subtitle":"","journal_blog":"","journal_button_text":"","journal_button_link":"","show_policies":true,"policy_1_title":"Delivery Timeframe","policy_1_link":"shopify:\/\/pages\/delivery-timeframe","policy_2_title":"Exchange & Refund Policy","policy_2_link":"shopify:\/\/pages\/exchange-refund-policy","policy_3_title":"Shipping & Handling","policy_3_link":"shopify:\/\/pages\/shipping-handling"}}},"order":["sakatelier_home"]}
+{
+  "sections": {
+    "sakatelier_home": {
+      "type": "sakatelier-home-custom",
+      "blocks": {
+        "hero_slide_1": {
+          "type": "hero_slide",
+          "settings": {
+            "label": "New Collection",
+            "heading": "Pret",
+            "subheading": "your everyday style fix",
+            "button_text": "Shop Pret",
+            "button_link": ""
+          }
+        },
+        "hero_slide_2": {
+          "type": "hero_slide",
+          "settings": {
+            "label": "Exclusive",
+            "heading": "Formals",
+            "subheading": "for the occasions that matter",
+            "button_text": "Shop Formals",
+            "button_link": ""
+          }
+        },
+        "fabric_pret": {
+          "type": "fabric_collection",
+          "settings": {
+            "collection_name": "Pret",
+            "collection_description": "Everyday eastern wear designed for effortless elegance.",
+            "collection_link": ""
+          }
+        },
+        "fabric_blockprint": {
+          "type": "fabric_collection",
+          "settings": {
+            "collection_name": "Block Print",
+            "collection_description": "Artisanal prints, refined silhouettes, and festive-ready details.",
+            "collection_link": ""
+          }
+        },
+        "fabric_formals": {
+          "type": "fabric_collection",
+          "settings": {
+            "collection_name": "Formals",
+            "collection_description": "Handcrafted pieces for occasions that matter.",
+            "collection_link": ""
+          }
+        },
+        "journal_1": {
+          "type": "journal_article",
+          "settings": {
+            "article_image": "shopify://shop_images/journal-craft.jpg",
+            "article_title": "Behind the Scenes: Our Craft",
+            "article_date": "February 2026",
+            "article_excerpt": "Discover the artistry and attention to detail behind every piece we create.",
+            "article_link": "shopify://pages/behind-the-scenes-our-craft"
+          }
+        },
+        "journal_2": {
+          "type": "journal_article",
+          "settings": {
+            "article_image": "shopify://shop_images/d35b1e61-ea29-4463-9e36-85b5442dac36.jpg",
+            "article_title": "Spring Styling Guide",
+            "article_date": "February 2026",
+            "article_excerpt": "Your complete guide to styling our Spring '26 collection for every occasion.",
+            "article_link": "shopify://pages/spring-styling-guide"
+          }
+        },
+        "journal_3": {
+          "type": "journal_article",
+          "settings": {
+            "article_image": "shopify://shop_images/journal-linen.jpg",
+            "article_title": "The Art of Linen",
+            "article_date": "January 2026",
+            "article_excerpt": "Exploring the timeless appeal and modern versatility of our premium linens.",
+            "article_link": "shopify://pages/the-art-of-linen"
+          }
+        }
+      },
+      "block_order": [
+        "hero_slide_1",
+        "hero_slide_2",
+        "fabric_pret",
+        "fabric_blockprint",
+        "fabric_formals",
+        "journal_1",
+        "journal_2",
+        "journal_3"
+      ],
+      "name": "Jannat & Sadaf Home",
+      "settings": {
+        "hero_button2_text": "Explore Collections",
+        "hero_button2_link": "shopify://collections/all",
+        "show_fabrics": true,
+        "fabrics_heading": "Our Collections",
+        "fabrics_subtitle": "",
+        "fabrics_button_text": "Explore the Collection",
+        "fabrics_button_link": "shopify://collections/all",
+        "show_bestsellers": true,
+        "bestsellers_heading": "New Arrivals",
+        "bestsellers_subtitle": "",
+        "bestsellers_collection": "",
+        "bestsellers_button_text": "Shop New Arrivals",
+        "bestsellers_button_link": "shopify://collections/all",
+        "show_atelier": true,
+        "atelier_subtitle": "At the Studio",
+        "atelier_heading": "Handcrafted With Care",
+        "atelier_body": "Every Jannat & Sadaf piece is shaped slowly — hand embroidery, traditional techniques, and a quiet attention to detail that machines cannot replicate. We believe in fewer, finer things.",
+        "atelier_button_text": "Discover Our Craft",
+        "atelier_button_link": "shopify://pages/behind-the-scenes-our-craft",
+        "show_bts": true,
+        "bts_heading": "Behind the Scenes",
+        "bts_subtitle": "the art of our craft",
+        "bts_detail_1": "shopify://shop_images/PHOTO-2026-02-16-22-25-39.jpg",
+        "bts_caption_1": "Hand embroidery",
+        "bts_caption_2": "Fabric selection",
+        "bts_caption_3": "Finishing details",
+        "bts_description": "Every piece begins as a vision — brought to life through hours of meticulous hand-embroidery, traditional techniques passed down through generations, and an unwavering commitment to perfection.",
+        "show_journal": true,
+        "journal_heading": "In the Journal",
+        "journal_subtitle": "",
+        "show_policies": true,
+        "policy_1_link": "shopify://pages/delivery-timeframe",
+        "policy_2_link": "shopify://pages/shipping-handling",
+        "policy_3_link": "shopify://pages/exchange-refund-policy",
+        "show_newsletter": true,
+        "newsletter_heading": "Join the Jannat & Sadaf List",
+        "newsletter_text": "Be the first to discover new collections, styling notes, and early access."
+      }
+    }
+  },
+  "order": ["sakatelier_home"]
+}

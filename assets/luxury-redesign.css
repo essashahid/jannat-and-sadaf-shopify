@@ -22,10 +22,8 @@
 }
 */
 
-/* Eid dispatch notice styling. Remove this block when the notice is taken down. */
-.announcement-bar {
-  background-color: #161310 !important;
-}
+/* Eid dispatch notice — slim & warm. Background/text come from scheme-5 (warm
+   espresso). Remove this block when the notice is taken down. */
 .announcement-bar__slide {
   display: flex !important;
   flex-wrap: wrap;
@@ -35,17 +33,16 @@
   row-gap: 0.15rem;
 }
 .announcement-bar__text {
-  color: #f1e9da !important;
-  font-size: 0.78rem !important;
-  letter-spacing: 0.05em !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.08em !important;
   line-height: 1.5 !important;
 }
 .announcement-bar__text::before {
   content: "\263E  Eid Notice";
   margin-right: 0.85rem;
   padding-right: 0.85rem;
-  border-right: 1px solid rgba(197, 165, 114, 0.45);
-  color: #c5a572;
+  border-right: 1px solid rgba(203, 176, 132, 0.4);
+  color: #cbb084;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -153,16 +150,9 @@ p, .paragraph, .rte {
    2. COLOR PALETTE - LUXURY REFINEMENT
    ============================================================ */
 
-/* Override default color scheme for luxury aesthetic */
-.color-scheme-1,
-.color-scheme1 {
-  --color-background: #ffffff;
-  --color-foreground-heading: #1a1a1a;
-  --color-foreground: #4a4a4a;
-  --color-primary: #c9a96e;
-  --color-primary-hover: #b8954f;
-  --color-border: #e8e8e8;
-}
+/* Color schemes are driven by theme settings (settings_data.json):
+   warm ivory backgrounds, soft charcoal text, muted taupe/gold accents.
+   No hard scheme overrides here so Horizon's native color system stays intact. */
 
 
 /* ============================================================
@@ -296,7 +286,7 @@ header-component[stuck] .header {
 /* Submenu/Dropdown refinement */
 .header-menu__submenu,
 .header-dropdown {
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid #e6ddcd;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
 
@@ -312,8 +302,8 @@ header-component[stuck] .header {
 /* Mega Menu Collection Label Badge */
 .mega-menu__collection-label {
   display: inline !important;
-  background-color: #1a1a1a;
-  color: #ffffff !important;
+  background-color: #2b2620;
+  color: #f7f3ec !important;
   font-family: 'Montserrat', 'Helvetica Neue', sans-serif !important;
   font-size: 0.45rem !important;
   font-weight: 600 !important;
@@ -370,7 +360,7 @@ header-component[stuck] .header {
 /* Title hover - gold accent */
 .product-card:hover .product-card__content a p,
 .product-card:hover .product-card__content [ref="productTitleLink"] p {
-  color: #c9a96e !important;
+  color: #a98c5f !important;
 }
 
 /* Price Styling */
@@ -499,7 +489,7 @@ header-component[stuck] .header {
 
 /* Footer container */
 .footer {
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid #e6ddcd;
 }
 
 /* Footer headings */
@@ -536,7 +526,7 @@ header-component[stuck] .header {
 /* Footer newsletter input */
 .footer input[type="email"] {
   border-radius: 0 !important;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #e6ddcd;
   font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
   font-size: 0.8rem;
   letter-spacing: 0.04em;
@@ -545,7 +535,7 @@ header-component[stuck] .header {
 
 /* Footer bottom/utilities */
 .footer-utilities {
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid #e6ddcd;
   padding-top: 2rem;
   margin-top: 3rem;
 }
@@ -763,7 +753,7 @@ select {
 
 html {
   scrollbar-width: thin;
-  scrollbar-color: #c9a96e transparent;
+  scrollbar-color: #a98c5f transparent;
 }
 
 ::-webkit-scrollbar {
@@ -775,12 +765,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #c9a96e;
+  background-color: #a98c5f;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #b8954f;
+  background-color: #8a6f47;
 }
 
 
@@ -878,7 +868,7 @@ dialog {
 /* Accordion on product page */
 .product-information .accordion,
 .product-information details {
-  border-color: #e8e8e8;
+  border-color: #e6ddcd;
 }
 
 .product-information .accordion summary,
@@ -936,18 +926,18 @@ dialog {
    ============================================================ */
 
 ::selection {
-  background-color: #c9a96e;
+  background-color: #a98c5f;
   color: #ffffff;
 }
 
 ::-moz-selection {
-  background-color: #c9a96e;
+  background-color: #a98c5f;
   color: #ffffff;
 }
 
 /* Refined focus states */
 :focus-visible {
-  outline-color: #c9a96e;
+  outline-color: #a98c5f;
 }
 
 
@@ -971,7 +961,7 @@ dialog {
 .divider,
 .section-divider,
 hr {
-  border-color: #e8e8e8;
+  border-color: #e6ddcd;
   opacity: 0.6;
 }
 
