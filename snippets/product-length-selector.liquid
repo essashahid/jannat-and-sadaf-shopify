@@ -7,12 +7,11 @@
 {%- enddoc -%}
 
 {%- assign product_title_normalized = product.title | downcase | strip -%}
+{%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
 {%- if product_title_normalized == 'quiet sage' -%}
   {%- assign shirt_lengths = '28' | split: ',' -%}
-  {%- assign bottom_lengths = '' | split: ',' -%}
 {%- else -%}
   {%- assign shirt_lengths = '28,30,32 (Standard),34' | split: ',' -%}
-  {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
 {%- endif -%}
 
 <div class="product-length-selectors">
