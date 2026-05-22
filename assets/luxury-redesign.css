@@ -22,6 +22,46 @@
 }
 */
 
+/* Eid dispatch notice styling. Remove this block when the notice is taken down. */
+.announcement-bar {
+  background-color: #161310 !important;
+}
+.announcement-bar__slide {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center !important;
+  justify-content: center !important;
+  column-gap: 0.85rem;
+  row-gap: 0.15rem;
+}
+.announcement-bar__text {
+  color: #f1e9da !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.5 !important;
+}
+.announcement-bar__text::before {
+  content: "\263E  Eid Notice";
+  margin-right: 0.85rem;
+  padding-right: 0.85rem;
+  border-right: 1px solid rgba(197, 165, 114, 0.45);
+  color: #c5a572;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+@media screen and (max-width: 749px) {
+  .announcement-bar__text::before {
+    margin-right: 0;
+    padding-right: 0;
+    border-right: 0;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}
+
 
 /* ============================================================
    1. TYPOGRAPHY OVERRIDES
