@@ -74,6 +74,12 @@
     data-placeholder="true"
   {% endif %}
 >
+  {%- unless onboarding -%}
+    {%- assign card_title_normalized = product.title | downcase | strip -%}
+    {%- if card_title_normalized == 'quiet sage' -%}
+      <span class="product-card__badge">Bestseller</span>
+    {%- endif -%}
+  {%- endunless -%}
   <a
     id="{{ product_card_id | md5 }}"
     {% unless onboarding %}
@@ -126,6 +132,26 @@
 
   .product-card__placeholder-image svg {
     height: 100%;
+  }
+
+  product-card {
+    position: relative;
+  }
+
+  .product-card__badge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    z-index: 3;
+    pointer-events: none;
+    background: #161310;
+    color: #c5a572;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.75rem;
+    line-height: 1;
   }
 
   @media screen and (max-width: 749px) {
