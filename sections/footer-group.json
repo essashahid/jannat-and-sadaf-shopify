@@ -19,7 +19,7 @@
         "text_care": {
           "type": "text",
           "settings": {
-            "text": "<h2>Customer Care</h2><p><a href=\"/pages/delivery-timeframe\">Delivery Timeframe</a><br><a href=\"/pages/exchange-refund-policy\">Exchange & Refund</a><br><a href=\"/pages/shipping-handling\">Shipping & Handling</a><br><a href=\"/search\">Search</a></p>",
+            "text": "<h2>Customer Care</h2><p><a href=\"/pages/delivery-timeframe\">Delivery Timeframe</a><br><a href=\"/pages/exchange-refund-policy\">Exchange & Refund</a><br><a href=\"/pages/shipping-handling\">Shipping & Handling</a></p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",

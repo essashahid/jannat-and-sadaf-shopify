@@ -29,5 +29,4 @@ jobs:
           shopify theme push \
             --theme 184572674359 \
             --allow-live \
-            --nodelete \
-            --ignore config/settings_data.json
+            --nodelete
