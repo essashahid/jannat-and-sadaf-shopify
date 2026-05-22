@@ -135,7 +135,7 @@
             "card-gallery": {
               "type": "_product-card-gallery",
               "settings": {
-                "image_ratio": "portrait",
+                "image_ratio": "adapt",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -204,8 +204,8 @@
       },
       "settings": {
         "layout_type": "grid",
-        "product_card_size": "medium",
-        "mobile_product_card_size": "small",
+        "product_card_size": "large",
+        "mobile_product_card_size": "medium",
         "enable_infinite_scroll": true,
         "products_per_page": 24,
         "product_grid_width": "centered",
