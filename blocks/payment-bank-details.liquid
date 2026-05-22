@@ -1,0 +1,250 @@
+{%- liquid
+  assign s = block.settings
+-%}
+
+<div
+  class="spacing-style bank-details"
+  style="{% render 'spacing-style', settings: block.settings %}"
+  {{ block.shopify_attributes }}
+>
+  {%- if s.heading != blank -%}
+    <p class="bank-details__heading">{{ s.heading }}</p>
+  {%- endif -%}
+
+  <dl class="bank-details__list">
+    {%- if s.account_title != blank -%}
+      <div class="bank-details__row">
+        <dt>Account Title</dt>
+        <dd>{{ s.account_title }}</dd>
+      </div>
+    {%- endif -%}
+    {%- if s.bank_name != blank -%}
+      <div class="bank-details__row">
+        <dt>Bank</dt>
+        <dd>{{ s.bank_name }}</dd>
+      </div>
+    {%- endif -%}
+    {%- if s.account_number != blank -%}
+      <div class="bank-details__row">
+        <dt>Account Number</dt>
+        <dd>
+          <span class="bank-details__value">{{ s.account_number }}</span>
+          <button
+            type="button"
+            class="bank-details__copy"
+            data-copy="{{ s.account_number }}"
+            aria-label="Copy account number"
+          >Copy</button>
+        </dd>
+      </div>
+    {%- endif -%}
+    {%- if s.iban != blank -%}
+      <div class="bank-details__row">
+        <dt>IBAN</dt>
+        <dd>
+          <span class="bank-details__value">{{ s.iban }}</span>
+          <button
+            type="button"
+            class="bank-details__copy"
+            data-copy="{{ s.iban }}"
+            aria-label="Copy IBAN"
+          >Copy</button>
+        </dd>
+      </div>
+    {%- endif -%}
+  </dl>
+
+  {%- if s.note != blank -%}
+    <p class="bank-details__note">{{ s.note }}</p>
+  {%- endif -%}
+</div>
+
+<script>
+  (function () {
+    const root = document.currentScript.previousElementSibling;
+    if (!root) return;
+    root.querySelectorAll('.bank-details__copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const value = btn.getAttribute('data-copy') || '';
+        const done = function () {
+          const prev = btn.textContent;
+          btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = prev; }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(value).then(done).catch(done);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = value;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(ta);
+          done();
+        }
+      });
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .bank-details {
+    border: 1px solid var(--color-border, #dfdfdf);
+    padding: var(--padding-lg, 1.25rem);
+  }
+  .bank-details__heading {
+    margin: 0 0 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .bank-details__list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .bank-details__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.75rem;
+  }
+  .bank-details__row dt {
+    flex: 0 0 8.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin: 0;
+  }
+  .bank-details__row dd {
+    margin: 0;
+    flex: 1 1 12rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+  }
+  .bank-details__value {
+    word-break: break-all;
+  }
+  .bank-details__copy {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid var(--color-border, #dfdfdf);
+    padding: 0.2rem 0.6rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: inherit;
+    transition: background-color 0.15s ease;
+  }
+  .bank-details__copy:hover {
+    background: var(--color-foreground, #000);
+    color: var(--color-background, #fff);
+  }
+  .bank-details__note {
+    margin: 0.9rem 0 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Bank Transfer Details",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Pay via Bank Transfer"
+    },
+    {
+      "type": "text",
+      "id": "account_title",
+      "label": "Account Title",
+      "default": "Essa Shahid Arshad"
+    },
+    {
+      "type": "text",
+      "id": "bank_name",
+      "label": "Bank",
+      "default": "Meezan Bank"
+    },
+    {
+      "type": "text",
+      "id": "account_number",
+      "label": "Account Number",
+      "default": "04010104972689"
+    },
+    {
+      "type": "text",
+      "id": "iban",
+      "label": "IBAN",
+      "default": "PK11MEZN0004010104972689"
+    },
+    {
+      "type": "textarea",
+      "id": "note",
+      "label": "Note / instructions",
+      "default": "After placing your order, transfer the total amount and share your receipt with us to confirm."
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bank Transfer Details",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
