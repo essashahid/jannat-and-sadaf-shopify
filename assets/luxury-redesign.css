@@ -1008,7 +1008,203 @@ hr {
 
 
 /* ============================================================
-   25. GLOBAL TRANSITIONS & SMOOTHNESS
+   25. PHASE 2 — COLLECTION, POLICY & JOURNAL REFINEMENT
+   ============================================================ */
+
+/* --- Collection page: filter bar --- */
+.facets-wrapper,
+.facets {
+  border-bottom: 1px solid #e6ddcd;
+  padding-bottom: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.facets__button,
+.disclosure__toggle,
+[data-filter-toggle] {
+  border-radius: 0 !important;
+  border: 1px solid #e6ddcd !important;
+  background: transparent !important;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-foreground);
+  padding: 8px 20px;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.facets__button:hover,
+.disclosure__toggle:hover {
+  border-color: #a98c5f !important;
+  color: #a98c5f;
+}
+
+.facets__button[aria-expanded="true"],
+.disclosure__toggle[aria-expanded="true"] {
+  border-color: #2b2620 !important;
+  background: #2b2620 !important;
+  color: #f7f3ec !important;
+}
+
+/* Active filter pills */
+.facets__selected-count,
+.active-facets__button {
+  border-radius: 0 !important;
+  background: #2b2620 !important;
+  color: #f7f3ec !important;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Sort by select */
+.facet-filters__sort select,
+.facets__sort select {
+  border-radius: 0 !important;
+  border: 1px solid #e6ddcd;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  background-color: transparent;
+}
+
+/* Results count */
+.product-count,
+.facets__product-count {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--color-foreground);
+  opacity: 0.6;
+}
+
+/* --- Collection heading decorative rule --- */
+.main-collection-banner,
+.collection-hero {
+  text-align: center;
+}
+
+/* --- Policy pages: readable content width --- */
+.main-page .rte,
+.main-page .page-content,
+.main-page [class*="page-content"] {
+  max-width: 680px;
+  line-height: 1.9;
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+}
+
+.main-page h1,
+.main-page .h1 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5em;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e6ddcd;
+}
+
+.main-page h2 {
+  font-size: 1.25rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.main-page p {
+  margin-bottom: 1.25em;
+  color: var(--color-foreground);
+}
+
+.main-page a {
+  color: #a98c5f;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* --- Blog listing: image corners + hover --- */
+.blog-post-card,
+[class*="blog-post-card"] {
+  transition: opacity 0.4s ease;
+}
+
+.blog-post-card:hover {
+  opacity: 0.85;
+}
+
+.blog-post-card img,
+[class*="blog-post-card"] img {
+  border-radius: 0 !important;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.blog-post-card:hover img {
+  transform: scale(1.03);
+}
+
+/* Blog listing title */
+.main-blog h1,
+.main-blog .h1 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* --- Article page: editorial reading layout --- */
+.main-blog-post {
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.main-blog-post h1,
+.main-blog-post .h1 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.main-blog-post img {
+  border-radius: 0 !important;
+}
+
+/* Article body text — readable line length */
+.main-blog-post .rte,
+.main-blog-post [class*="blog-post-content"] {
+  max-width: 680px;
+  margin-inline: auto;
+  font-size: 0.9375rem;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+}
+
+.main-blog-post .rte p {
+  margin-bottom: 1.4em;
+}
+
+.main-blog-post .rte h2,
+.main-blog-post .rte h3 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Article date/author line */
+.main-blog-post [class*="blog-post-info"],
+.main-blog-post [class*="post-details"] {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 2.5rem;
+}
+
+/* ============================================================
+   26. GLOBAL TRANSITIONS & SMOOTHNESS
    ============================================================ */
 
 /* Smooth all link transitions */
