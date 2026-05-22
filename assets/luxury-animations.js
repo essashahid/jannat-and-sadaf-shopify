@@ -11,9 +11,21 @@
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   /**
+   * Content pages (collection, product, blog, page, search, cart) must show
+   * their content immediately — scroll-reveal is reserved for the homepage.
+   */
+  function isContentPage() {
+    return /\/(collections|products|blogs|pages|policies|search|cart|account)(\/|$)/.test(
+      window.location.pathname
+    );
+  }
+
+  /**
    * Initialize scroll-triggered animations
    */
   function initScrollAnimations() {
+    if (isContentPage()) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -31,16 +43,12 @@
 
     // Animate all shopify sections
     document.querySelectorAll('.shopify-section').forEach((section) => {
-      // Skip header, footer, homepage, and primary content sections
+      // Skip header, footer, and sakatelier home sections
       if (
         section.closest('#header-group') ||
         section.closest('.footer-group') ||
         section.closest('header-component') ||
-        section.querySelector('.sakatelier-home') ||
-        section.querySelector('.main-collection') ||
-        section.querySelector('.main-page') ||
-        section.querySelector('.main-blog') ||
-        section.querySelector('.main-blog-post')
+        section.querySelector('.sakatelier-home')
       ) {
         return;
       }
@@ -48,18 +56,16 @@
       observer.observe(section);
     });
 
-    // Animate product cards — only on non-collection pages (homepage featured grids)
-    if (!document.querySelector('.main-collection')) {
-      document.querySelectorAll('.product-grid').forEach((grid) => {
-        const cards = grid.querySelectorAll('.product-grid__item');
-        cards.forEach((card, index) => {
-          card.classList.add('luxury-animate');
-          const staggerIndex = (index % 4) + 1;
-          card.classList.add(`luxury-stagger-${staggerIndex}`);
-          observer.observe(card);
-        });
+    // Animate product cards with stagger
+    document.querySelectorAll('.product-grid').forEach((grid) => {
+      const cards = grid.querySelectorAll('.product-grid__item');
+      cards.forEach((card, index) => {
+        card.classList.add('luxury-animate');
+        const staggerIndex = (index % 4) + 1;
+        card.classList.add(`luxury-stagger-${staggerIndex}`);
+        observer.observe(card);
       });
-    }
+    });
 
     // Animate collection cards with stagger
     document.querySelectorAll('.collection-card').forEach((card, index) => {

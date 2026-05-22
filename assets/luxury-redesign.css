@@ -1087,11 +1087,10 @@ hr {
   text-align: center;
 }
 
-/* --- Tighten collection, policy, article, blog pages --- */
-.shopify-section:has(.main-collection),
-.shopify-section:has(.main-page),
-.shopify-section:has(.main-blog),
-.shopify-section:has(.main-blog-post) {
+/* --- Tighten collection, policy, blog pages --- */
+.shopify-section:has(results-list),
+.shopify-section:has(.page-width-content),
+.shopify-section:has(blog-posts-list) {
   padding-block-start: 0 !important;
   padding-block-end: 0 !important;
 }
