@@ -24,7 +24,7 @@ jobs:
       - name: Push theme to live
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-          SHOPIFY_FLAG_STORE: jannat-and-sadaf.myshopify.com
+          SHOPIFY_FLAG_STORE: x1hna4-kw.myshopify.com
         run: |
           shopify theme push \
             --theme 184572674359 \
