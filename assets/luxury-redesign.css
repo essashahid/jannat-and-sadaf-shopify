@@ -1087,9 +1087,13 @@ hr {
   text-align: center;
 }
 
-/* --- Tighten collection page layout --- */
-.main-collection {
+/* --- Tighten collection, policy, article, blog pages --- */
+.shopify-section:has(.main-collection),
+.shopify-section:has(.main-page),
+.shopify-section:has(.main-blog),
+.shopify-section:has(.main-blog-post) {
   padding-block-start: 0 !important;
+  padding-block-end: 0 !important;
 }
 
 /* --- Policy pages: readable content width --- */
