@@ -1,0 +1,139 @@
+{%- doc -%}
+  Renders Shirt Length and Bottom Length radio button selectors as line item properties.
+  These bypass the 3-option variant limit by submitting as properties[] instead of variant options.
+
+  @param {string} form_id - The product form ID to associate inputs with
+  @param {object} product - The current product object
+{%- enddoc -%}
+
+{%- assign product_title_normalized = product.title | downcase | strip -%}
+{%- if product_title_normalized == 'quiet sage' -%}
+  {%- assign shirt_lengths = '28' | split: ',' -%}
+  {%- assign bottom_lengths = '' | split: ',' -%}
+{%- else -%}
+  {%- assign shirt_lengths = '28,30,32 (Standard),34' | split: ',' -%}
+  {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
+{%- endif -%}
+
+<div class="product-length-selectors">
+  <fieldset class="variant-option variant-option--buttons">
+    <legend>Shirt Length</legend>
+    {%- for length in shirt_lengths -%}
+      <label class="length-selector__label">
+        <input
+          type="radio"
+          name="properties[Shirt Length]"
+          value="{{ length }}"
+          form="{{ form_id }}"
+          {% if product_title_normalized == 'quiet sage' %}
+            checked
+          {% elsif length == '32 (Standard)' %}
+            checked
+          {% endif %}
+        >
+        <span class="length-selector__text">{{ length }}</span>
+      </label>
+    {%- endfor -%}
+  </fieldset>
+
+  {%- if bottom_lengths.size > 0 -%}
+    <fieldset class="variant-option variant-option--buttons">
+      <legend>Bottom Length</legend>
+      {%- for length in bottom_lengths -%}
+        <label class="length-selector__label">
+          <input
+            type="radio"
+            name="properties[Bottom Length]"
+            value="{{ length }}"
+            form="{{ form_id }}"
+            {% if length == '42 (Standard)' %}checked{% endif %}
+          >
+          <span class="length-selector__text">{{ length }}</span>
+        </label>
+      {%- endfor -%}
+    </fieldset>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .product-length-selectors {
+    width: 100%;
+  }
+
+  .product-length-selectors .variant-option + .variant-option {
+    margin-top: var(--padding-lg);
+  }
+
+  .length-selector__label {
+    cursor: pointer;
+    display: flex;
+    flex: 0 0 3.25em;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding-block: var(--padding-sm);
+    padding-inline: var(--padding-lg);
+    border: var(--options-border-width) solid var(--color-variant-border);
+    border-radius: var(--options-border-radius);
+    overflow: clip;
+    min-height: 3.25em;
+    min-width: fit-content;
+    white-space: nowrap;
+    background-color: var(--color-variant-background);
+    color: var(--color-variant-text);
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  @media screen and (min-width: 750px) {
+    .length-selector__label {
+      padding: var(--padding-xs) var(--variant-option-padding-inline);
+    }
+  }
+
+  .length-selector__label:hover {
+    background-color: var(--color-variant-hover-background);
+    border-color: var(--color-variant-hover-border);
+    color: var(--color-variant-hover-text);
+  }
+
+  .length-selector__label:has(:checked) {
+    background-color: var(--color-selected-variant-background);
+    border-color: var(--color-selected-variant-border);
+    color: var(--color-selected-variant-text);
+  }
+
+  .length-selector__label:has(:checked):hover {
+    background-color: var(--color-selected-variant-hover-background);
+    border-color: var(--color-selected-variant-hover-border);
+    color: var(--color-selected-variant-hover-text);
+  }
+
+  .length-selector__label:has(:focus-visible) {
+    border-color: var(--color-foreground);
+    outline: var(--focus-outline-width) solid var(--color-foreground);
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .length-selector__label input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    appearance: auto;
+    display: block;
+    cursor: pointer;
+  }
+
+  .length-selector__text {
+    pointer-events: none;
+    text-align: start;
+    text-wrap: auto;
+    z-index: 1;
+  }
+{% endstylesheet %}

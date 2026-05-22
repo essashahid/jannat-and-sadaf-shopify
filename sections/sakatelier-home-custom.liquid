@@ -1,0 +1,1129 @@
+<script>
+  // Immediately ensure this section is visible — override luxury-animations.js
+  (function() {
+    var el = document.currentScript;
+    if (el) {
+      var parent = el.closest('.shopify-section');
+      if (parent) {
+        parent.classList.remove('luxury-animate');
+        parent.classList.add('luxury-visible');
+        parent.style.opacity = '1';
+        parent.style.transform = 'none';
+      }
+    }
+  })();
+</script>
+
+{{ 'sakatelier-home.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  SAK Home — sakatelier.com inspired home page section
+  Built for the Jannat & Sadaf Shopify theme (Horizon)
+{%- endcomment -%}
+
+{%- liquid
+  assign hero_slides = section.blocks | where: "type", "hero_slide"
+  assign bestseller_products = section.blocks | where: "type", "bestseller_product"
+  assign seen_on_items = section.blocks | where: "type", "seen_on_person"
+  assign fabric_items = section.blocks | where: "type", "fabric_collection"
+  assign journal_items = section.blocks | where: "type", "journal_article"
+-%}
+
+<!-- =============================================
+     1. HERO SLIDESHOW
+     ============================================= -->
+<section class="sak-section sak-hero" id="sak-hero" data-section-id="{{ section.id }}">
+  <div class="sak-hero__slides">
+    {%- for block in hero_slides -%}
+      <div class="sak-hero__slide {% if forloop.first %}is-active{% endif %}" {{ block.shopify_attributes }}>
+        {%- if block.settings.image != blank -%}
+          <img
+            src="{{ block.settings.image | image_url: width: 1920 }}"
+            alt="{{ block.settings.image.alt | default: block.settings.heading }}"
+            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            width="1920"
+            height="900"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'hero-slide-' | append: forloop.index | append: '.png' | asset_url }}"
+            alt="{{ block.settings.heading | default: 'Hero' }}"
+            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            width="1920"
+            height="900"
+          >
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="sak-hero__overlay"></div>
+
+  <div class="sak-hero__content">
+    {%- assign active_slide = hero_slides | first -%}
+    {%- if active_slide.settings.label != blank -%}
+      <p class="sak-label">{{ active_slide.settings.label }}</p>
+    {%- endif -%}
+    {%- if active_slide.settings.heading != blank -%}
+      <h1>{{ active_slide.settings.heading }}</h1>
+    {%- endif -%}
+    {%- if active_slide.settings.subheading != blank -%}
+      <p class="sak-hero-sub">{{ active_slide.settings.subheading }}</p>
+    {%- endif -%}
+    {%- if active_slide.settings.button_text != blank -%}
+      <a href="{{ active_slide.settings.button_link | default: '/collections/all' }}" class="sak-btn sak-btn--light">
+        <span>{{ active_slide.settings.button_text }}</span>
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- if hero_slides.size > 1 -%}
+    <div class="sak-hero__nav sak-hero__nav--left">
+      <button class="sak-hero__arrow" data-hero-prev aria-label="Previous slide">&#8592;</button>
+    </div>
+    <div class="sak-hero__nav sak-hero__nav--right">
+      <button class="sak-hero__arrow" data-hero-next aria-label="Next slide">&#8594;</button>
+    </div>
+    <div class="sak-hero__dots">
+      {%- for block in hero_slides -%}
+        <button class="sak-hero__dot {% if forloop.first %}is-active{% endif %}" data-hero-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+<!-- =============================================
+     2. FEATURED PRODUCT / IMAGE COMPARISON
+     ============================================= -->
+{%- if section.settings.show_comparison -%}
+<section class="sak-section sak-comparison">
+  <div class="sak-content-width">
+    <div class="sak-section-header">
+      <h2>{{ section.settings.comparison_heading | default: 'Featured' }}</h2>
+      {%- if section.settings.comparison_subtitle != blank -%}
+        <p class="sak-subtitle">{{ section.settings.comparison_subtitle }}</p>
+      {%- endif -%}
+    </div>
+    <div class="sak-comparison__inner">
+      <div class="sak-comparison__side">
+        {%- if section.settings.comparison_image_left != blank -%}
+          <img
+            src="{{ section.settings.comparison_image_left | image_url: width: 800 }}"
+            alt="{{ section.settings.comparison_label_left | default: 'Option 1' }}"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+        <div class="sak-comparison__label">
+          <span>{{ section.settings.comparison_label_left | default: 'Noir' }}</span>
+        </div>
+      </div>
+      <div class="sak-comparison__divider"></div>
+      <div class="sak-comparison__side">
+        {%- if section.settings.comparison_image_right != blank -%}
+          <img
+            src="{{ section.settings.comparison_image_right | image_url: width: 800 }}"
+            alt="{{ section.settings.comparison_label_right | default: 'Option 2' }}"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+        <div class="sak-comparison__label">
+          <span>{{ section.settings.comparison_label_right | default: 'Ivory' }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="sak-comparison__info">
+      <h3>{{ section.settings.comparison_product_name | default: 'The Signature Set' }}</h3>
+      <p>{{ section.settings.comparison_product_price | default: 'PKR 12,500' }}</p>
+      {%- if section.settings.comparison_button_text != blank -%}
+        <a href="{{ section.settings.comparison_button_link | default: '/collections/all' }}" class="sak-btn">
+          <span>{{ section.settings.comparison_button_text }}</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+<!-- =============================================
+     3. AT THE ATELIER BANNER
+     ============================================= -->
+{%- if section.settings.show_atelier -%}
+<section class="sak-section sak-atelier">
+  {%- if section.settings.atelier_image != blank -%}
+    <img
+      src="{{ section.settings.atelier_image | image_url: width: 1920 }}"
+      alt="{{ section.settings.atelier_heading | default: 'At the Atelier' }}"
+      class="sak-atelier__bg"
+      loading="lazy"
+      width="1920"
+      height="600"
+    >
+  {%- else -%}
+    <img
+      src="{{ 'atelier-banner.png' | asset_url }}"
+      alt="{{ section.settings.atelier_heading | default: 'At the Atelier' }}"
+      class="sak-atelier__bg"
+      loading="lazy"
+      width="1920"
+      height="600"
+    >
+  {%- endif -%}
+  <div class="sak-atelier__overlay">
+    <h2>{{ section.settings.atelier_heading | default: 'At the Atelier' }}</h2>
+    {%- if section.settings.atelier_subtitle != blank -%}
+      <p class="sak-atelier-sub">{{ section.settings.atelier_subtitle }}</p>
+    {%- endif -%}
+    {%- if section.settings.atelier_button_text != blank -%}
+      <a href="{{ section.settings.atelier_button_link | default: '/pages/about' }}" class="sak-btn sak-btn--light">
+        <span>{{ section.settings.atelier_button_text }}</span>
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+<!-- =============================================
+     BEHIND THE SCENES
+     ============================================= -->
+{%- if section.settings.show_bts -%}
+<section class="sak-section sak-bts">
+  <div class="sak-content-width">
+    <div class="sak-section-header">
+      <h2>{{ section.settings.bts_heading | default: 'Behind The Scenes' }}</h2>
+      {%- if section.settings.bts_subtitle != blank -%}
+        <p class="sak-subtitle">{{ section.settings.bts_subtitle }}</p>
+      {%- endif -%}
+    </div>
+    <div class="sak-bts__grid">
+      <div class="sak-bts__item">
+        {%- if section.settings.bts_detail_1 != blank -%}
+          <img src="{{ section.settings.bts_detail_1 | image_url: width: 600 }}" alt="Craft detail" loading="lazy">
+        {%- else -%}
+          <img src="{{ 'bts-embroidery-1.jpg' | asset_url }}" alt="Zardozi embroidery on purple fabric" loading="lazy">
+        {%- endif -%}
+      </div>
+      <div class="sak-bts__item">
+        {%- if section.settings.bts_detail_2 != blank -%}
+          <img src="{{ section.settings.bts_detail_2 | image_url: width: 600 }}" alt="Craft detail" loading="lazy">
+        {%- else -%}
+          <img src="{{ 'bts-embroidery-2.jpg' | asset_url }}" alt="Gold thread work in progress" loading="lazy">
+        {%- endif -%}
+      </div>
+      <div class="sak-bts__item">
+        {%- if section.settings.bts_detail_3 != blank -%}
+          <img src="{{ section.settings.bts_detail_3 | image_url: width: 600 }}" alt="Craft detail" loading="lazy">
+        {%- else -%}
+          <img src="{{ 'bts-embroidery-3.jpg' | asset_url }}" alt="Traditional paisley embroidery" loading="lazy">
+        {%- endif -%}
+      </div>
+    </div>
+    {%- if section.settings.bts_description != blank -%}
+      <p class="sak-bts__description">{{ section.settings.bts_description }}</p>
+    {%- else -%}
+      <p class="sak-bts__description">Every piece begins as a vision — brought to life through hours of meticulous hand-embroidery, traditional techniques passed down through generations, and an unwavering commitment to perfection.</p>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+<!-- =============================================
+     4. BEST SELLERS
+     ============================================= -->
+{%- if section.settings.show_bestsellers -%}
+<section class="sak-section sak-bestsellers">
+  <div class="sak-content-width">
+    <div class="sak-section-header">
+      <h2>{{ section.settings.bestsellers_heading | default: 'Best Sellers' }}</h2>
+      {%- if section.settings.bestsellers_subtitle != blank -%}
+        <p class="sak-subtitle">{{ section.settings.bestsellers_subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.bestsellers_collection != blank -%}
+      {%- assign bs_collection = collections[section.settings.bestsellers_collection] -%}
+      <div class="sak-bestsellers__grid">
+        {%- for product in bs_collection.products limit: 4 -%}
+          <a href="{{ product.url }}" class="sak-bestsellers__card sak-animate sak-animate--delay-{{ forloop.index }}">
+            <div class="sak-bestsellers__card-img">
+              {%- if product.featured_image != blank -%}
+                <img
+                  src="{{ product.featured_image | image_url: width: 600 }}"
+                  alt="{{ product.title }}"
+                  loading="lazy"
+                  width="600"
+                  height="800"
+                >
+              {%- else -%}
+                {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="sak-bestsellers__card-info">
+              <h4>{{ product.title }}</h4>
+              <p class="sak-price">{{ product.price | money }}</p>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- elsif bestseller_products.size > 0 -%}
+      <div class="sak-bestsellers__grid">
+        {%- for block in bestseller_products limit: 4 -%}
+          <a href="{{ block.settings.product_link | default: '#' }}" class="sak-bestsellers__card sak-animate sak-animate--delay-{{ forloop.index }}" {{ block.shopify_attributes }}>
+            <div class="sak-bestsellers__card-img">
+              {%- if block.settings.product_image != blank -%}
+                <img
+                  src="{{ block.settings.product_image | image_url: width: 600 }}"
+                  alt="{{ block.settings.product_name | default: 'Product' }}"
+                  loading="lazy"
+                  width="600"
+                  height="800"
+                >
+              {%- else -%}
+                {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="sak-bestsellers__card-info">
+              <h4>{{ block.settings.product_name | default: 'Product Name' }}</h4>
+              <p class="sak-price">{{ block.settings.product_price | default: 'PKR 0' }}</p>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="sak-bestsellers__grid">
+        {%- for i in (1..4) -%}
+          <div class="sak-bestsellers__card sak-animate sak-animate--delay-{{ i }}">
+            <div class="sak-bestsellers__card-img">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <div class="sak-bestsellers__card-info">
+              <h4>Product {{ i }}</h4>
+              <p class="sak-price">PKR 12,500</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="sak-bestsellers__nav">
+      <button class="sak-bestsellers__nav-btn" aria-label="Previous">&#8592;</button>
+      <button class="sak-bestsellers__nav-btn" aria-label="Next">&#8594;</button>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+<!-- =============================================
+     5. AS SEEN ON
+     ============================================= -->
+{%- if section.settings.show_seenon -%}
+<section class="sak-section sak-seenon">
+  <div class="sak-content-width">
+    <div class="sak-section-header">
+      <h2>{{ section.settings.seenon_heading | default: 'As Seen On' }}</h2>
+      {%- if section.settings.seenon_subtitle != blank -%}
+        <p class="sak-subtitle">{{ section.settings.seenon_subtitle }}</p>
+      {%- endif -%}
+    </div>
+    <div class="sak-seenon__grid">
+      {%- if seen_on_items.size > 0 -%}
+        {%- for block in seen_on_items -%}
+          <a href="{{ block.settings.profile_link | default: '#' }}" class="sak-seenon__item" {{ block.shopify_attributes }}>
+            <div class="sak-seenon__avatar">
+              {%- if block.settings.avatar != blank -%}
+                <img
+                  src="{{ block.settings.avatar | image_url: width: 300 }}"
+                  alt="{{ block.settings.name | default: 'Featured' }}"
+                  loading="lazy"
+                  width="130"
+                  height="130"
+                >
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <span class="sak-seenon__name">{{ block.settings.name | default: '@username' }}</span>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..5) -%}
+          <div class="sak-seenon__item">
+            <div class="sak-seenon__avatar">
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <span class="sak-seenon__name">@featured{{ i }}</span>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+<!-- =============================================
+     6. FABRICS / COLLECTIONS
+     ============================================= -->
+{%- if section.settings.show_fabrics -%}
+<section class="sak-section sak-fabrics">
+  <div class="sak-content-width">
+    <div class="sak-section-header">
+      <h2>{{ section.settings.fabrics_heading | default: 'Our Collections' }}</h2>
+      {%- if section.settings.fabrics_subtitle != blank -%}
+        <p class="sak-subtitle">{{ section.settings.fabrics_subtitle }}</p>
+      {%- endif -%}
+    </div>
+    <div class="sak-fabrics__grid">
+      {%- if fabric_items.size > 0 -%}
+        {%- for block in fabric_items -%}
+          {%- liquid
+            assign fabric_asset = ''
+            assign fabric_name_lower = block.settings.collection_name | downcase
+            if fabric_name_lower == 'pret'
+              assign fabric_asset = 'collection-pret.jpg'
+            elsif fabric_name_lower == 'formals'
+              assign fabric_asset = 'collection-formals.jpg'
+            endif
+          -%}
+          <a href="{{ block.settings.collection_link | default: '#' }}" class="sak-fabrics__card" {{ block.shopify_attributes }}>
+            {%- if block.settings.collection_image != blank -%}
+              <img
+                src="{{ block.settings.collection_image | image_url: width: 800 }}"
+                alt="{{ block.settings.collection_name | default: 'Collection' }}"
+                loading="lazy"
+              >
+            {%- elsif fabric_asset != '' -%}
+              <img
+                src="{{ fabric_asset | asset_url }}"
+                alt="{{ block.settings.collection_name | default: 'Collection' }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+            <div class="sak-fabrics__card-overlay">
+              <h4>{{ block.settings.collection_name | default: 'Collection' }}</h4>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        <a href="#" class="sak-fabrics__card">
+          <img src="{{ 'collection-pret.jpg' | asset_url }}" alt="Pret" loading="lazy">
+          <div class="sak-fabrics__card-overlay">
+            <h4>Pret</h4>
+          </div>
+        </a>
+        <a href="#" class="sak-fabrics__card">
+          <img src="{{ 'collection-formals.jpg' | asset_url }}" alt="Formals" loading="lazy">
+          <div class="sak-fabrics__card-overlay">
+            <h4>Formals</h4>
+          </div>
+        </a>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.fabrics_button_text != blank -%}
+      <div class="sak-fabrics__action">
+        <a href="{{ section.settings.fabrics_button_link | default: '/collections' }}" class="sak-btn">
+          <span>{{ section.settings.fabrics_button_text }}</span>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+<!-- =============================================
+     7. IN THE JOURNAL
+     ============================================= -->
+{%- if section.settings.show_journal -%}
+<section class="sak-section sak-journal">
+  <div class="sak-content-width">
+    <div class="sak-section-header">
+      <h2>{{ section.settings.journal_heading | default: 'In The Journal' }}</h2>
+      {%- if section.settings.journal_subtitle != blank -%}
+        <p class="sak-subtitle">{{ section.settings.journal_subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.journal_blog != blank -%}
+      {%- assign journal_blog = blogs[section.settings.journal_blog] -%}
+      <div class="sak-journal__grid">
+        {%- for article in journal_blog.articles limit: 3 -%}
+          <a href="{{ article.url }}" class="sak-journal__card">
+            <div class="sak-journal__card-img">
+              {%- if article.image != blank -%}
+                <img
+                  src="{{ article.image | image_url: width: 600 }}"
+                  alt="{{ article.title }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <p class="sak-journal__card-meta">{{ article.published_at | date: '%B %d, %Y' }}</p>
+            <h4>{{ article.title }}</h4>
+            <p>{{ article.excerpt_or_content | strip_html | truncate: 100 }}</p>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- elsif journal_items.size > 0 -%}
+      <div class="sak-journal__grid">
+        {%- for block in journal_items limit: 3 -%}
+          <a href="{{ block.settings.article_link | default: '#' }}" class="sak-journal__card" {{ block.shopify_attributes }}>
+            <div class="sak-journal__card-img">
+              {%- if block.settings.article_image != blank -%}
+                <img
+                  src="{{ block.settings.article_image | image_url: width: 600 }}"
+                  alt="{{ block.settings.article_title | default: 'Article' }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <p class="sak-journal__card-meta">{{ block.settings.article_date | default: 'January 2026' }}</p>
+            <h4>{{ block.settings.article_title | default: 'Article Title' }}</h4>
+            <p>{{ block.settings.article_excerpt | default: 'Read more about our latest updates and behind-the-scenes stories.' }}</p>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="sak-journal__grid">
+        {%- for i in (1..3) -%}
+          <div class="sak-journal__card">
+            <div class="sak-journal__card-img">
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <p class="sak-journal__card-meta">February 2026</p>
+            <h4>Behind the Scenes: Our Craft</h4>
+            <p>Discover the artistry and attention to detail behind every piece.</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.journal_button_text != blank -%}
+      <div class="sak-journal__action">
+        <a href="{{ section.settings.journal_button_link | default: '/blogs' }}" class="sak-btn">
+          <span>{{ section.settings.journal_button_text }}</span>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+<!-- =============================================
+     POLICIES INFO BAR
+     ============================================= -->
+{%- if section.settings.show_policies -%}
+<section class="sak-section sak-policies">
+  <div class="sak-content-width">
+    <div class="sak-policies__grid">
+      <div class="sak-policies__item">
+        <div class="sak-policies__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h4>{{ section.settings.policy_1_title | default: 'Delivery Timeframe' }}</h4>
+        <a href="{{ section.settings.policy_1_link | default: '/pages/delivery-timeframe' }}" class="sak-policies__link">Learn More</a>
+      </div>
+      <div class="sak-policies__divider"></div>
+      <div class="sak-policies__item">
+        <div class="sak-policies__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <h4>{{ section.settings.policy_2_title | default: 'Exchange & Refund Policy' }}</h4>
+        <a href="{{ section.settings.policy_2_link | default: '/pages/exchange-refund-policy' }}" class="sak-policies__link">Learn More</a>
+      </div>
+      <div class="sak-policies__divider"></div>
+      <div class="sak-policies__item">
+        <div class="sak-policies__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <h4>{{ section.settings.policy_3_title | default: 'Shipping & Handling' }}</h4>
+        <a href="{{ section.settings.policy_3_link | default: '/pages/shipping-handling' }}" class="sak-policies__link">Learn More</a>
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+<!-- =============================================
+     HERO SLIDESHOW JAVASCRIPT
+     ============================================= -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const hero = document.getElementById('sak-hero');
+    if (!hero) return;
+
+    const slides = hero.querySelectorAll('.sak-hero__slide');
+    const dots = hero.querySelectorAll('.sak-hero__dot');
+    const content = hero.querySelector('.sak-hero__content');
+    if (slides.length <= 1) return;
+
+    let current = 0;
+    let interval;
+
+    function goToSlide(index) {
+      slides[current].classList.remove('is-active');
+      if (dots[current]) dots[current].classList.remove('is-active');
+      current = (index + slides.length) % slides.length;
+      slides[current].classList.add('is-active');
+      if (dots[current]) dots[current].classList.add('is-active');
+
+      // Update hero content from slide data
+      const slideData = [
+        {%- for block in hero_slides -%}
+          {
+            "label": {{ block.settings.label | default: '' | json }},
+            "heading": {{ block.settings.heading | default: '' | json }},
+            "subheading": {{ block.settings.subheading | default: '' | json }},
+            "button_text": {{ block.settings.button_text | default: '' | json }},
+            "button_link": {{ block.settings.button_link | default: '/collections/all' | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ];
+      if (slideData[current]) {
+        const d = slideData[current];
+        const labelEl = content.querySelector('.sak-label');
+        const h1El = content.querySelector('h1');
+        const subEl = content.querySelector('.sak-hero-sub');
+
+        if (labelEl) labelEl.textContent = d.label;
+        if (h1El) h1El.textContent = d.heading;
+        if (subEl) subEl.textContent = d.subheading;
+      }
+    }
+
+    function nextSlide() { goToSlide(current + 1); }
+    function prevSlide() { goToSlide(current - 1); }
+
+    function startAutoplay() {
+      interval = setInterval(nextSlide, 5000);
+    }
+
+    function stopAutoplay() {
+      clearInterval(interval);
+    }
+
+    // Navigation buttons
+    const prevBtn = hero.querySelector('[data-hero-prev]');
+    const nextBtn = hero.querySelector('[data-hero-next]');
+    if (prevBtn) prevBtn.addEventListener('click', function () { stopAutoplay(); prevSlide(); startAutoplay(); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { stopAutoplay(); nextSlide(); startAutoplay(); });
+
+    // Dots
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () {
+        stopAutoplay();
+        goToSlide(i);
+        startAutoplay();
+      });
+    });
+
+    startAutoplay();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Sakatelier Home",
+  "tag": "div",
+  "class": "sakatelier-home",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Featured Product / Comparison"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_comparison",
+      "label": "Show comparison section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "comparison_heading",
+      "label": "Heading",
+      "default": "Featured"
+    },
+    {
+      "type": "text",
+      "id": "comparison_subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "image_picker",
+      "id": "comparison_image_left",
+      "label": "Left image"
+    },
+    {
+      "type": "text",
+      "id": "comparison_label_left",
+      "label": "Left label",
+      "default": "Noir"
+    },
+    {
+      "type": "image_picker",
+      "id": "comparison_image_right",
+      "label": "Right image"
+    },
+    {
+      "type": "text",
+      "id": "comparison_label_right",
+      "label": "Right label",
+      "default": "Ivory"
+    },
+    {
+      "type": "text",
+      "id": "comparison_product_name",
+      "label": "Product name",
+      "default": "The Signature Set"
+    },
+    {
+      "type": "text",
+      "id": "comparison_product_price",
+      "label": "Price display",
+      "default": "PKR 12,500"
+    },
+    {
+      "type": "text",
+      "id": "comparison_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "comparison_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "At the Atelier"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_atelier",
+      "label": "Show atelier section",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "atelier_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "atelier_heading",
+      "label": "Heading",
+      "default": "At the Atelier"
+    },
+    {
+      "type": "text",
+      "id": "atelier_subtitle",
+      "label": "Subtitle",
+      "default": "handcrafted with love"
+    },
+    {
+      "type": "text",
+      "id": "atelier_button_text",
+      "label": "Button text",
+      "default": "Meet the Founder"
+    },
+    {
+      "type": "url",
+      "id": "atelier_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Best Sellers"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bestsellers",
+      "label": "Show best sellers section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "bestsellers_heading",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "text",
+      "id": "bestsellers_subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "collection",
+      "id": "bestsellers_collection",
+      "label": "Collection (optional)"
+    },
+    {
+      "type": "header",
+      "content": "As Seen On"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_seenon",
+      "label": "Show 'As Seen On' section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "seenon_heading",
+      "label": "Heading",
+      "default": "As Seen On"
+    },
+    {
+      "type": "text",
+      "id": "seenon_subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Behind The Scenes"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bts",
+      "label": "Show behind the scenes section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "bts_heading",
+      "label": "Heading",
+      "default": "Behind The Scenes"
+    },
+    {
+      "type": "text",
+      "id": "bts_subtitle",
+      "label": "Subtitle",
+      "default": "the art of our craft"
+    },
+    {
+      "type": "image_picker",
+      "id": "bts_feature_image",
+      "label": "Feature image (large)"
+    },
+    {
+      "type": "text",
+      "id": "bts_feature_caption",
+      "label": "Feature caption",
+      "default": "The finished piece — where craft meets elegance"
+    },
+    {
+      "type": "image_picker",
+      "id": "bts_detail_1",
+      "label": "Detail image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "bts_detail_2",
+      "label": "Detail image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "bts_detail_3",
+      "label": "Detail image 3"
+    },
+    {
+      "type": "textarea",
+      "id": "bts_description",
+      "label": "Description text",
+      "default": "Every piece begins as a vision — brought to life through hours of meticulous hand-embroidery, traditional techniques passed down through generations, and an unwavering commitment to perfection."
+    },
+    {
+      "type": "header",
+      "content": "Fabrics / Collections"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fabrics",
+      "label": "Show fabrics section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "fabrics_heading",
+      "label": "Heading",
+      "default": "Our Collections"
+    },
+    {
+      "type": "text",
+      "id": "fabrics_subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "fabrics_button_text",
+      "label": "Button text",
+      "default": "Explore All"
+    },
+    {
+      "type": "url",
+      "id": "fabrics_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "In The Journal"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_journal",
+      "label": "Show journal section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "journal_heading",
+      "label": "Heading",
+      "default": "In The Journal"
+    },
+    {
+      "type": "text",
+      "id": "journal_subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "blog",
+      "id": "journal_blog",
+      "label": "Blog (optional)"
+    },
+    {
+      "type": "text",
+      "id": "journal_button_text",
+      "label": "Button text",
+      "default": "Visit Blog"
+    },
+    {
+      "type": "url",
+      "id": "journal_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Policies Info Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Show policies section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "policy_1_title",
+      "label": "Policy 1 title",
+      "default": "Delivery Timeframe"
+    },
+    {
+      "type": "url",
+      "id": "policy_1_link",
+      "label": "Policy 1 link"
+    },
+    {
+      "type": "text",
+      "id": "policy_2_title",
+      "label": "Policy 2 title",
+      "default": "Exchange & Refund Policy"
+    },
+    {
+      "type": "url",
+      "id": "policy_2_link",
+      "label": "Policy 2 link"
+    },
+    {
+      "type": "text",
+      "id": "policy_3_title",
+      "label": "Policy 3 title",
+      "default": "Shipping & Handling"
+    },
+    {
+      "type": "url",
+      "id": "policy_3_link",
+      "label": "Policy 3 link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hero_slide",
+      "name": "Hero Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Slide image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "New Arrival"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "LINEN"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "your everyday spring fix"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "bestseller_product",
+      "name": "Best Seller Product",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product image"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product name",
+          "default": "Product Name"
+        },
+        {
+          "type": "text",
+          "id": "product_price",
+          "label": "Price",
+          "default": "PKR 12,500"
+        },
+        {
+          "type": "url",
+          "id": "product_link",
+          "label": "Product link"
+        }
+      ]
+    },
+    {
+      "type": "seen_on_person",
+      "name": "Seen On Person",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Portrait image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name / Handle",
+          "default": "@username"
+        },
+        {
+          "type": "url",
+          "id": "profile_link",
+          "label": "Profile link"
+        }
+      ]
+    },
+    {
+      "type": "fabric_collection",
+      "name": "Fabric / Collection",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "collection_image",
+          "label": "Collection image"
+        },
+        {
+          "type": "text",
+          "id": "collection_name",
+          "label": "Collection name",
+          "default": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "collection_link",
+          "label": "Collection link"
+        }
+      ]
+    },
+    {
+      "type": "journal_article",
+      "name": "Journal Article",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "article_image",
+          "label": "Article image"
+        },
+        {
+          "type": "text",
+          "id": "article_title",
+          "label": "Title",
+          "default": "Article Title"
+        },
+        {
+          "type": "text",
+          "id": "article_date",
+          "label": "Date",
+          "default": "February 2026"
+        },
+        {
+          "type": "textarea",
+          "id": "article_excerpt",
+          "label": "Excerpt",
+          "default": "Discover the artistry and attention to detail behind every piece."
+        },
+        {
+          "type": "url",
+          "id": "article_link",
+          "label": "Article link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sakatelier Home",
+      "blocks": [
+        {
+          "type": "hero_slide",
+          "settings": {
+            "label": "Spring Collection",
+            "heading": "LINEN",
+            "subheading": "your everyday spring fix",
+            "button_text": "Shop Now"
+          }
+        },
+        {
+          "type": "hero_slide",
+          "settings": {
+            "label": "New Arrivals",
+            "heading": "SILK",
+            "subheading": "timeless elegance redefined",
+            "button_text": "Discover"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,994 @@
+/* ============================================================
+   JANNAT & SADAF - LUXURY FASHION REDESIGN
+   Inspired by: Sania Maskatiya, Faiza Samee, SAK Atelier,
+                Misha Lakhani, Sana Safinaz
+   ============================================================ */
+
+/* ============================================================
+   0. UNIFIED HEADER - Logo centered, nav + icons on same row
+   ============================================================ */
+
+/* Restore the header logo (centered) */
+.header-logo {
+  display: flex !important;
+}
+
+/* Hide the announcement bar entirely (logo is back in header) */
+.announcement-bar,
+[class*="header-announcements"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   1. TYPOGRAPHY OVERRIDES
+   ============================================================ */
+
+:root {
+  /* Font Family Overrides */
+  --font-heading--family: 'Cormorant Garamond', 'Georgia', serif;
+  --font-heading--weight: 600;
+  --font-heading--style: normal;
+
+  --font-accent--family: 'Cormorant Garamond', 'Georgia', serif;
+  --font-accent--weight: 600;
+  --font-accent--style: normal;
+
+  --font-body--family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  --font-body--weight: 400;
+  --font-body--style: normal;
+
+  --font-subheading--family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  --font-subheading--weight: 500;
+  --font-subheading--style: normal;
+
+  /* Letter Spacing - Luxury Feel */
+  --letter-spacing--heading-normal: 0.12em;
+  --letter-spacing--heading-tight: 0.06em;
+  --letter-spacing--heading-loose: 0.18em;
+  --letter-spacing--body-normal: 0.02em;
+  --letter-spacing--body-loose: 0.04em;
+  --letter-spacing--display-normal: 0.08em;
+  --letter-spacing--display-tight: 0.04em;
+  --letter-spacing--display-loose: 0.12em;
+
+  /* Refined Line Heights */
+  --line-height--display-tight: 1.05;
+  --line-height--display-normal: 1.15;
+  --line-height--heading-tight: 1.2;
+  --line-height--heading-normal: 1.3;
+  --line-height--body-normal: 1.7;
+  --line-height--body-loose: 1.8;
+
+  /* Transition Refinement - Slower, More Elegant */
+  --hover-transition-duration: 0.4s;
+  --hover-transition-timing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --surface-transition-duration: 0.4s;
+  --animation-speed-slow: 0.35s;
+  --animation-speed: 0.2s;
+
+  /* Hover Effects - More Subtle */
+  --hover-lift-amount: 2px;
+  --hover-scale-amount: 1.02;
+  --hover-subtle-zoom-amount: 1.01;
+}
+
+/* Heading Typography */
+h1, .h1.h1,
+h2, .h2.h2,
+h3, .h3.h3,
+h4, .h4.h4 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+h5, .h5.h5,
+h6, .h6.h6 {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+}
+
+/* Body Typography */
+body {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Paragraph refinement */
+p, .paragraph, .rte {
+  letter-spacing: 0.02em;
+  line-height: 1.8;
+}
+
+
+/* ============================================================
+   2. COLOR PALETTE - LUXURY REFINEMENT
+   ============================================================ */
+
+/* Override default color scheme for luxury aesthetic */
+.color-scheme-1,
+.color-scheme1 {
+  --color-background: #ffffff;
+  --color-foreground-heading: #1a1a1a;
+  --color-foreground: #4a4a4a;
+  --color-primary: #c9a96e;
+  --color-primary-hover: #b8954f;
+  --color-border: #e8e8e8;
+}
+
+
+/* ============================================================
+   3. BUTTON REDESIGN
+   ============================================================ */
+
+/* Primary Button - Sharp, Luxurious */
+.button:not(.button-secondary):not(.button-unstyled) {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  padding-block: 16px;
+  padding-inline: 44px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Button hover - elegant slide effect */
+.button:not(.button-secondary):not(.button-unstyled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Secondary Button - Refined Outline */
+.button-secondary {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  padding-block: 16px;
+  padding-inline: 44px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.button-secondary:hover {
+  transform: translateY(-1px);
+}
+
+/* Link-style buttons */
+a.link,
+.link {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  position: relative;
+  text-decoration: none !important;
+}
+
+a.link::after,
+.link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+a.link:hover::after,
+.link:hover::after {
+  width: 100%;
+}
+
+
+/* ============================================================
+   4. HEADER REFINEMENT
+   ============================================================ */
+
+/* Header Container */
+header-component,
+.header {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Navigation Items - Uppercase with Spacing */
+.header-menu__item,
+.header a[href],
+header-component nav a,
+overflow-list a {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Nav hover - elegant fade */
+.header-menu__item:hover,
+header-component nav a:hover,
+overflow-list a:hover {
+  opacity: 0.6;
+}
+
+/* Sticky header shadow */
+header-component[sticky] .header,
+header-component[stuck] .header {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Header logo */
+.header__logo img {
+  transition: opacity 0.3s ease;
+}
+
+.header__logo:hover img {
+  opacity: 0.8;
+}
+
+/* Header icons */
+.header-actions__icon,
+.header__icon {
+  transition: opacity 0.3s ease;
+}
+
+.header-actions__icon:hover,
+.header__icon:hover {
+  opacity: 0.6;
+}
+
+/* Submenu/Dropdown refinement */
+.header-menu__submenu,
+.header-dropdown {
+  border-top: 1px solid #e8e8e8;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Fix drawer z-index so page elements don't bleed through */
+.menu-drawer {
+  z-index: 9999 !important;
+}
+
+.menu-drawer__backdrop {
+  z-index: 9998 !important;
+}
+
+/* Mega Menu Collection Label Badge */
+.mega-menu__collection-label {
+  display: inline !important;
+  background-color: #1a1a1a;
+  color: #ffffff !important;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif !important;
+  font-size: 0.45rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 6px !important;
+  margin-left: 6px;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   5. PRODUCT CARD ENHANCEMENT
+   ============================================================ */
+
+/* Card Container */
+.product-card {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Card Gallery - Remove Radius, Refined Overflow */
+.card-gallery {
+  border-radius: 0 !important;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Image Zoom on Hover - Smooth & Elegant */
+.card-gallery img,
+.card-gallery .product-media {
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.product-card:hover .card-gallery img,
+.product-card:hover .card-gallery .product-media {
+  transform: scale(1.06) !important;
+}
+
+/* Product Title Styling */
+.product-card__content a p,
+.product-card .product-title,
+.product-card__content [ref="productTitleLink"] p {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  line-height: 1.6;
+}
+
+/* Title hover - gold accent */
+.product-card:hover .product-card__content a p,
+.product-card:hover .product-card__content [ref="productTitleLink"] p {
+  color: #c9a96e !important;
+}
+
+/* Price Styling */
+.product-card .price,
+.product-card price-component,
+.product-card [class*="price"] {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: #888888;
+}
+
+/* Sale Price */
+.product-card .price--on-sale,
+.product-card .price--sale {
+  color: #b5544d;
+}
+
+/* Product Grid Spacing */
+.product-grid {
+  gap: 2rem !important;
+}
+
+@media screen and (min-width: 750px) {
+  .product-grid {
+    gap: 2.5rem !important;
+  }
+}
+
+/* Badge Styling - Sharp & Minimal */
+.badge {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.65rem;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+}
+
+/* Product card content spacing */
+.product-grid__card.product-grid__card {
+  gap: 0.75rem;
+}
+
+
+/* ============================================================
+   6. HERO SECTION REFINEMENT
+   ============================================================ */
+
+/* Hero text overlay */
+.hero .text-block,
+.hero__content,
+[class*="hero"] .text-block {
+  letter-spacing: 0.08em;
+}
+
+/* Hero heading */
+.hero h1,
+.hero h2,
+.hero .h1,
+.hero .h2,
+[class*="hero"] h1,
+[class*="hero"] h2 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+}
+
+/* Hero button */
+.hero .button,
+.hero .button-secondary,
+[class*="hero"] .button,
+[class*="hero"] .button-secondary {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  padding: 18px 50px;
+}
+
+
+/* ============================================================
+   7. SECTION SPACING - GENEROUS WHITESPACE
+   ============================================================ */
+
+/* Default section padding increase */
+.shopify-section {
+  --padding-block-start: 80px;
+  --padding-block-end: 80px;
+}
+
+@media screen and (min-width: 750px) {
+  .shopify-section {
+    --padding-block-start: 100px;
+    --padding-block-end: 100px;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .shopify-section {
+    --padding-block-start: 120px;
+    --padding-block-end: 120px;
+  }
+}
+
+/* Collection header spacing */
+.collection-heading,
+.collection__title {
+  margin-bottom: 3rem;
+}
+
+/* Section titles */
+.section-header__title,
+.section__title {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+
+/* ============================================================
+   8. FOOTER POLISH
+   ============================================================ */
+
+/* Footer container */
+.footer {
+  border-top: 1px solid #e8e8e8;
+}
+
+/* Footer headings */
+.footer h2,
+.footer h3,
+.footer h4,
+.footer .h2,
+.footer .h3,
+.footer .h4,
+.footer .footer__heading {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Footer links */
+.footer a,
+.footer-utilities a {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  transition: opacity 0.3s ease;
+  text-decoration: none;
+}
+
+.footer a:hover,
+.footer-utilities a:hover {
+  opacity: 0.6;
+}
+
+/* Footer newsletter input */
+.footer input[type="email"] {
+  border-radius: 0 !important;
+  border: 1px solid #e8e8e8;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  padding: 14px 16px;
+}
+
+/* Footer bottom/utilities */
+.footer-utilities {
+  border-top: 1px solid #e8e8e8;
+  padding-top: 2rem;
+  margin-top: 3rem;
+}
+
+/* Footer copyright */
+.footer__copyright,
+.footer-utilities__copyright {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+
+/* ============================================================
+   9. COLLECTION PAGE REFINEMENT
+   ============================================================ */
+
+/* Collection cards */
+.collection-card {
+  border-radius: 0 !important;
+}
+
+.collection-card__image {
+  border-radius: 0 !important;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.collection-card:hover .collection-card__image {
+  transform: scale(1.04);
+}
+
+/* Collection title */
+.collection-card__title,
+.collection-card h3,
+.collection-card h2 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* Filter/facets */
+.facets__label,
+.facet-filters__label {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   10. CART & DRAWER REFINEMENT
+   ============================================================ */
+
+/* Drawer styling */
+dialog[open],
+.drawer {
+  border-radius: 0 !important;
+}
+
+/* Cart drawer header */
+.drawer__header h2,
+.drawer__header h3 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* Cart item titles */
+.cart-item__title,
+.cart-products__title {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+}
+
+/* Cart prices */
+.cart-item__price,
+.cart-products__price {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* Quantity selector */
+.quantity-selector {
+  border-radius: 0 !important;
+}
+
+/* Checkout button */
+.cart__checkout-button,
+[name="checkout"] {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   11. INPUT & FORM REFINEMENT
+   ============================================================ */
+
+input,
+textarea,
+select {
+  border-radius: 0 !important;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Search input */
+.search__input,
+.predictive-search__input {
+  border-radius: 0 !important;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+
+/* ============================================================
+   12. ANNOUNCEMENT BAR REFINEMENT
+   ============================================================ */
+
+.announcement-bar,
+.header-announcements {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   13. SCROLL ANIMATIONS
+   ============================================================ */
+
+/* Fade in up animation */
+@keyframes luxuryFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes luxuryFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes luxurySlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation classes - applied via JS IntersectionObserver */
+.luxury-animate {
+  opacity: 0;
+}
+
+.luxury-animate.luxury-visible {
+  animation: luxuryFadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.luxury-animate-fade.luxury-visible {
+  animation: luxuryFadeIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.luxury-animate-left.luxury-visible {
+  animation: luxurySlideInLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Staggered delay for product cards */
+.luxury-stagger-1 { animation-delay: 0.1s; }
+.luxury-stagger-2 { animation-delay: 0.2s; }
+.luxury-stagger-3 { animation-delay: 0.3s; }
+.luxury-stagger-4 { animation-delay: 0.4s; }
+.luxury-stagger-5 { animation-delay: 0.5s; }
+.luxury-stagger-6 { animation-delay: 0.6s; }
+.luxury-stagger-7 { animation-delay: 0.7s; }
+.luxury-stagger-8 { animation-delay: 0.8s; }
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .luxury-animate,
+  .luxury-animate-fade,
+  .luxury-animate-left {
+    opacity: 1;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+
+/* ============================================================
+   14. CUSTOM SCROLLBAR
+   ============================================================ */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #c9a96e transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c9a96e;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #b8954f;
+}
+
+
+/* ============================================================
+   15. POPOVER & DIALOG REFINEMENT
+   ============================================================ */
+
+.popover,
+[popover] {
+  border-radius: 0 !important;
+}
+
+dialog {
+  border-radius: 0 !important;
+}
+
+/* Quick add modal */
+.quick-add-modal {
+  border-radius: 0 !important;
+}
+
+
+/* ============================================================
+   16. BREADCRUMB & PAGINATION
+   ============================================================ */
+
+.breadcrumb,
+.breadcrumbs {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+}
+
+.pagination {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.06em;
+}
+
+
+/* ============================================================
+   17. PRODUCT PAGE REFINEMENT
+   ============================================================ */
+
+/* Product title on detail page */
+.product__title,
+.product-information h1,
+.product-information .h1 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Product price on detail page */
+.product__price,
+.product-information .price {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.06em;
+  font-weight: 400;
+}
+
+/* Product description */
+.product__description,
+.product-information .rte {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  font-size: 0.875rem;
+}
+
+/* Variant picker labels */
+.variant-picker__label,
+.product-form__label {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+}
+
+/* Add to cart button */
+.product-form__submit,
+.product-form .button {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  font-size: 0.8rem;
+  padding: 18px 40px;
+}
+
+/* Accordion on product page */
+.product-information .accordion,
+.product-information details {
+  border-color: #e8e8e8;
+}
+
+.product-information .accordion summary,
+.product-information details summary {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   18. BLOG / ARTICLE REFINEMENT
+   ============================================================ */
+
+.article__title,
+.blog-post__title {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.article__content,
+.blog-post__content {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+}
+
+.article__date,
+.blog-post__date {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+}
+
+
+/* ============================================================
+   19. MEDIA WITH CONTENT SECTIONS
+   ============================================================ */
+
+.media-with-content h2,
+.media-with-content h3,
+.media-with-content .h2,
+.media-with-content .h3 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+
+/* ============================================================
+   20. SELECTION & FOCUS STATES
+   ============================================================ */
+
+::selection {
+  background-color: #c9a96e;
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background-color: #c9a96e;
+  color: #ffffff;
+}
+
+/* Refined focus states */
+:focus-visible {
+  outline-color: #c9a96e;
+}
+
+
+/* ============================================================
+   21. MARQUEE / SCROLLING TEXT
+   ============================================================ */
+
+.marquee,
+.marquee-text {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 400;
+}
+
+
+/* ============================================================
+   22. DIVIDER REFINEMENT
+   ============================================================ */
+
+.divider,
+.section-divider,
+hr {
+  border-color: #e8e8e8;
+  opacity: 0.6;
+}
+
+
+/* ============================================================
+   23. PREDICTIVE SEARCH
+   ============================================================ */
+
+.predictive-search,
+.search-modal {
+  border-radius: 0 !important;
+}
+
+.predictive-search__heading {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.predictive-search-results__card .product-card__content a p {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+}
+
+
+/* ============================================================
+   24. SLIDESHOW CONTROLS
+   ============================================================ */
+
+.slideshow__controls button,
+.carousel__button {
+  border-radius: 0 !important;
+  transition: all 0.3s ease;
+}
+
+.slideshow__controls button:hover,
+.carousel__button:hover {
+  opacity: 0.7;
+}
+
+
+/* ============================================================
+   25. GLOBAL TRANSITIONS & SMOOTHNESS
+   ============================================================ */
+
+/* Smooth all link transitions */
+a {
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Image transitions globally */
+img {
+  transition: opacity 0.4s ease;
+}
+
+/* Smooth color scheme transitions between sections */
+.shopify-section {
+  transition: background-color 0.5s ease;
+}

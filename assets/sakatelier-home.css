@@ -1,0 +1,1045 @@
+/* =============================================
+   SAKATELIER-INSPIRED HOME PAGE STYLES
+   ============================================= */
+
+/* CRITICAL: Override luxury-animations.js hiding this section */
+.sakatelier-home,
+.shopify-section .sakatelier-home,
+.shopify-section:has(.sakatelier-home) {
+  opacity: 1 !important;
+  animation: none !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+/* Also override if luxury-animate class gets applied to parent */
+.shopify-section.luxury-animate:has(.sakatelier-home) {
+  opacity: 1 !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+/* ---------- CSS Variables ---------- */
+:root {
+  --sak-gold: #c9a96e;
+  --sak-gold-hover: #b8954f;
+  --sak-dark: #1a1a1a;
+  --sak-light: #faf9f7;
+  --sak-white: #ffffff;
+  --sak-muted: #6b6b6b;
+  --sak-border: #e8e8e8;
+  --sak-gradient-start: #e8a87c;
+  --sak-gradient-mid: #d8637f;
+  --sak-gradient-end: #c9a96e;
+  --sak-font-heading: 'Inter', sans-serif;
+  --sak-font-body: 'Inter', sans-serif;
+  --sak-transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --sak-section-gap: 80px;
+}
+
+/* ---------- Section Container ---------- */
+.sak-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.sak-section+.sak-section {
+  margin-top: var(--sak-section-gap);
+}
+
+.sak-content-width {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ---------- Section Headers ---------- */
+.sak-section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.sak-section-header h2 {
+  font-family: var(--sak-font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--sak-dark);
+  margin: 0 0 4px;
+}
+
+.sak-section-header .sak-subtitle {
+  font-family: var(--sak-font-body);
+  font-size: 13px;
+  color: var(--sak-muted);
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* ---------- Buttons ---------- */
+.sak-btn {
+  display: inline-block;
+  font-family: var(--sak-font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 40px;
+  border: 1.5px solid var(--sak-dark);
+  color: var(--sak-dark);
+  background: transparent;
+  cursor: pointer;
+  transition: var(--sak-transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.sak-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--sak-dark);
+  transition: var(--sak-transition);
+  z-index: 0;
+}
+
+.sak-btn:hover::before {
+  left: 0;
+}
+
+.sak-btn:hover {
+  color: var(--sak-white);
+  border-color: var(--sak-dark);
+}
+
+.sak-btn span {
+  position: relative;
+  z-index: 1;
+}
+
+.sak-btn--light {
+  border-color: var(--sak-white);
+  color: var(--sak-white);
+}
+
+.sak-btn--light::before {
+  background: var(--sak-white);
+}
+
+.sak-btn--light:hover {
+  color: var(--sak-dark);
+  border-color: var(--sak-white);
+}
+
+.sak-btn--filled {
+  background: var(--sak-dark);
+  color: var(--sak-white);
+  border-color: var(--sak-dark);
+}
+
+.sak-btn--filled::before {
+  background: var(--sak-white);
+}
+
+.sak-btn--filled:hover {
+  color: var(--sak-dark);
+}
+
+/* =============================================
+   1. HERO SLIDESHOW
+   ============================================= */
+.sak-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  max-height: 900px;
+  overflow: hidden;
+}
+
+.sak-hero__slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.sak-hero__slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  will-change: opacity;
+}
+
+.sak-hero__slide.is-active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.sak-hero__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.sak-hero__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.25) 100%);
+  z-index: 2;
+}
+
+.sak-hero__content {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 3;
+  color: var(--sak-white);
+}
+
+.sak-hero__content .sak-label {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.sak-hero__content h1 {
+  font-family: var(--sak-font-heading);
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: 14px;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  line-height: 1.1;
+}
+
+.sak-hero__content .sak-hero-sub {
+  font-size: 13px;
+  letter-spacing: 2px;
+  font-weight: 400;
+  margin-bottom: 32px;
+  opacity: 0.85;
+}
+
+/* Hero Navigation Arrows */
+.sak-hero__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  display: flex;
+  gap: 0;
+}
+
+.sak-hero__nav--left {
+  left: 30px;
+}
+
+.sak-hero__nav--right {
+  right: 30px;
+}
+
+.sak-hero__arrow {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--sak-white);
+  cursor: pointer;
+  transition: var(--sak-transition);
+  font-size: 18px;
+}
+
+.sak-hero__arrow:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* Hero Dots */
+.sak-hero__dots {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 4;
+}
+
+.sak-hero__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  transition: var(--sak-transition);
+  padding: 0;
+}
+
+.sak-hero__dot.is-active {
+  background: var(--sak-white);
+  transform: scale(1.2);
+}
+
+/* =============================================
+   2. FEATURED PRODUCT / IMAGE COMPARISON
+   ============================================= */
+.sak-comparison {
+  padding: 80px 0;
+  background: var(--sak-white);
+}
+
+.sak-comparison__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  height: 600px;
+}
+
+.sak-comparison__side {
+  position: relative;
+  overflow: hidden;
+}
+
+.sak-comparison__side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sak-comparison__divider {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: var(--sak-white);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.sak-comparison__label {
+  position: absolute;
+  bottom: 40px;
+  text-align: center;
+  width: 100%;
+  z-index: 3;
+}
+
+.sak-comparison__label span {
+  font-family: var(--sak-font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sak-white);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 20px;
+  backdrop-filter: blur(4px);
+}
+
+.sak-comparison__info {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.sak-comparison__info h3 {
+  font-family: var(--sak-font-heading);
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  color: var(--sak-dark);
+  margin: 0 0 8px;
+}
+
+.sak-comparison__info p {
+  font-size: 13px;
+  color: var(--sak-muted);
+  letter-spacing: 1px;
+  margin: 0 0 24px;
+}
+
+/* =============================================
+   3. AT THE ATELIER BANNER
+   ============================================= */
+.sak-atelier {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+}
+
+.sak-atelier img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sak-atelier__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.sak-atelier__overlay h2 {
+  font-family: var(--sak-font-heading);
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: 12px;
+  text-transform: uppercase;
+  color: var(--sak-white);
+  margin: 0 0 8px;
+}
+
+.sak-atelier__overlay .sak-atelier-sub {
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 36px;
+}
+
+/* =============================================
+   4. BEST SELLERS
+   ============================================= */
+.sak-bestsellers {
+  padding: 80px 0;
+  background: var(--sak-white);
+}
+
+.sak-bestsellers__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.sak-bestsellers__card {
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--sak-dark);
+  display: block;
+}
+
+.sak-bestsellers__card-img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  background: var(--sak-light);
+}
+
+.sak-bestsellers__card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.sak-bestsellers__card:hover .sak-bestsellers__card-img img {
+  transform: scale(1.05);
+}
+
+.sak-bestsellers__card-info {
+  padding: 16px 0 0;
+  text-align: center;
+}
+
+.sak-bestsellers__card-info h4 {
+  font-family: var(--sak-font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+.sak-bestsellers__card-info .sak-price {
+  font-size: 13px;
+  color: var(--sak-muted);
+  letter-spacing: 1px;
+}
+
+/* Best Sellers Navigation */
+.sak-bestsellers__nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.sak-bestsellers__nav-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--sak-border);
+  background: transparent;
+  color: var(--sak-dark);
+  cursor: pointer;
+  transition: var(--sak-transition);
+  font-size: 16px;
+}
+
+.sak-bestsellers__nav-btn:hover {
+  background: var(--sak-dark);
+  color: var(--sak-white);
+  border-color: var(--sak-dark);
+}
+
+/* =============================================
+   5. AS SEEN ON
+   ============================================= */
+.sak-seenon {
+  padding: 80px 0;
+  background: var(--sak-light);
+}
+
+.sak-seenon__grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.sak-seenon__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.sak-seenon__avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg,
+      var(--sak-gradient-start),
+      var(--sak-gradient-mid),
+      var(--sak-gradient-end));
+  transition: transform 0.4s ease;
+}
+
+.sak-seenon__item:hover .sak-seenon__avatar {
+  transform: scale(1.06);
+}
+
+.sak-seenon__avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--sak-white);
+}
+
+.sak-seenon__name {
+  font-family: var(--sak-font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sak-dark);
+  text-decoration: none;
+}
+
+/* =============================================
+   BEHIND THE SCENES
+   ============================================= */
+.sak-bts {
+  padding: 80px 0;
+  background: var(--sak-light);
+}
+
+.sak-bts__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.sak-bts__item {
+  overflow: hidden;
+  border-radius: 2px;
+  aspect-ratio: 1;
+}
+
+.sak-bts__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.sak-bts__item:hover img {
+  transform: scale(1.05);
+}
+
+.sak-bts__description {
+  text-align: center;
+  max-width: 700px;
+  margin: 40px auto 0;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--sak-muted);
+  letter-spacing: 0.5px;
+  font-style: italic;
+}
+
+/* =============================================
+   POLICIES INFO BAR
+   ============================================= */
+.sak-policies {
+  padding: 60px 0;
+  background: var(--sak-white);
+  border-top: 1px solid var(--sak-border);
+}
+
+.sak-policies__grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 0;
+}
+
+.sak-policies__item {
+  text-align: center;
+  padding: 20px 16px;
+}
+
+.sak-policies__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--sak-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: var(--sak-dark);
+  transition: var(--sak-transition);
+}
+
+.sak-policies__item:hover .sak-policies__icon {
+  background: var(--sak-dark);
+  color: var(--sak-white);
+}
+
+.sak-policies__item h4 {
+  font-family: var(--sak-font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sak-dark);
+  margin: 0 0 12px;
+}
+
+.sak-policies__link {
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--sak-muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--sak-muted);
+  padding-bottom: 2px;
+  transition: var(--sak-transition);
+}
+
+.sak-policies__link:hover {
+  color: var(--sak-dark);
+  border-bottom-color: var(--sak-dark);
+}
+
+.sak-policies__divider {
+  width: 1px;
+  height: 80px;
+  background: var(--sak-border);
+}
+
+/* =============================================
+   6. FABRICS / COLLECTIONS
+   ============================================= */
+.sak-fabrics {
+  padding: 80px 0;
+  background: var(--sak-white);
+}
+
+.sak-fabrics__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.sak-fabrics__card {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  text-decoration: none;
+  display: block;
+}
+
+.sak-fabrics__card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.sak-fabrics__card:hover img {
+  transform: scale(1.05);
+}
+
+.sak-fabrics__card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px;
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.55) 0%,
+      transparent 100%);
+  z-index: 2;
+}
+
+.sak-fabrics__card-overlay h4 {
+  font-family: var(--sak-font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sak-white);
+  margin: 0;
+}
+
+.sak-fabrics__action {
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* =============================================
+   7. IN THE JOURNAL
+   ============================================= */
+.sak-journal {
+  padding: 80px 0;
+  background: var(--sak-light);
+}
+
+.sak-journal__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.sak-journal__card {
+  text-decoration: none;
+  color: var(--sak-dark);
+  display: block;
+}
+
+.sak-journal__card-img {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: var(--sak-border);
+}
+
+.sak-journal__card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.sak-journal__card:hover .sak-journal__card-img img {
+  transform: scale(1.05);
+}
+
+.sak-journal__card-meta {
+  font-size: 11px;
+  color: var(--sak-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.sak-journal__card h4 {
+  font-family: var(--sak-font-heading);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0 0 12px;
+  color: var(--sak-dark);
+}
+
+.sak-journal__card p {
+  font-size: 13px;
+  color: var(--sak-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.sak-journal__action {
+  text-align: center;
+  margin-top: 48px;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 991px) {
+  :root {
+    --sak-section-gap: 60px;
+  }
+
+  .sak-content-width {
+    padding: 0 24px;
+  }
+
+  .sak-hero__content h1 {
+    font-size: 42px;
+    letter-spacing: 8px;
+  }
+
+  .sak-hero {
+    max-height: 700px;
+  }
+
+  .sak-comparison__inner {
+    height: 450px;
+  }
+
+  .sak-atelier__overlay h2 {
+    font-size: 36px;
+    letter-spacing: 8px;
+  }
+
+  .sak-bestsellers__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .sak-fabrics__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sak-journal__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sak-bts__grid {
+    gap: 14px;
+  }
+
+  .sak-seenon__grid {
+    gap: 24px;
+  }
+
+  .sak-seenon__avatar {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 599px) {
+  :root {
+    --sak-section-gap: 48px;
+  }
+
+  .sak-content-width {
+    padding: 0 16px;
+  }
+
+  .sak-section-header {
+    margin-bottom: 32px;
+  }
+
+  .sak-section-header h2 {
+    font-size: 12px;
+    letter-spacing: 3px;
+  }
+
+  .sak-hero {
+    min-height: 500px;
+    max-height: 650px;
+  }
+
+  .sak-hero__content {
+    bottom: 60px;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .sak-hero__content h1 {
+    font-size: 32px;
+    letter-spacing: 6px;
+  }
+
+  .sak-hero__content .sak-hero-sub {
+    font-size: 12px;
+  }
+
+  .sak-hero__arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .sak-hero__nav--left {
+    left: 12px;
+  }
+
+  .sak-hero__nav--right {
+    right: 12px;
+  }
+
+  .sak-comparison__inner {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .sak-comparison__side {
+    height: 350px;
+  }
+
+  .sak-comparison__divider {
+    display: none;
+  }
+
+  .sak-atelier {
+    height: 400px;
+  }
+
+  .sak-atelier__overlay h2 {
+    font-size: 24px;
+    letter-spacing: 6px;
+  }
+
+  .sak-bestsellers__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .sak-seenon__grid {
+    gap: 16px;
+  }
+
+  .sak-seenon__avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .sak-seenon__name {
+    font-size: 10px;
+  }
+
+  .sak-fabrics__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sak-bts__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sak-bts__item {
+    aspect-ratio: 16/9;
+  }
+
+  .sak-policies__grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .sak-policies__divider {
+    width: 60%;
+    height: 1px;
+    margin: 0 auto;
+  }
+
+  .sak-journal__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sak-btn {
+    padding: 12px 30px;
+    font-size: 10px;
+  }
+
+  .sak-bestsellers,
+  .sak-seenon,
+  .sak-fabrics,
+  .sak-journal,
+  .sak-comparison {
+    padding: 60px 0;
+  }
+}
+
+/* ---------- Animations ---------- */
+@keyframes sakFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sak-animate {
+  opacity: 0;
+  animation: sakFadeUp 0.7s ease forwards;
+}
+
+.sak-animate--delay-1 {
+  animation-delay: 0.1s;
+}
+
+.sak-animate--delay-2 {
+  animation-delay: 0.2s;
+}
+
+.sak-animate--delay-3 {
+  animation-delay: 0.3s;
+}
+
+.sak-animate--delay-4 {
+  animation-delay: 0.4s;
+}
