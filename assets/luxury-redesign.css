@@ -14,10 +14,13 @@
 }
 
 /* Hide the announcement bar entirely (logo is back in header) */
+/* Un-hidden for the Eid dispatch notice. Re-enable this rule to hide the bar again. */
+/*
 .announcement-bar,
 [class*="header-announcements"] {
   display: none !important;
 }
+*/
 
 
 /* ============================================================
