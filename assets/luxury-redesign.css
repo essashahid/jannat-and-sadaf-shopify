@@ -1087,6 +1087,11 @@ hr {
   text-align: center;
 }
 
+/* --- Tighten collection page layout --- */
+.main-collection {
+  padding-block-start: 0 !important;
+}
+
 /* --- Policy pages: readable content width --- */
 .main-page .rte,
 .main-page .page-content,
