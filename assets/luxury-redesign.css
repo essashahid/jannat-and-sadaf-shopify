@@ -14,49 +14,9 @@
 }
 
 /* Hide the announcement bar entirely (logo is back in header) */
-/* Un-hidden for the Eid dispatch notice. Re-enable this rule to hide the bar again. */
-/*
 .announcement-bar,
 [class*="header-announcements"] {
   display: none !important;
-}
-*/
-
-/* Eid dispatch notice — slim & warm. Background/text come from scheme-5 (warm
-   espresso). Remove this block when the notice is taken down. */
-.announcement-bar__slide {
-  display: flex !important;
-  flex-wrap: wrap;
-  align-items: center !important;
-  justify-content: center !important;
-  column-gap: 0.85rem;
-  row-gap: 0.15rem;
-}
-.announcement-bar__text {
-  font-size: 0.72rem !important;
-  letter-spacing: 0.08em !important;
-  line-height: 1.5 !important;
-}
-.announcement-bar__text::before {
-  content: "\263E  Eid Notice";
-  margin-right: 0.85rem;
-  padding-right: 0.85rem;
-  border-right: 1px solid rgba(203, 176, 132, 0.4);
-  color: #cbb084;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-@media screen and (max-width: 749px) {
-  .announcement-bar__text::before {
-    margin-right: 0;
-    padding-right: 0;
-    border-right: 0;
-    display: block;
-    width: 100%;
-    text-align: center;
-  }
 }
 
 
