@@ -235,6 +235,19 @@
   </section>
 {%- endif -%}
 
+{%- comment -%} ============ MARQUEE STRIP ============ {%- endcomment -%}
+<section class="sak-section sak-marquee" aria-hidden="true">
+  <div class="sak-marquee__track">
+    {%- assign marquee_items = 'Jannat &amp; Sadaf,Atelier,Handcrafted in Pakistan' | split: ',' -%}
+    {%- for cycle in (1..3) -%}
+      {%- for item in marquee_items -%}
+        <span class="sak-marquee__item">{{ item }}</span>
+        <span class="sak-marquee__sep">&#x2022;</span>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</section>
+
 {%- comment -%} ============ 4. CRAFT / AT THE STUDIO ============ {%- endcomment -%}
 {%- if section.settings.show_atelier -%}
   <section class="sak-section sak-craft">
