@@ -1055,6 +1055,47 @@ hr {
   padding-block-end: 0 !important;
 }
 
+/* --- Collection page entrance animations (Motion One driven) --- */
+/* Initial hidden states only apply when .is-animating is on <html>.
+   The inline init script in main-collection.liquid adds it synchronously
+   and the 3.5s fallback strips it if Motion One fails to load. */
+.is-animating .product-grid-container .product-grid__item {
+  opacity: 0;
+}
+.is-animating .product-grid-container .product-grid__item img {
+  clip-path: inset(0 100% 0 0);
+}
+.is-animating .product-grid-container .facets,
+.is-animating .product-grid-container .facets-wrapper,
+.is-animating .product-grid-container .facet-filters,
+.is-animating .product-grid-container .product-count,
+.is-animating .product-grid-container .facets__product-count,
+.is-animating .product-grid-container .facet-filters__sort {
+  opacity: 0;
+}
+.is-animating .shopify-section h1 {
+  opacity: 0;
+}
+
+/* Premium product card hover — slower, more controlled */
+.product-grid__item .card-gallery,
+.product-grid__item .product-card__media {
+  overflow: hidden;
+}
+.product-grid__item .card-gallery img,
+.product-grid__item .product-card__media img {
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.product-grid__item:hover .card-gallery img,
+.product-grid__item:hover .product-card__media img {
+  transform: scale(1.05);
+}
+.product-grid__item .product-card__content a,
+.product-grid__item .product-title a {
+  transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* --- Policy pages: readable content width --- */
 .main-page .rte,
 .main-page .page-content,

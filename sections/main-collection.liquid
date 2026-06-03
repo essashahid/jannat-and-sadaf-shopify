@@ -1,5 +1,18 @@
 
 
+<script>
+  (function () {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.documentElement.classList.add('is-animating');
+    window.setTimeout(function () {
+      if (!window.__motionReady) {
+        document.documentElement.classList.remove('is-animating');
+      }
+    }, 3500);
+  })();
+</script>
+<script src="{{ 'collection-animations.js' | asset_url }}" defer></script>
+
 <script
   src="{{ 'results-list.js' | asset_url }}"
   type="module"
