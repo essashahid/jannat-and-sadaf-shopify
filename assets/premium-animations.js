@@ -126,6 +126,8 @@
     '.sak-tiles .sak-head',
     '.sak-tiles__card',
     '.sak-products .sak-head',
+    '.sak-spotlight__media',
+    '.sak-spotlight__content',
     '.sak-craft__media',
     '.sak-craft__content',
     '.sak-bts .sak-head',

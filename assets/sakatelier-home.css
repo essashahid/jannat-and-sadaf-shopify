@@ -510,6 +510,134 @@
 }
 
 /* ============================================================
+   3.5 FEATURED PRODUCT SPOTLIGHT — "Most Loved"
+   ============================================================ */
+.sak-spotlight {
+  background: var(--sak-cream);
+  padding-block: clamp(64px, 8.5vw, 120px);
+  overflow: hidden;
+}
+
+.sak-spotlight__inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: clamp(20px, 4vw, 56px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+}
+
+.sak-spotlight__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+.sak-spotlight__media a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.sak-spotlight__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.sak-spotlight__media:hover img {
+  transform: scale(1.06);
+}
+.sak-spotlight__badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: var(--sak-charcoal);
+  color: var(--sak-cream);
+  font-family: var(--sak-sans);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  z-index: 2;
+}
+
+.sak-spotlight__content {
+  max-width: 480px;
+}
+.sak-spotlight__sub {
+  font-family: var(--sak-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--sak-gold);
+  margin: 0 0 22px;
+}
+.sak-spotlight__title {
+  font-family: var(--sak-serif) !important;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--sak-charcoal);
+  margin: 0 0 14px;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+.sak-spotlight__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.4s var(--sak-ease);
+}
+.sak-spotlight__title a:hover {
+  color: var(--sak-gold);
+}
+.sak-spotlight__price {
+  font-family: var(--sak-sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: var(--sak-body);
+  margin: 0 0 24px;
+}
+.sak-spotlight__price--sale {
+  color: #b5544d;
+  font-weight: 600;
+  margin-right: 0.6em;
+}
+.sak-spotlight__price--strike {
+  color: var(--sak-muted);
+  font-weight: 400;
+}
+.sak-spotlight__body {
+  font-family: var(--sak-sans);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--sak-body);
+  margin: 0 0 36px;
+  max-width: 400px;
+}
+.sak-spotlight__cta {
+  align-self: flex-start;
+}
+
+@media screen and (max-width: 989px) {
+  .sak-spotlight__inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .sak-spotlight__content {
+    max-width: 100%;
+    text-align: center;
+    margin-inline: auto;
+  }
+  .sak-spotlight__body {
+    margin-inline: auto;
+  }
+}
+
+/* ============================================================
    4. CRAFT / AT THE STUDIO
    ============================================================ */
 .sak-craft {
@@ -974,7 +1102,9 @@
 .is-animating .sakatelier-home .sak-bts .sak-head,
 .is-animating .sakatelier-home .sak-journal .sak-head,
 .is-animating .sakatelier-home .sak-craft__media,
-.is-animating .sakatelier-home .sak-craft__content {
+.is-animating .sakatelier-home .sak-craft__content,
+.is-animating .sakatelier-home .sak-spotlight__media,
+.is-animating .sakatelier-home .sak-spotlight__content {
   opacity: 0;
   transform: translateY(28px);
 }

@@ -246,6 +246,69 @@
   </section>
 {%- endif -%}
 
+{%- comment -%} ============ FEATURED PRODUCT SPOTLIGHT ============ {%- endcomment -%}
+{%- if section.settings.show_spotlight -%}
+  {%- assign spotlight_product = section.settings.spotlight_product -%}
+  {%- if spotlight_product != blank -%}
+    <section class="sak-section sak-spotlight">
+      <div class="sak-spotlight__inner">
+        <div class="sak-spotlight__media">
+          <a href="{{ spotlight_product.url }}" aria-label="{{ spotlight_product.title }}">
+            {%- if section.settings.spotlight_image != blank -%}
+              <img
+                src="{{ section.settings.spotlight_image | image_url: width: 1200 }}"
+                srcset="{{ section.settings.spotlight_image | image_url: width: 600 }} 600w, {{ section.settings.spotlight_image | image_url: width: 900 }} 900w, {{ section.settings.spotlight_image | image_url: width: 1200 }} 1200w"
+                sizes="(min-width: 990px) 50vw, 100vw"
+                alt="{{ spotlight_product.title }}"
+                loading="lazy"
+                width="1200"
+                height="1500"
+              >
+            {%- elsif spotlight_product.featured_media -%}
+              <img
+                src="{{ spotlight_product.featured_media | image_url: width: 1200 }}"
+                srcset="{{ spotlight_product.featured_media | image_url: width: 600 }} 600w, {{ spotlight_product.featured_media | image_url: width: 900 }} 900w, {{ spotlight_product.featured_media | image_url: width: 1200 }} 1200w"
+                sizes="(min-width: 990px) 50vw, 100vw"
+                alt="{{ spotlight_product.title }}"
+                loading="lazy"
+                width="1200"
+                height="1500"
+              >
+            {%- endif -%}
+          </a>
+          {%- if section.settings.spotlight_eyebrow != blank -%}
+            <span class="sak-spotlight__badge">{{ section.settings.spotlight_eyebrow }}</span>
+          {%- endif -%}
+        </div>
+        <div class="sak-spotlight__content">
+          {%- if section.settings.spotlight_subtitle != blank -%}
+            <p class="sak-spotlight__sub">{{ section.settings.spotlight_subtitle }}</p>
+          {%- endif -%}
+          <h2 class="sak-spotlight__title">
+            <a href="{{ spotlight_product.url }}">{{ spotlight_product.title }}</a>
+          </h2>
+          {%- unless spotlight_product.price == 0 -%}
+            <p class="sak-spotlight__price">
+              {%- if spotlight_product.compare_at_price > spotlight_product.price -%}
+                <span class="sak-spotlight__price--sale">{{ spotlight_product.price | money }}</span>
+                <s class="sak-spotlight__price--strike">{{ spotlight_product.compare_at_price | money }}</s>
+              {%- else -%}
+                {{ spotlight_product.price | money }}
+              {%- endif -%}
+            </p>
+          {%- endunless -%}
+          {%- if section.settings.spotlight_body != blank -%}
+            <p class="sak-spotlight__body">{{ section.settings.spotlight_body }}</p>
+          {%- endif -%}
+          <a href="{{ spotlight_product.url }}" class="sak-btn sak-btn--dark sak-spotlight__cta">
+            <span>{{ section.settings.spotlight_button | default: 'Shop the Piece' }}</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+{%- endif -%}
+
 {%- comment -%} ============ MARQUEE STRIP ============ {%- endcomment -%}
 <section class="sak-section sak-marquee" aria-hidden="true">
   <div class="sak-marquee__track">
@@ -613,6 +676,48 @@
       "type": "url",
       "id": "bestsellers_button_link",
       "label": "Button link"
+    },
+    { "type": "header", "content": "Featured Product Spotlight" },
+    {
+      "type": "checkbox",
+      "id": "show_spotlight",
+      "label": "Show featured product spotlight",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "spotlight_product",
+      "label": "Featured product"
+    },
+    {
+      "type": "image_picker",
+      "id": "spotlight_image",
+      "label": "Override image (optional)",
+      "info": "Defaults to the product's featured image"
+    },
+    {
+      "type": "text",
+      "id": "spotlight_eyebrow",
+      "label": "Image badge",
+      "default": "Most Loved"
+    },
+    {
+      "type": "text",
+      "id": "spotlight_subtitle",
+      "label": "Subtitle",
+      "default": "By Popular Demand"
+    },
+    {
+      "type": "textarea",
+      "id": "spotlight_body",
+      "label": "Body copy",
+      "default": "A piece our community keeps coming back to. Hand-finished in the atelier — quietly confident, easy to live in."
+    },
+    {
+      "type": "text",
+      "id": "spotlight_button",
+      "label": "Button text",
+      "default": "Shop the Piece"
     },
     { "type": "header", "content": "Craft / At the Studio" },
     {
