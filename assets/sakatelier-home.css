@@ -1015,35 +1015,38 @@ html {
   }
 }
 
-/* Marquee strip — slim editorial band */
+/* Marquee strip — whisper-quiet, blends into adjacent sections */
 .sak-marquee {
-  background: var(--sak-cream);
-  border-block: 1px solid var(--sak-border);
+  background: var(--sak-ivory);
   overflow: hidden;
-  padding-block: clamp(20px, 2.4vw, 30px);
+  padding-block: clamp(28px, 3.4vw, 44px);
 }
 .sak-marquee__track {
   display: flex;
   align-items: center;
-  gap: clamp(1.8rem, 3.4vw, 3rem);
+  gap: clamp(2.5rem, 5vw, 4.5rem);
   width: max-content;
   white-space: nowrap;
-  animation: sakMarquee 40s linear infinite;
+  animation: sakMarquee 55s linear infinite;
 }
 .sak-marquee__item {
-  font-family: var(--sak-serif);
-  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  font-family: var(--sak-sans);
+  font-size: clamp(0.66rem, 0.9vw, 0.78rem);
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--sak-charcoal);
+  color: var(--sak-muted);
   flex-shrink: 0;
 }
 .sak-marquee__sep {
-  display: inline-flex;
-  font-size: clamp(0.6rem, 1vw, 0.9rem);
-  color: var(--sak-gold);
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: var(--sak-gold);
+  border-radius: 50%;
   flex-shrink: 0;
+  font-size: 0;
+  line-height: 0;
 }
 @keyframes sakMarquee {
   from {
