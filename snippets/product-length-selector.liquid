@@ -7,11 +7,21 @@
 {%- enddoc -%}
 
 {%- assign product_title_normalized = product.title | downcase | strip -%}
-{%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
-{%- if product_title_normalized == 'quiet sage' -%}
+{%- if product.handle == 'ash-blue-wrap' -%}
+  {%- assign shirt_lengths = '26,27,28' | split: ',' -%}
+  {%- assign bottom_lengths = '39,40,42' | split: ',' -%}
+  {%- assign default_shirt_length = '26' -%}
+  {%- assign default_bottom_length = '39' -%}
+{%- elsif product_title_normalized == 'quiet sage' -%}
   {%- assign shirt_lengths = '28' | split: ',' -%}
+  {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
+  {%- assign default_shirt_length = '28' -%}
+  {%- assign default_bottom_length = '42 (Standard)' -%}
 {%- else -%}
   {%- assign shirt_lengths = '28,30,32 (Standard),34' | split: ',' -%}
+  {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
+  {%- assign default_shirt_length = '32 (Standard)' -%}
+  {%- assign default_bottom_length = '42 (Standard)' -%}
 {%- endif -%}
 
 <div class="product-length-selectors">
@@ -24,11 +34,7 @@
           name="properties[Shirt Length]"
           value="{{ length }}"
           form="{{ form_id }}"
-          {% if product_title_normalized == 'quiet sage' %}
-            checked
-          {% elsif length == '32 (Standard)' %}
-            checked
-          {% endif %}
+          {% if length == default_shirt_length %}checked{% endif %}
         >
         <span class="length-selector__text">{{ length }}</span>
       </label>
@@ -45,7 +51,7 @@
             name="properties[Bottom Length]"
             value="{{ length }}"
             form="{{ form_id }}"
-            {% if length == '42 (Standard)' %}checked{% endif %}
+            {% if length == default_bottom_length %}checked{% endif %}
           >
           <span class="length-selector__text">{{ length }}</span>
         </label>
