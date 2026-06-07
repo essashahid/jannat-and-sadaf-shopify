@@ -19,6 +19,11 @@
   {%- assign default_shirt_length = '28' -%}
   {%- assign default_bottom_length = '42' -%}
   {%- assign default_pants_style = 'Wide Legged Pleated Pants' -%}
+{%- elsif product.handle == 'quiet-ivory' or product.handle == 'stone-willow' or product.handle == 'misty-blue' or product.handle == 'desert-blush' -%}
+  {%- assign shirt_lengths = '28' | split: ',' -%}
+  {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
+  {%- assign default_shirt_length = '28' -%}
+  {%- assign default_bottom_length = '42 (Standard)' -%}
 {%- elsif product_title_normalized == 'quiet sage' -%}
   {%- assign shirt_lengths = '28' | split: ',' -%}
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
