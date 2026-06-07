@@ -202,7 +202,8 @@
             </a>
           {%- endfor -%}
         {%- elsif bs_collection.products.size > 0 -%}
-          {%- for product in bs_collection.products limit: 8 -%}
+          {%- assign sorted_bs_products = bs_collection.products | sort: 'created_at' | reverse -%}
+          {%- for product in sorted_bs_products limit: 8 -%}
             <a href="{{ product.url }}" class="sak-product">
               <div class="sak-product__media">
                 {%- unless product.available -%}
