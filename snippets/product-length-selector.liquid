@@ -12,6 +12,13 @@
   {%- assign bottom_lengths = '39,40,42' | split: ',' -%}
   {%- assign default_shirt_length = '26' -%}
   {%- assign default_bottom_length = '39' -%}
+{%- elsif product.handle == 'midnight-blossom' -%}
+  {%- assign shirt_lengths = '27,28,29' | split: ',' -%}
+  {%- assign bottom_lengths = '40,42,44' | split: ',' -%}
+  {%- assign pants_styles = 'Wide Legged Pleated Pants,Fluid Drape Trousers' | split: ',' -%}
+  {%- assign default_shirt_length = '28' -%}
+  {%- assign default_bottom_length = '42' -%}
+  {%- assign default_pants_style = 'Wide Legged Pleated Pants' -%}
 {%- elsif product_title_normalized == 'quiet sage' -%}
   {%- assign shirt_lengths = '28' | split: ',' -%}
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
@@ -54,6 +61,24 @@
             {% if length == default_bottom_length %}checked{% endif %}
           >
           <span class="length-selector__text">{{ length }}</span>
+        </label>
+      {%- endfor -%}
+    </fieldset>
+  {%- endif -%}
+
+  {%- if pants_styles.size > 0 -%}
+    <fieldset class="variant-option variant-option--buttons">
+      <legend>Pants Style</legend>
+      {%- for style in pants_styles -%}
+        <label class="length-selector__label">
+          <input
+            type="radio"
+            name="properties[Pants Style]"
+            value="{{ style }}"
+            form="{{ form_id }}"
+            {% if style == default_pants_style %}checked{% endif %}
+          >
+          <span class="length-selector__text">{{ style }}</span>
         </label>
       {%- endfor -%}
     </fieldset>
