@@ -109,6 +109,68 @@
   {%- endif -%}
 </section>
 
+{%- comment -%} ============ 1.5 PROMO / COUPON BAND ============ {%- endcomment -%}
+{%- if section.settings.show_promo -%}
+  <section class="sak-section sak-promo" aria-label="Discount offer">
+    <div class="sak-promo__inner">
+      {%- if section.settings.promo_eyebrow != blank -%}
+        <p class="sak-promo__eyebrow">{{ section.settings.promo_eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="sak-promo__title">{{ section.settings.promo_title | default: '5% off everything' }}</h2>
+      <div class="sak-promo__ticket">
+        <span class="sak-promo__ticket-label">Code</span>
+        <span class="sak-promo__code" data-promo-code>{{ section.settings.promo_code | default: 'JS5' }}</span>
+        <button type="button" class="sak-promo__copy" data-promo-copy aria-label="Copy discount code">
+          <span class="sak-promo__copy-text">Copy</span>
+        </button>
+      </div>
+      {%- if section.settings.promo_note != blank -%}
+        <p class="sak-promo__note">{{ section.settings.promo_note }}</p>
+      {%- endif -%}
+      {%- if section.settings.promo_button_text != blank -%}
+        <a href="{{ section.settings.promo_button_link | default: '/discount/JS5?redirect=/collections/all' }}" class="sak-btn sak-btn--cream sak-promo__cta">
+          <span>{{ section.settings.promo_button_text }}</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </section>
+  <script>
+    (function () {
+      var root = document.currentScript.previousElementSibling;
+      if (!root) return;
+      var btn = root.querySelector('[data-promo-copy]');
+      var codeEl = root.querySelector('[data-promo-code]');
+      var textEl = root.querySelector('.sak-promo__copy-text');
+      if (!btn || !codeEl || !textEl) return;
+      btn.addEventListener('click', function () {
+        var code = (codeEl.textContent || '').trim();
+        var done = function () {
+          textEl.textContent = 'Copied';
+          btn.classList.add('is-copied');
+          setTimeout(function () {
+            textEl.textContent = 'Copy';
+            btn.classList.remove('is-copied');
+          }, 2000);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).then(done, done);
+        } else {
+          var t = document.createElement('textarea');
+          t.value = code;
+          t.setAttribute('readonly', '');
+          t.style.position = 'absolute';
+          t.style.left = '-9999px';
+          document.body.appendChild(t);
+          t.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(t);
+          done();
+        }
+      });
+    })();
+  </script>
+{%- endif -%}
+
 {%- comment -%} ============ 2. COLLECTION TILES ============ {%- endcomment -%}
 {%- if section.settings.show_fabrics -%}
   <section class="sak-section sak-tiles">
@@ -613,6 +675,48 @@
       "type": "url",
       "id": "hero_button2_link",
       "label": "Secondary button link"
+    },
+    { "type": "header", "content": "Promo / Coupon Bar" },
+    {
+      "type": "checkbox",
+      "id": "show_promo",
+      "label": "Show promo bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "promo_eyebrow",
+      "label": "Eyebrow",
+      "default": "Welcome Offer"
+    },
+    {
+      "type": "text",
+      "id": "promo_title",
+      "label": "Headline",
+      "default": "5% off everything"
+    },
+    {
+      "type": "text",
+      "id": "promo_code",
+      "label": "Discount code",
+      "default": "JS5"
+    },
+    {
+      "type": "text",
+      "id": "promo_note",
+      "label": "Note",
+      "default": "Apply code JS5 at checkout — valid site-wide on your entire order."
+    },
+    {
+      "type": "text",
+      "id": "promo_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "promo_button_link",
+      "label": "Button link"
     },
     { "type": "header", "content": "Collection Tiles" },
     {

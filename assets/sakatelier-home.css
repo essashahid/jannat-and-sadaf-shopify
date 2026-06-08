@@ -1190,6 +1190,104 @@ html {
   animation-play-state: paused;
 }
 
+/* ============ PROMO / COUPON BAND ============ */
+.sak-promo {
+  background: var(--sak-charcoal);
+  color: var(--sak-cream);
+  padding-block: clamp(40px, 5vw, 70px);
+  text-align: center;
+}
+.sak-promo__inner {
+  max-width: 720px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 40px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(14px, 2vw, 20px);
+}
+.sak-promo__eyebrow {
+  font-family: var(--sak-sans);
+  font-size: clamp(0.62rem, 0.85vw, 0.72rem);
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--sak-gold);
+  margin: 0;
+}
+.sak-promo__title {
+  font-family: var(--sak-serif);
+  font-size: clamp(2rem, 4.6vw, 3.1rem);
+  font-weight: 500;
+  line-height: 1.08;
+  color: var(--sak-cream);
+  margin: 0;
+}
+.sak-promo__ticket {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px dashed rgba(169, 140, 95, 0.6);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+.sak-promo__ticket-label {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--sak-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--sak-muted);
+  padding: 0 14px;
+}
+.sak-promo__code {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--sak-sans);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--sak-cream);
+  padding: 12px 18px;
+  border-inline: 1px dashed rgba(169, 140, 95, 0.6);
+}
+.sak-promo__copy {
+  font-family: var(--sak-sans);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sak-charcoal);
+  background: var(--sak-gold);
+  border: none;
+  cursor: pointer;
+  padding: 0 18px;
+  transition: background-color 0.3s var(--sak-ease);
+}
+.sak-promo__copy:hover,
+.sak-promo__copy.is-copied {
+  background: var(--sak-cream);
+}
+.sak-promo__note {
+  font-family: var(--sak-sans);
+  font-size: clamp(0.68rem, 0.95vw, 0.78rem);
+  letter-spacing: 0.04em;
+  color: var(--sak-muted);
+  margin: 0;
+}
+.sak-promo__cta {
+  margin-top: 4px;
+}
+@media (max-width: 600px) {
+  .sak-promo__ticket-label {
+    display: none;
+  }
+  .sak-promo__code {
+    border-inline-start: none;
+  }
+}
+
 /* Reduced-motion overrides */
 @media (prefers-reduced-motion: reduce) {
   .sak-hero__slide.is-active img {
