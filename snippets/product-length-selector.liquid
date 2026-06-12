@@ -25,6 +25,12 @@
   {%- assign default_shirt_length = '50' -%}
   {%- assign default_bottom_length = '42' -%}
   {%- assign lead_time = '6-8 weeks' -%}
+{%- elsif product.handle == 'sea-mist-panel' -%}
+  {%- assign shirt_lengths = '28,30,32 (Standard),34' | split: ',' -%}
+  {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
+  {%- assign default_shirt_length = '32 (Standard)' -%}
+  {%- assign default_bottom_length = '42 (Standard)' -%}
+  {%- assign lead_time = '6-8 weeks' -%}
 {%- elsif product.handle == 'quiet-ivory' or product.handle == 'stone-willow' or product.handle == 'misty-blue' or product.handle == 'desert-blush' -%}
   {%- assign shirt_lengths = '28' | split: ',' -%}
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
