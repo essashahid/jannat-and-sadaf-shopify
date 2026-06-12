@@ -24,6 +24,7 @@
   {%- assign bottom_lengths = '40,42,44' | split: ',' -%}
   {%- assign default_shirt_length = '50' -%}
   {%- assign default_bottom_length = '42' -%}
+  {%- assign lead_time = '6-8 weeks' -%}
 {%- elsif product.handle == 'quiet-ivory' or product.handle == 'stone-willow' or product.handle == 'misty-blue' or product.handle == 'desert-blush' -%}
   {%- assign shirt_lengths = '28' | split: ',' -%}
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
@@ -93,6 +94,13 @@
       {%- endfor -%}
     </fieldset>
   {%- endif -%}
+
+  {%- if lead_time != blank -%}
+    <p class="length-selector__lead-time">
+      <span class="length-selector__lead-time-label">Made to order</span>
+      Ships in {{ lead_time }}
+    </p>
+  {%- endif -%}
 </div>
 
 {% stylesheet %}
@@ -102,6 +110,28 @@
 
   .product-length-selectors .variant-option + .variant-option {
     margin-top: var(--padding-lg);
+  }
+
+  .length-selector__lead-time {
+    margin-top: var(--padding-lg);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
+    opacity: 0.75;
+  }
+
+  .length-selector__lead-time-label {
+    display: inline-block;
+    margin-inline-end: 0.5em;
+    padding-block: 0.15em;
+    padding-inline: 0.6em;
+    border: var(--options-border-width) solid var(--color-variant-border);
+    border-radius: var(--options-border-radius);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.9;
   }
 
   .length-selector__label {
