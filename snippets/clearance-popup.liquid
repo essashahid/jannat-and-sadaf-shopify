@@ -1,0 +1,265 @@
+{% comment %}
+  Clearance Sale Popup
+  ---------------------------------------------------------------------------
+  Self-contained promotional modal for the Clearance collection.
+  Rendered globally from layout/theme.liquid.
+
+  Shows once per browsing session (sessionStorage). Once a visitor dismisses
+  it, it stays hidden for the number of days set in `dismiss_days`.
+
+  Edit the copy / settings below to update the promotion.
+{% endcomment %}
+
+{%- liquid
+  assign cp_enabled    = true
+  assign cp_link       = '/collections/clearance'
+  assign cp_eyebrow    = 'Now On · Limited Time'
+  assign cp_heading    = 'Clearance Sale'
+  assign cp_body       = "Selected pieces from past collections, now at reduced prices. Once they're gone, they're gone."
+  assign cp_cta        = 'Shop Clearance'
+  assign cp_dismiss    = 'Maybe later'
+  assign cp_delay      = 1400
+  assign cp_dismiss_days = 3
+-%}
+
+{%- if cp_enabled -%}
+  <div
+    class="clearance-popup"
+    id="ClearancePopup"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="ClearancePopupHeading"
+    aria-hidden="true"
+    data-delay="{{ cp_delay }}"
+    data-dismiss-days="{{ cp_dismiss_days }}"
+    hidden
+  >
+    <div class="clearance-popup__backdrop" data-cp-close></div>
+
+    <div class="clearance-popup__dialog" role="document">
+      <button
+        type="button"
+        class="clearance-popup__close"
+        aria-label="Close"
+        data-cp-close
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <div class="clearance-popup__rule" aria-hidden="true"></div>
+      <p class="clearance-popup__eyebrow">{{ cp_eyebrow }}</p>
+      <h2 class="clearance-popup__heading" id="ClearancePopupHeading">{{ cp_heading }}</h2>
+      <p class="clearance-popup__body">{{ cp_body }}</p>
+
+      <a href="{{ cp_link }}" class="clearance-popup__cta">{{ cp_cta }}</a>
+      <button type="button" class="clearance-popup__dismiss" data-cp-close>{{ cp_dismiss }}</button>
+    </div>
+  </div>
+
+  <style>
+    .clearance-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .clearance-popup.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .clearance-popup__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(43, 38, 32, 0.55);
+      backdrop-filter: blur(2px);
+    }
+    .clearance-popup__dialog {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      background: #f7f3ec;
+      border: 1px solid #e6ddcd;
+      padding: 52px 40px 44px;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(43, 38, 32, 0.28);
+      transform: translateY(18px);
+      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .clearance-popup.is-open .clearance-popup__dialog {
+      transform: translateY(0);
+    }
+    .clearance-popup__close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: #2b2620;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+    .clearance-popup__close:hover { opacity: 1; }
+    .clearance-popup__rule {
+      width: 44px;
+      height: 1px;
+      margin: 0 auto 22px;
+      background: #a98c5f;
+    }
+    .clearance-popup__eyebrow {
+      margin: 0 0 14px;
+      font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #a98c5f;
+    }
+    .clearance-popup__heading {
+      margin: 0 0 16px;
+      font-family: 'Cormorant Garamond', 'Georgia', serif;
+      font-size: 38px;
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #2b2620;
+    }
+    .clearance-popup__body {
+      margin: 0 auto 28px;
+      max-width: 320px;
+      font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+      color: #5a534a;
+    }
+    .clearance-popup__cta {
+      display: inline-block;
+      padding: 15px 44px;
+      background: #2b2620;
+      color: #f7f3ec;
+      font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+    .clearance-popup__cta:hover {
+      background: #a98c5f;
+      color: #fff;
+    }
+    .clearance-popup__dismiss {
+      display: block;
+      margin: 18px auto 0;
+      padding: 4px;
+      border: none;
+      background: transparent;
+      font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #8a857c;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .clearance-popup__dismiss:hover { color: #2b2620; }
+
+    @media (max-width: 480px) {
+      .clearance-popup__dialog { padding: 46px 26px 36px; }
+      .clearance-popup__heading { font-size: 30px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .clearance-popup,
+      .clearance-popup__dialog { transition: none; }
+    }
+  </style>
+
+  <script>
+    (function () {
+      var popup = document.getElementById('ClearancePopup');
+      if (!popup) return;
+
+      var STORAGE_KEY = 'js_clearance_popup';
+      var SESSION_KEY = 'js_clearance_popup_seen';
+      var dismissDays = parseInt(popup.getAttribute('data-dismiss-days'), 10) || 3;
+      var delay = parseInt(popup.getAttribute('data-delay'), 10) || 1400;
+      var lastFocused = null;
+
+      function isSuppressed() {
+        try {
+          var until = localStorage.getItem(STORAGE_KEY);
+          if (until && Date.now() < parseInt(until, 10)) return true;
+          if (sessionStorage.getItem(SESSION_KEY)) return true;
+        } catch (e) {}
+        return false;
+      }
+
+      function suppressForSession() {
+        try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
+      }
+
+      function suppressForDays() {
+        try {
+          var until = Date.now() + dismissDays * 24 * 60 * 60 * 1000;
+          localStorage.setItem(STORAGE_KEY, String(until));
+        } catch (e) {}
+      }
+
+      function open() {
+        lastFocused = document.activeElement;
+        popup.hidden = false;
+        popup.setAttribute('aria-hidden', 'false');
+        // force reflow so the transition runs
+        void popup.offsetWidth;
+        popup.classList.add('is-open');
+        suppressForSession();
+        document.addEventListener('keydown', onKeydown);
+        var cta = popup.querySelector('.clearance-popup__cta');
+        if (cta) cta.focus();
+      }
+
+      function close() {
+        popup.classList.remove('is-open');
+        popup.setAttribute('aria-hidden', 'true');
+        suppressForDays();
+        document.removeEventListener('keydown', onKeydown);
+        window.setTimeout(function () { popup.hidden = true; }, 500);
+        if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+      }
+
+      function onKeydown(e) {
+        if (e.key === 'Escape') close();
+      }
+
+      popup.querySelectorAll('[data-cp-close]').forEach(function (el) {
+        el.addEventListener('click', close);
+      });
+
+      // Don't run on the clearance page itself, in the theme editor, or if suppressed.
+      var onClearance = /\/collections\/clearance/.test(window.location.pathname);
+      if (window.Shopify && window.Shopify.designMode) return;
+      if (onClearance || isSuppressed()) return;
+
+      window.setTimeout(open, delay);
+    })();
+  </script>
+{%- endif -%}
