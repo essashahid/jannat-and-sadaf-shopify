@@ -1,0 +1,151 @@
+{% comment %}
+  Clearance Floating Badge
+  ---------------------------------------------------------------------------
+  Subtle, persistent pill linking to the Clearance collection. Rendered
+  globally from layout/theme.liquid as a quiet companion to the clearance
+  popup: once the popup is dismissed, this stays as a one-tap path.
+
+  Slides in after a short delay. If a visitor closes it, it stays hidden for
+  the rest of the session. Hidden on the clearance page and in the editor.
+
+  Edit the copy / settings below to update the promotion.
+{% endcomment %}
+
+{%- liquid
+  assign cb_enabled  = true
+  assign cb_link     = '/collections/clearance'
+  assign cb_label    = 'Clearance Sale'
+  assign cb_delay    = 2600
+-%}
+
+{%- if cb_enabled -%}
+  <div
+    class="clearance-badge"
+    id="ClearanceBadge"
+    data-delay="{{ cb_delay }}"
+    hidden
+  >
+    <a href="{{ cb_link }}" class="clearance-badge__link">
+      <span class="clearance-badge__dot" aria-hidden="true"></span>
+      <span class="clearance-badge__label">{{ cb_label }}</span>
+      <span class="clearance-badge__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <button type="button" class="clearance-badge__close" aria-label="Hide clearance link" data-cb-close>
+      <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" focusable="false">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <style>
+    .clearance-badge {
+      position: fixed;
+      left: 22px;
+      bottom: 22px;
+      z-index: 9990;
+      display: flex;
+      align-items: stretch;
+      background: #f7f3ec;
+      border: 1px solid #e6ddcd;
+      box-shadow: 0 12px 34px rgba(43, 38, 32, 0.18);
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .clearance-badge.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .clearance-badge__link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 14px 12px 16px;
+      font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #2b2620;
+      text-decoration: none;
+      transition: color 0.35s ease;
+    }
+    .clearance-badge__link:hover { color: #a98c5f; }
+    .clearance-badge__dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #b5544d;
+      flex: 0 0 auto;
+      animation: clearance-badge-pulse 2.4s ease-in-out infinite;
+    }
+    .clearance-badge__arrow {
+      font-size: 13px;
+      transition: transform 0.35s ease;
+    }
+    .clearance-badge__link:hover .clearance-badge__arrow { transform: translateX(3px); }
+    .clearance-badge__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      padding: 0;
+      border: none;
+      border-left: 1px solid #e6ddcd;
+      background: transparent;
+      color: #8a857c;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .clearance-badge__close:hover { color: #2b2620; }
+
+    @keyframes clearance-badge-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    @media (max-width: 480px) {
+      .clearance-badge { left: 14px; bottom: 14px; }
+      .clearance-badge__link { padding: 11px 12px 11px 14px; letter-spacing: 0.14em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .clearance-badge { transition: opacity 0.3s ease; transform: none; }
+      .clearance-badge.is-in { transform: none; }
+      .clearance-badge__dot { animation: none; }
+      .clearance-badge__arrow { transition: none; }
+    }
+  </style>
+
+  <script>
+    (function () {
+      var badge = document.getElementById('ClearanceBadge');
+      if (!badge) return;
+
+      var SESSION_KEY = 'js_clearance_badge_closed';
+      var delay = parseInt(badge.getAttribute('data-delay'), 10) || 2600;
+
+      function isClosed() {
+        try { return !!sessionStorage.getItem(SESSION_KEY); } catch (e) { return false; }
+      }
+
+      function close() {
+        badge.classList.remove('is-in');
+        try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
+        window.setTimeout(function () { badge.hidden = true; }, 500);
+      }
+
+      var closeBtn = badge.querySelector('[data-cb-close]');
+      if (closeBtn) closeBtn.addEventListener('click', close);
+
+      var onClearance = /\/collections\/clearance/.test(window.location.pathname);
+      if (window.Shopify && window.Shopify.designMode) return;
+      if (onClearance || isClosed()) return;
+
+      window.setTimeout(function () {
+        badge.hidden = false;
+        void badge.offsetWidth;
+        badge.classList.add('is-in');
+      }, delay);
+    })();
+  </script>
+{%- endif -%}
