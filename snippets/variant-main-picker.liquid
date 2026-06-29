@@ -68,6 +68,9 @@
               {%- endif %}
             </legend>
             {%- for product_option_value in product_option.values -%}
+              {%- if product_resource.handle == 'peach-floret-1' and (product_option.name == 'Size' or product_option.name == 'Pants') and product_option_value != 'S' -%}
+                {%- continue -%}
+              {%- endif -%}
               {% if product_option_value.size > longest_value and option_id_attribute %}
                 {% assign longest_value = product_option_value.size %}
               {% endif %}
@@ -171,6 +174,9 @@
                 class="variant-option__select"
               >
                 {%- for product_option_value in product_option.values -%}
+                  {%- if product_resource.handle == 'peach-floret-1' and (product_option.name == 'Size' or product_option.name == 'Pants') and product_option_value != 'S' -%}
+                    {%- continue -%}
+                  {%- endif -%}
                   <option
                     value="{{ product_option_value | escape }}"
                     data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
