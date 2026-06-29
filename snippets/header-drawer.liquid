@@ -102,6 +102,15 @@
             {% assign animation_index = 0 %}
             {%- for link in linklist.links -%}
               {% assign animation_index = animation_index | plus: 1 %}
+              {%- liquid
+                assign has_clearance_child = false
+                for child_link in link.links
+                  if child_link.url contains '/collections/clearance'
+                    assign has_clearance_child = true
+                    break
+                  endif
+                endfor
+              -%}
               <li
                 style="--menu-drawer-animation-index: {{ animation_index }};"
                 class="{%- if block_settings.drawer_accordion -%}menu-drawer__list-item--deep{%- else -%}menu-drawer__list-item--flat{%- endif -%}{% if block_settings.drawer_dividers %} menu-drawer__list-item--divider{% endif %}"
@@ -125,7 +134,7 @@
                         id="HeaderDrawer-{{ link.handle }}"
                         class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset"
                       >
-                        <span class="menu-drawer__menu-item-text wrap-text">{{ link.title | escape }}</span>
+                        <span class="menu-drawer__menu-item-text wrap-text">{%- if has_clearance_child -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ link.title | escape }}</span>
                         <span class="svg-wrapper icon-plus">
                           {{- 'icon-plus.svg' | inline_asset_content -}}
                         </span>
@@ -166,7 +175,7 @@
                                   sizes: 'auto, 400px'
                                 %}
                               {% endif %}
-                              <span class="menu-drawer__menu-item-text wrap-text">{{ childlink.title | escape }}</span>
+                              <span class="menu-drawer__menu-item-text wrap-text">{%- if childlink.url contains '/collections/clearance' -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ childlink.title | escape }}</span>
                             </a>
                           </li>
                         {%- endfor -%}
@@ -185,7 +194,7 @@
                       aria-current="page"
                     {% endif %}
                   >
-                    <span class="menu-drawer__menu-item-text wrap-text">{{ link.title | escape }}</span>
+                    <span class="menu-drawer__menu-item-text wrap-text">{%- if has_clearance_child -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ link.title | escape }}</span>
                   </a>
                   {% liquid
                     assign render_link_image = false
@@ -219,7 +228,7 @@
                               sizes: 'auto, 400px'
                             %}
                           {% endif %}
-                          <span class="menu-drawer__menu-item-text wrap-text">{{ childlink.title | escape }}</span>
+                          <span class="menu-drawer__menu-item-text wrap-text">{%- if childlink.url contains '/collections/clearance' -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ childlink.title | escape }}</span>
                         </a>
                       </li>
                     {%- endfor -%}
@@ -236,7 +245,7 @@
                       aria-current="page"
                     {% endif %}
                   >
-                    <span class="menu-drawer__menu-item-text wrap-text">{{ link.title | escape }}</span>
+                    <span class="menu-drawer__menu-item-text wrap-text">{%- if has_clearance_child -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ link.title | escape }}</span>
                   </a>
                 {% endif %}
               </li>
@@ -550,7 +559,7 @@
                       aria-current="page"
                     {% endif %}
                   >
-                    <span class="menu-drawer__menu-item-text wrap-text">{{ link.title | escape }}</span>
+                    <span class="menu-drawer__menu-item-text wrap-text">{%- if has_clearance_child -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ link.title | escape }}</span>
                   </a>
                 {%- endif -%}
               </li>

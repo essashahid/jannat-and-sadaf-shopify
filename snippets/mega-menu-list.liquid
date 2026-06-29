@@ -151,8 +151,9 @@
             >
               <a
                 href="{{ childLink.url }}"
-                class="mega-menu__link"
+                class="mega-menu__link{% if childLink.url contains '/collections/clearance' %} mega-menu__link--sale{% endif %}"
               >
+                {%- if childLink.url contains '/collections/clearance' -%}{% render 'menu-sale-badge' %}{%- endif -%}
                 <span class="wrap-text">{{- childLink.title -}}</span>
               </a>
             </li>

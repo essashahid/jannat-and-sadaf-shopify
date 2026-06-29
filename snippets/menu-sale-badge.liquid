@@ -1,0 +1,12 @@
+{%- doc -%}
+  Subtle "Sale" cue for navigation items tied to the clearance collection.
+
+  @param {string} [variant] - 'eyebrow' renders a small label positioned above a
+    parent item (used on the desktop top-level menu). Any other value renders an
+    inline tag that sits in front of the link text.
+{%- enddoc -%}
+{%- if variant == 'eyebrow' -%}
+  <span class="menu-sale-eyebrow" aria-hidden="true">Sale</span>
+{%- else -%}
+  <span class="menu-sale-tag" aria-hidden="true">Sale</span>
+{%- endif -%}

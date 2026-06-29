@@ -79,6 +79,15 @@
 
     {% capture children %}
       {% for link in block_settings.menu.links %}
+        {%- liquid
+          assign has_clearance_child = false
+          for child_link in link.links
+            if child_link.url contains '/collections/clearance'
+              assign has_clearance_child = true
+              break
+            endif
+          endfor
+        -%}
         <li
           role="presentation"
           class="menu-list__list-item"
@@ -90,7 +99,7 @@
           <a
             href="{{ link.url }}"
             data-skip-node-update="true"
-            class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
+            class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}{% if has_clearance_child %} menu-list__link--has-sale{% endif %}"
             {%- if link.links != blank -%}
               aria-controls="submenu-{{ forloop.index }}"
               aria-haspopup="true"
@@ -98,6 +107,7 @@
             {%- endif -%}
             ref="menuitem"
           >
+            {%- if has_clearance_child -%}{% render 'menu-sale-badge', variant: 'eyebrow' %}{%- endif -%}
             <span class="menu-list__link-title">{{- link.title -}}</span>
           </a>
           {%- if link.links != blank -%}
