@@ -53,7 +53,8 @@
           endif
 
           assign restrict_to_s = false
-          if product_resource.handle == 'peach-floret-1'
+          assign restrict_to_s_handles = 'peach-floret-1,fuschia-floret,pink-floret-1' | split: ','
+          if restrict_to_s_handles contains product_resource.handle
             if product_option.name == 'Size' or product_option.name == 'Pants'
               assign restrict_to_s = true
             endif
