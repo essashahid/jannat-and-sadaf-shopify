@@ -67,8 +67,16 @@
                 <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
               {%- endif %}
             </legend>
+            {%- liquid
+              assign restrict_to_s = false
+              if product_resource.handle == 'peach-floret-1'
+                if product_option.name == 'Size' or product_option.name == 'Pants'
+                  assign restrict_to_s = true
+                endif
+              endif
+            -%}
             {%- for product_option_value in product_option.values -%}
-              {%- if product_resource.handle == 'peach-floret-1' and (product_option.name == 'Size' or product_option.name == 'Pants') and product_option_value != 'S' -%}
+              {%- if restrict_to_s and product_option_value != 'S' -%}
                 {%- continue -%}
               {%- endif -%}
               {% if product_option_value.size > longest_value and option_id_attribute %}
@@ -173,8 +181,16 @@
                 name="options[{{ product_option.name | escape }}]"
                 class="variant-option__select"
               >
+                {%- liquid
+                  assign restrict_to_s = false
+                  if product_resource.handle == 'peach-floret-1'
+                    if product_option.name == 'Size' or product_option.name == 'Pants'
+                      assign restrict_to_s = true
+                    endif
+                  endif
+                -%}
                 {%- for product_option_value in product_option.values -%}
-                  {%- if product_resource.handle == 'peach-floret-1' and (product_option.name == 'Size' or product_option.name == 'Pants') and product_option_value != 'S' -%}
+                  {%- if restrict_to_s and product_option_value != 'S' -%}
                     {%- continue -%}
                   {%- endif -%}
                   <option
