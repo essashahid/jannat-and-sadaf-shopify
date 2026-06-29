@@ -51,12 +51,19 @@
             assign option_id_attribute = 'data-option-id="' | append: fieldset_id | append: '"'
             assign longest_value = 0
           endif
+
+          assign restrict_to_s = false
+          if product_resource.handle == 'peach-floret-1'
+            if product_option.name == 'Size' or product_option.name == 'Pants'
+              assign restrict_to_s = true
+            endif
+          endif
         -%}
 
         {%- if variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
           {%- assign fieldset_index = forloop.index0 -%}
           <fieldset
-            class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}"
+            class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}{% if restrict_to_s %} variant-option--single{% endif %}"
             data-fieldset-index="{{ fieldset_index }}"
             ref="fieldsets[]"
             {{ option_id_attribute }}
@@ -67,14 +74,6 @@
                 <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
               {%- endif %}
             </legend>
-            {%- liquid
-              assign restrict_to_s = false
-              if product_resource.handle == 'peach-floret-1'
-                if product_option.name == 'Size' or product_option.name == 'Pants'
-                  assign restrict_to_s = true
-                endif
-              endif
-            -%}
             {%- for product_option_value in product_option.values -%}
               {%- if restrict_to_s and product_option_value != 'S' -%}
                 {%- continue -%}
@@ -103,7 +102,7 @@
                   {% if product_option_value.variant.id %}
                     data-variant-id="{{ product_option_value.variant.id }}"
                   {% endif %}
-                  {% if product_option_value.selected %}
+                  {% if product_option_value.selected or restrict_to_s %}
                     data-current-checked="true"
                     checked
                   {% else %}
@@ -181,14 +180,6 @@
                 name="options[{{ product_option.name | escape }}]"
                 class="variant-option__select"
               >
-                {%- liquid
-                  assign restrict_to_s = false
-                  if product_resource.handle == 'peach-floret-1'
-                    if product_option.name == 'Size' or product_option.name == 'Pants'
-                      assign restrict_to_s = true
-                    endif
-                  endif
-                -%}
                 {%- for product_option_value in product_option.values -%}
                   {%- if restrict_to_s and product_option_value != 'S' -%}
                     {%- continue -%}
@@ -199,7 +190,7 @@
                     data-option-value-id="{{ product_option_value.id }}"
                     data-variant-id="{{ product_option_value.variant.id }}"
                     data-connected-product-url="{{ product_option_value.product_url }}"
-                    {% if product_option_value.selected %}
+                    {% if product_option_value.selected or restrict_to_s %}
                       selected="selected"
                     {% endif %}
                   >
@@ -235,6 +226,16 @@
   /* Variant picker container styles - unique to main variant picker */
   .variant-picker {
     width: 100%;
+  }
+
+  /* Single-value option (e.g. restricted to one size): don't stretch full width */
+  .variant-option--single.variant-option--equal-width-buttons {
+    grid-template-columns: auto;
+    justify-content: start;
+  }
+
+  .variant-option--single .variant-option__button-label {
+    min-width: 3.25em;
   }
 
   .variant-picker__form {
