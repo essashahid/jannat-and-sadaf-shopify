@@ -1236,24 +1236,20 @@ img {
    "Sale" eyebrow above the Shop menu + tag in front of Clearance
    ============================================================ */
 
-/* Eyebrow above the parent item (desktop top-level "Shop") */
-.menu-list__link--has-sale {
-  position: relative;
-  overflow: visible;
-}
-
+/* Eyebrow above the parent item (desktop top-level "Shop").
+   .menu-list__link is already a centered flex column, so the eyebrow simply
+   sits in flow directly above the link text. */
 .menu-sale-eyebrow {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 1px;
+  display: block;
+  align-self: center;
+  margin-bottom: 2px;
   font-family: 'Montserrat', 'Helvetica Neue', sans-serif !important;
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.22em;
   line-height: 1;
   text-transform: uppercase;
+  text-align: center;
   color: #b5544d;
   pointer-events: none;
   white-space: nowrap;
