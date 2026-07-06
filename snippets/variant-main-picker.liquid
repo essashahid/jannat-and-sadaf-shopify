@@ -35,6 +35,11 @@
     <form class="variant-picker__form">
       {%- for product_option in product_resource.options_with_values -%}
         {%- liquid
+          assign hide_options_handles = 'chantelle-lace-gold,guilded-gold-jacket' | split: ','
+          if hide_options_handles contains product_resource.handle
+            continue
+          endif
+
           assign swatch_count = product_option.values | map: 'swatch' | compact | size
           assign variant_style = block_settings.variant_style
 
