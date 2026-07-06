@@ -35,8 +35,19 @@
     <form class="variant-picker__form">
       {%- for product_option in product_resource.options_with_values -%}
         {%- liquid
+          assign hide_all_options = false
           assign hide_options_handles = 'chantelle-lace-gold,guilded-gold-jacket' | split: ','
           if hide_options_handles contains product_resource.handle
+            assign hide_all_options = true
+          else
+            for hide_options_collection in product_resource.collections
+              if hide_options_collection.handle == 'wedding'
+                assign hide_all_options = true
+                break
+              endif
+            endfor
+          endif
+          if hide_all_options
             continue
           endif
 
