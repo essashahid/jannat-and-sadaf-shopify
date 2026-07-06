@@ -7,6 +7,22 @@
 {%- enddoc -%}
 
 {%- assign product_title_normalized = product.title | downcase | strip -%}
+
+{%- assign hide_length_selectors = false -%}
+{%- assign hide_length_selector_handles = 'chantelle-lace-gold,guilded-gold-jacket' | split: ',' -%}
+{%- if hide_length_selector_handles contains product.handle -%}
+  {%- assign hide_length_selectors = true -%}
+{%- else -%}
+  {%- for hide_length_selector_collection in product.collections -%}
+    {%- if hide_length_selector_collection.handle == 'wedding' -%}
+      {%- assign hide_length_selectors = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- unless hide_length_selectors -%}
+
 {%- if product.handle == 'ash-blue-wrap' -%}
   {%- assign shirt_lengths = '26,27,28' | split: ',' -%}
   {%- assign bottom_lengths = '39,40,42' | split: ',' -%}
@@ -108,6 +124,8 @@
     </p>
   {%- endif -%}
 </div>
+
+{%- endunless -%}
 
 {% stylesheet %}
   .product-length-selectors {
