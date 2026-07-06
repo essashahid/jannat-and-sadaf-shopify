@@ -21,6 +21,18 @@
   {%- endfor -%}
 {%- endif -%}
 
+{%- if hide_length_selectors -%}
+  <div class="made-to-measure">
+    <p class="made-to-measure__title">Made to Measure</p>
+    <p class="made-to-measure__body">
+      To honor the intricate heritage craftsmanship and ensure a flawless drape, this ensemble is
+      exclusively available as a custom, made-to-order piece. Upon placing your order, our design team
+      will contact you directly to guide you through our bespoke measurement process to ensure precise
+      tailoring.
+    </p>
+  </div>
+{%- endif -%}
+
 {%- unless hide_length_selectors -%}
 
 {%- if product.handle == 'ash-blue-wrap' -%}
@@ -128,6 +140,32 @@
 {%- endunless -%}
 
 {% stylesheet %}
+  .made-to-measure {
+    width: 100%;
+    padding-block: var(--padding-lg);
+    padding-inline: var(--padding-lg);
+    border: var(--options-border-width) solid var(--color-variant-border);
+    border-radius: var(--options-border-radius);
+    background-color: var(--color-variant-background);
+  }
+
+  .made-to-measure__title {
+    margin: 0 0 var(--padding-xs);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  .made-to-measure__body {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
+    opacity: 0.8;
+  }
+
   .product-length-selectors {
     width: 100%;
   }
