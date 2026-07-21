@@ -76,6 +76,16 @@
   {%- assign default_bottom_length = '42 (Standard)' -%}
 {%- endif -%}
 
+{%- comment -%}
+  Pieces offered in more than one pants cut. Kept separate from the length
+  chain above so a product can pick up a pants style without restating its
+  lengths.
+{%- endcomment -%}
+{%- if product.handle == 'serenade-blue' -%}
+  {%- assign pants_styles = 'Cropped Pants,Pleated Pants' | split: ',' -%}
+  {%- assign default_pants_style = 'Cropped Pants' -%}
+{%- endif -%}
+
 <div class="product-length-selectors">
   <fieldset class="variant-option variant-option--buttons">
     <legend>Shirt Length</legend>
