@@ -122,15 +122,32 @@
   {%- endif -%}
 
   {%- if pants_styles.size > 0 -%}
-    <fieldset class="variant-option variant-option--buttons">
+    <fieldset class="variant-option variant-option--buttons" data-pants-style>
       <legend>Pants Style</legend>
       {%- for style in pants_styles -%}
+        {%- liquid
+          # Link each cut to the photo that shows it, matched on the image alt
+          # text or filename (e.g. "...CroppedPants.png" for "Cropped Pants").
+          assign style_key = style | split: ' ' | first | downcase
+          assign style_media_id = ''
+          for style_media in product.media
+            assign style_media_alt = style_media.alt | default: '' | downcase
+            assign style_media_src = style_media.preview_image | image_url: width: 200 | downcase
+            if style_media_alt contains style_key or style_media_src contains style_key
+              assign style_media_id = style_media.id
+              break
+            endif
+          endfor
+        -%}
         <label class="length-selector__label">
           <input
             type="radio"
             name="properties[Pants Style]"
             value="{{ style }}"
             form="{{ form_id }}"
+            {% if style_media_id != blank %}
+              data-media-id="{{ style_media_id }}"
+            {% endif %}
             {% if style == default_pants_style %}checked{% endif %}
           >
           <span class="length-selector__text">{{ style }}</span>
@@ -149,7 +166,68 @@
 
 {%- endunless -%}
 
+{%- if pants_styles.size > 0 -%}
+  <script>
+    (function () {
+      var fieldset = document.querySelector('[data-pants-style]');
+      var gallery = document.querySelector('.media-gallery__grid');
+      if (!fieldset || !gallery) return;
+
+      var inputs = fieldset.querySelectorAll('input[data-media-id]');
+      if (!inputs.length) return;
+
+      function focusMedia(mediaId) {
+        var marked = gallery.querySelectorAll('[data-media-id]');
+        if (!marked.length) return;
+
+        gallery.classList.add('media-gallery__grid--style-linked');
+
+        marked.forEach(function (node) {
+          var item = node.closest('li') || node;
+          var isMatch = node.getAttribute('data-media-id') === mediaId;
+          item.classList.toggle('media-item--style-active', isMatch);
+          item.classList.toggle('media-item--style-muted', !isMatch);
+
+          // On mobile the gallery scrolls horizontally, so bring the
+          // matching photo into view. Skipped on the desktop grid, where
+          // both photos are already visible and scrolling would jump the page.
+          if (isMatch && gallery.scrollWidth > gallery.clientWidth + 1) {
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        });
+      }
+
+      inputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+          if (input.checked) focusMedia(input.getAttribute('data-media-id'));
+        });
+      });
+    })();
+  </script>
+{%- endif -%}
+
 {% stylesheet %}
+  /* Selecting a pants cut fades the gallery toward the photo showing it.
+     Only applies once the shopper picks a cut, so the page loads clean. */
+  .media-gallery__grid--style-linked li {
+    transition: opacity 0.45s ease, filter 0.45s ease;
+  }
+
+  .media-gallery__grid--style-linked li.media-item--style-muted {
+    opacity: 0.4;
+    filter: saturate(0.9);
+  }
+
+  .media-gallery__grid--style-linked li.media-item--style-active {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .media-gallery__grid--style-linked li {
+      transition: none;
+    }
+  }
+
   .made-to-measure {
     width: 100%;
     padding-block: var(--padding-lg);
