@@ -77,6 +77,15 @@
 {%- endif -%}
 
 {%- comment -%}
+  Shirt-only pieces, which have no bottom to measure. Clearing the list here
+  rather than in the chain above lets them keep their shirt lengths.
+{%- endcomment -%}
+{%- assign shirt_only_handles = 'black-leopard' | split: ',' -%}
+{%- if shirt_only_handles contains product.handle -%}
+  {%- assign bottom_lengths = '' | split: ',' -%}
+{%- endif -%}
+
+{%- comment -%}
   Pieces offered in more than one pants cut. Kept separate from the length
   chain above so a product can pick up a pants style without restating its
   lengths.
