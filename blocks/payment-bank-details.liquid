@@ -38,6 +38,12 @@
         </dd>
       </div>
     {%- endif -%}
+    {%- if s.branch != blank -%}
+      <div class="bank-details__row">
+        <dt>Branch</dt>
+        <dd>{{ s.branch }}</dd>
+      </div>
+    {%- endif -%}
     {%- if s.iban != blank -%}
       <div class="bank-details__row">
         <dt>IBAN</dt>
@@ -169,7 +175,7 @@
       "type": "text",
       "id": "account_title",
       "label": "Account Title",
-      "default": "Essa Shahid Arshad"
+      "default": "Jannat Shahid"
     },
     {
       "type": "text",
@@ -181,13 +187,19 @@
       "type": "text",
       "id": "account_number",
       "label": "Account Number",
-      "default": "04010104972689"
+      "default": "0100678144"
+    },
+    {
+      "type": "text",
+      "id": "branch",
+      "label": "Branch",
+      "default": "Serena Hotel Branch, Faisalabad (Code 0401)"
     },
     {
       "type": "text",
       "id": "iban",
       "label": "IBAN",
-      "default": "PK11MEZN0004010104972689"
+      "default": "PK90MEZN0004010100678144"
     },
     {
       "type": "textarea",
