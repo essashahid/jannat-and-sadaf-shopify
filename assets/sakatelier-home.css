@@ -266,7 +266,8 @@
 .sak-tiles__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  /* Flush: any gap lets the near-white section background show between tiles */
+  gap: 0;
 }
 
 /* 4:5 matches how Pret and Formals are shot, so those two are never cropped.
@@ -334,7 +335,7 @@
 @media (max-width: 749px) {
   .sak-tiles__grid {
     grid-template-columns: 1fr;
-    gap: 6px;
+    gap: 0;
   }
 
   .sak-tile {
