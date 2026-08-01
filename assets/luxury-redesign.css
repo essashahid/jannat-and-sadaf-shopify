@@ -1313,6 +1313,7 @@ img {
   .header-actions__cart-icon .cart-bubble,
   .header-actions__cart-icon .cart-bubble.visually-hidden:not(:focus, :active) {
     /* stylelint-disable declaration-no-important */
+    display: inline !important;
     position: static !important;
     width: auto !important;
     height: auto !important;
@@ -1338,8 +1339,11 @@ img {
     text-transform: uppercase;
   }
 
+  /* base.css hides the count at zero with `display: none !important` */
+  .header-actions__cart-icon .cart-bubble__text-count,
   .header-actions__cart-icon .cart-bubble__text-count.hidden {
-    display: inline;
+    /* stylelint-disable-next-line declaration-no-important */
+    display: inline !important;
   }
 }
 
