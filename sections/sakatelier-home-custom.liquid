@@ -43,70 +43,46 @@
 -%}
 
 {%- comment -%} ============ 1. HERO ============ {%- endcomment -%}
+{%- liquid
+  # Single full-bleed hero. The first hero block supplies the image and copy;
+  # any further blocks are ignored so there is no carousel to sit through.
+  assign hero = hero_slides | first
+-%}
 <section class="sak-section sak-hero" id="sak-hero" data-section-id="{{ section.id }}">
-  <div class="sak-hero__slides">
-    {%- for block in hero_slides -%}
-      <div class="sak-hero__slide {% if forloop.first %}is-active{% endif %}" {{ block.shopify_attributes }}>
-        {%- if block.settings.image != blank -%}
-          <img
-            src="{{ block.settings.image | image_url: width: 1920 }}"
-            srcset="{{ block.settings.image | image_url: width: 800 }} 800w, {{ block.settings.image | image_url: width: 1400 }} 1400w, {{ block.settings.image | image_url: width: 1920 }} 1920w"
-            sizes="100vw"
-            alt="{{ block.settings.image.alt | default: block.settings.heading }}"
-            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-            fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}"
-            width="1920"
-            height="1000"
-          >
-        {%- else -%}
-          <img
-            src="{{ 'hero-slide-' | append: forloop.index | append: '.png' | asset_url }}"
-            alt="{{ block.settings.heading | default: 'Hero' }}"
-            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-            width="1920"
-            height="1000"
-          >
-        {%- endif -%}
-      </div>
-    {%- endfor -%}
+  <div class="sak-hero__media">
+    {%- if hero.settings.image != blank -%}
+      <img
+        src="{{ hero.settings.image | image_url: width: 2400 }}"
+        srcset="{{ hero.settings.image | image_url: width: 900 }} 900w, {{ hero.settings.image | image_url: width: 1400 }} 1400w, {{ hero.settings.image | image_url: width: 1920 }} 1920w, {{ hero.settings.image | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt="{{ hero.settings.image.alt | default: shop.name }}"
+        loading="eager"
+        fetchpriority="high"
+        width="2400"
+        height="1350"
+      >
+    {%- else -%}
+      <img
+        src="{{ 'hero-banner.png' | asset_url }}"
+        alt="{{ shop.name }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- endif -%}
   </div>
 
   <div class="sak-hero__overlay"></div>
 
-  <div class="sak-hero__content">
-    {%- assign active_slide = hero_slides | first -%}
-    {%- if active_slide.settings.label != blank -%}
-      <p class="sak-hero__label">{{ active_slide.settings.label }}</p>
+  <div class="sak-hero__content" {{ hero.shopify_attributes }}>
+    {%- if hero.settings.label != blank -%}
+      <p class="sak-hero__label">{{ hero.settings.label }}</p>
     {%- endif -%}
-    {%- if active_slide.settings.heading != blank -%}
-      <h1 class="sak-hero__heading">{{ active_slide.settings.heading }}</h1>
+    {%- if hero.settings.button_text != blank -%}
+      <a href="{{ hero.settings.button_link | default: '/collections/all' }}" class="sak-hero__link">
+        {{ hero.settings.button_text }}
+      </a>
     {%- endif -%}
-    {%- if active_slide.settings.subheading != blank -%}
-      <p class="sak-hero__sub">{{ active_slide.settings.subheading }}</p>
-    {%- endif -%}
-    <div class="sak-hero__actions">
-      {%- if active_slide.settings.button_text != blank -%}
-        <a href="{{ active_slide.settings.button_link | default: '/collections/all' }}" class="sak-btn sak-btn--cream" data-hero-cta>
-          <span>{{ active_slide.settings.button_text }}</span>
-        </a>
-      {%- endif -%}
-      {%- if section.settings.hero_button2_text != blank -%}
-        <a href="{{ section.settings.hero_button2_link | default: '/collections' }}" class="sak-btn sak-btn--light">
-          <span>{{ section.settings.hero_button2_text }}</span>
-        </a>
-      {%- endif -%}
-    </div>
   </div>
-
-  {%- if hero_slides.size > 1 -%}
-    <button class="sak-hero__arrow sak-hero__arrow--prev" data-hero-prev aria-label="Previous slide">&#8249;</button>
-    <button class="sak-hero__arrow sak-hero__arrow--next" data-hero-next aria-label="Next slide">&#8250;</button>
-    <div class="sak-hero__dots">
-      {%- for block in hero_slides -%}
-        <button class="sak-hero__dot {% if forloop.first %}is-active{% endif %}" data-hero-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
-      {%- endfor -%}
-    </div>
-  {%- endif -%}
 </section>
 
 {%- comment -%} ============ 2. COLLECTION TILES ============ {%- endcomment -%}
@@ -544,72 +520,6 @@
   </section>
 {%- endif -%}
 
-{%- comment -%} ============ HERO SLIDESHOW JS ============ {%- endcomment -%}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var hero = document.getElementById('sak-hero');
-    if (!hero) return;
-
-    var slides = hero.querySelectorAll('.sak-hero__slide');
-    var dots = hero.querySelectorAll('.sak-hero__dot');
-    var content = hero.querySelector('.sak-hero__content');
-    if (slides.length <= 1) return;
-
-    var slideData = [
-      {%- for block in hero_slides -%}
-        {
-          "label": {{ block.settings.label | default: '' | json }},
-          "heading": {{ block.settings.heading | default: '' | json }},
-          "subheading": {{ block.settings.subheading | default: '' | json }},
-          "button_text": {{ block.settings.button_text | default: '' | json }},
-          "button_link": {{ block.settings.button_link | default: '/collections/all' | json }}
-        }{%- unless forloop.last -%},{%- endunless -%}
-      {%- endfor -%}
-    ];
-
-    var current = 0;
-    var timer;
-
-    function goToSlide(index) {
-      slides[current].classList.remove('is-active');
-      if (dots[current]) dots[current].classList.remove('is-active');
-      current = (index + slides.length) % slides.length;
-      slides[current].classList.add('is-active');
-      if (dots[current]) dots[current].classList.add('is-active');
-
-      var d = slideData[current];
-      if (d && content) {
-        var labelEl = content.querySelector('.sak-hero__label');
-        var headingEl = content.querySelector('.sak-hero__heading');
-        var subEl = content.querySelector('.sak-hero__sub');
-        var ctaEl = content.querySelector('[data-hero-cta]');
-        if (labelEl) labelEl.textContent = d.label;
-        if (headingEl) headingEl.textContent = d.heading;
-        if (subEl) subEl.textContent = d.subheading;
-        if (ctaEl) {
-          ctaEl.setAttribute('href', d.button_link || '/collections/all');
-          var ctaSpan = ctaEl.querySelector('span');
-          if (ctaSpan && d.button_text) ctaSpan.textContent = d.button_text;
-        }
-      }
-    }
-
-    function next() { goToSlide(current + 1); }
-    function prev() { goToSlide(current - 1); }
-    function start() { timer = setInterval(next, 6000); }
-    function stop() { clearInterval(timer); }
-
-    var prevBtn = hero.querySelector('[data-hero-prev]');
-    var nextBtn = hero.querySelector('[data-hero-next]');
-    if (prevBtn) prevBtn.addEventListener('click', function () { stop(); prev(); start(); });
-    if (nextBtn) nextBtn.addEventListener('click', function () { stop(); next(); start(); });
-    dots.forEach(function (dot, i) {
-      dot.addEventListener('click', function () { stop(); goToSlide(i); start(); });
-    });
-
-    start();
-  });
-</script>
 
 {% schema %}
 {

@@ -162,144 +162,91 @@
 .sak-hero {
   position: relative;
   width: 100%;
-  /* Sits below the sticky header; kept under one viewport so the CTAs
-     at the bottom of the hero stay comfortably in view. */
-  height: min(84vh, 820px);
-  min-height: 520px;
+  /* Runs behind the transparent header, so it reads as one full-bleed frame */
+  height: min(92vh, 940px);
+  min-height: 540px;
   overflow: hidden;
   background: var(--sak-beige);
 }
 
-.sak-hero__slides,
-.sak-hero__slide {
+.sak-hero__media {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
-.sak-hero__slide {
-  opacity: 0;
-  transition: opacity 1s var(--sak-ease);
-}
-.sak-hero__slide.is-active {
-  opacity: 1;
-  z-index: 1;
-}
-.sak-hero__slide img {
+.sak-hero__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  /* Bias upward so the model's head is never cropped on wide screens */
+  object-position: center 32%;
 }
 
+/* Just enough scrim at the top for the header type and at the foot for the label */
 .sak-hero__overlay {
   position: absolute;
   inset: 0;
   z-index: 2;
   background: linear-gradient(
-    to bottom,
-    rgba(28, 24, 20, 0.18) 0%,
-    rgba(28, 24, 20, 0.06) 38%,
-    rgba(28, 24, 20, 0.7) 100%
-  );
+      to bottom,
+      rgba(28, 24, 20, 0.3) 0%,
+      rgba(28, 24, 20, 0) 22%
+    ),
+    linear-gradient(
+      to top,
+      rgba(28, 24, 20, 0.5) 0%,
+      rgba(28, 24, 20, 0.12) 26%,
+      rgba(28, 24, 20, 0) 46%
+    );
 }
 
 .sak-hero__content {
   position: absolute;
-  left: 50%;
-  bottom: clamp(56px, 9vh, 104px);
-  transform: translateX(-50%);
+  left: 0;
+  bottom: clamp(48px, 8vh, 92px);
   z-index: 3;
-  width: 100%;
-  max-width: 760px;
-  padding-inline: 24px;
-  text-align: center;
+  padding-inline: clamp(24px, 5vw, 72px);
+  text-align: left;
   color: #fff;
 }
 
 .sak-hero__label {
   font-family: var(--sak-sans);
   font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  margin: 0 0 16px;
-  color: #f3e8d4;
-}
-
-.sak-hero__heading {
-  font-family: var(--sak-serif) !important;
-  font-size: clamp(2.8rem, 8vw, 6rem);
   font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  margin: 0 0 14px;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+  margin: 0 0 22px;
+  color: rgba(255, 255, 255, 0.88);
 }
 
-.sak-hero__sub {
+.sak-hero__link {
+  display: inline-block;
   font-family: var(--sak-sans);
-  font-size: 0.95rem;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  margin: 0 0 32px;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
-}
-
-.sak-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  justify-content: center;
-}
-
-.sak-hero__arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 4;
-  width: 46px;
-  height: 46px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: #fff;
-  background: rgba(43, 38, 32, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  cursor: pointer;
-  transition: background-color 0.3s var(--sak-ease);
+  text-decoration: none;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.75);
+  transition: border-color 0.35s var(--sak-ease), opacity 0.35s var(--sak-ease);
 }
-.sak-hero__arrow:hover {
-  background: rgba(43, 38, 32, 0.55);
-}
-.sak-hero__arrow--prev { left: 26px; }
-.sak-hero__arrow--next { right: 26px; }
 
-.sak-hero__dots {
-  position: absolute;
-  bottom: 26px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
-  display: flex;
-  gap: 9px;
+.sak-hero__link:hover {
+  border-color: #fff;
+  opacity: 0.82;
 }
-.sak-hero__dot {
-  width: 30px;
-  height: 2px;
-  padding: 0;
-  border: 0;
-  background: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  transition: background-color 0.3s var(--sak-ease);
-}
-.sak-hero__dot.is-active {
-  background: #fff;
+
+@media (max-width: 749px) {
+  .sak-hero {
+    height: min(86vh, 720px);
+  }
+
+  .sak-hero__label {
+    margin-bottom: 16px;
+  }
 }
 
 /* ============================================================
@@ -992,25 +939,6 @@
     flex-direction: column;
     align-items: center;
   }
-  .sak-hero__actions .sak-btn {
-    width: 100%;
-    max-width: 280px;
-  }
-  .sak-hero__arrow {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-  }
-  .sak-hero__arrow--prev { left: 12px; }
-  .sak-hero__arrow--next { right: 12px; }
-
-  .sak-tiles__grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-  .sak-tile {
-    aspect-ratio: 3 / 4;
-  }
 
   .sak-products__grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1129,11 +1057,11 @@ html {
    ============================================================ */
 
 /* Ken Burns — slow zoom + drift on the active hero slide */
-.sak-hero__slide img {
+.sak-hero__media img {
   transform-origin: center center;
   will-change: transform;
 }
-.sak-hero__slide.is-active img {
+.sak-hero__media img {
   animation: sakKenBurns 18s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 @keyframes sakKenBurns {
@@ -1192,7 +1120,7 @@ html {
 
 /* Reduced-motion overrides */
 @media (prefers-reduced-motion: reduce) {
-  .sak-hero__slide.is-active img {
+  .sak-hero__media img {
     animation: none !important;
     transform: none !important;
   }

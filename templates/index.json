@@ -6,11 +6,11 @@
         "hero_slide_1": {
           "type": "hero_slide",
           "settings": {
-            "label": "New Collection",
-            "heading": "Pret",
-            "subheading": "your everyday style fix",
-            "button_text": "Shop Pret",
-            "button_link": ""
+            "label": "Luxury Pret",
+            "heading": "",
+            "subheading": "",
+            "button_text": "Discover the Collection",
+            "button_link": "shopify://collections/pret"
           }
         },
         "hero_slide_2": {
@@ -93,7 +93,7 @@
       ],
       "name": "Jannat & Sadaf Home",
       "settings": {
-        "hero_button2_text": "Explore Collections",
+        "hero_button2_text": "",
         "hero_button2_link": "shopify://collections/all",
         "show_fabrics": true,
         "fabrics_heading": "",

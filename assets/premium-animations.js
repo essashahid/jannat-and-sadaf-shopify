@@ -30,6 +30,7 @@
   const heroLabel = document.querySelector('.sak-hero__label');
   const heroSub = document.querySelector('.sak-hero__sub');
   const heroActions = document.querySelector('.sak-hero__actions');
+  const heroLink = document.querySelector('.sak-hero__link');
 
   function splitWords(el) {
     const text = el.textContent.trim();
@@ -75,6 +76,13 @@
         heroActions,
         { opacity: [0, 1], y: [14, 0] },
         { duration: 0.9, easing: [0.22, 1, 0.36, 1], delay: 0.8 }
+      );
+    }
+    if (heroLink) {
+      animate(
+        heroLink,
+        { opacity: [0, 1], y: [14, 0] },
+        { duration: 0.9, easing: [0.22, 1, 0.36, 1], delay: 0.45 }
       );
     }
   }
