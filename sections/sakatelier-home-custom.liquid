@@ -134,15 +134,28 @@
               elsif fabric_name_lower == 'formals'
                 assign fabric_asset = 'collection-formals.jpg'
               endif
+
+              # Catalogue photo each tile falls back to when no image is set in the editor
+              assign fabric_product = block.settings.source_product
+              if fabric_product == blank
+                if fabric_name_lower == 'pret'
+                  assign fabric_product = all_products['serenade-beige']
+                elsif fabric_name_lower == 'block print'
+                  assign fabric_product = all_products['fuschia-angrakha']
+                elsif fabric_name_lower == 'formals'
+                  assign fabric_product = all_products['muted-iris']
+                endif
+              endif
+              assign fabric_image = fabric_product.featured_image
             -%}
             <a href="{{ block.settings.collection_link | default: '/collections/all' }}" class="sak-tile" {{ block.shopify_attributes }}>
               <div class="sak-tile__media">
                 {%- if block.settings.collection_image != blank -%}
                   <img src="{{ block.settings.collection_image | image_url: width: 1200 }}" alt="{{ block.settings.collection_name }}" loading="lazy" width="1200" height="1500">
-                {%- elsif block.settings.source_product.featured_image != blank -%}
+                {%- elsif fabric_image != blank -%}
                   <img
-                    src="{{ block.settings.source_product.featured_image | image_url: width: 1200 }}"
-                    srcset="{{ block.settings.source_product.featured_image | image_url: width: 700 }} 700w, {{ block.settings.source_product.featured_image | image_url: width: 1000 }} 1000w, {{ block.settings.source_product.featured_image | image_url: width: 1400 }} 1400w"
+                    src="{{ fabric_image | image_url: width: 1200 }}"
+                    srcset="{{ fabric_image | image_url: width: 700 }} 700w, {{ fabric_image | image_url: width: 1000 }} 1000w, {{ fabric_image | image_url: width: 1400 }} 1400w"
                     sizes="33vw"
                     alt="{{ block.settings.collection_name }}"
                     loading="lazy"

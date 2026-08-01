@@ -39,8 +39,9 @@
 
   <style>
     .clearance-badge {
+      /* Bottom-right: the bottom-left corner belongs to the collection tile labels */
       position: fixed;
-      left: 22px;
+      right: 22px;
       bottom: 22px;
       z-index: 9990;
       display: flex;
@@ -105,7 +106,7 @@
     }
 
     @media (max-width: 480px) {
-      .clearance-badge { left: 14px; bottom: 14px; }
+      .clearance-badge { right: 14px; bottom: 14px; }
       .clearance-badge__link { padding: 11px 12px 11px 14px; letter-spacing: 0.14em; }
     }
     @media (prefers-reduced-motion: reduce) {
