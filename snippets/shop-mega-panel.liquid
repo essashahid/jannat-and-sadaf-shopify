@@ -1,0 +1,77 @@
+{%- doc -%}
+  Renders the desktop mega menu as a vertical category rail on the left with a
+  preview of products from the hovered category on the right.
+
+  @param {object} parent_link - The top level link whose children build the rail.
+  @param {string} id - Unique id used to scope the panel.
+
+  @example
+  {% render 'shop-mega-panel', parent_link: link, id: 'ShopMega-1' %}
+{%- enddoc -%}
+
+<div class="shop-mega" data-shop-mega="{{ id }}">
+  <ul class="shop-mega__rail list-unstyled">
+    {%- for child in parent_link.links -%}
+      {%- liquid
+        assign is_clearance = false
+        if child.url contains '/collections/clearance'
+          assign is_clearance = true
+        endif
+      -%}
+      <li class="shop-mega__rail-item{% if is_clearance %} shop-mega__rail-item--divided{% endif %}">
+        <a
+          href="{{ child.url }}"
+          class="shop-mega__rail-link{% if forloop.first %} is-active{% endif %}"
+          data-shop-mega-trigger="{{ forloop.index0 }}"
+        >
+          <span class="wrap-text">{{- child.title -}}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+
+  <div class="shop-mega__panels">
+    {%- for child in parent_link.links -%}
+      {%- liquid
+        assign panel_collection = blank
+        if child.type == 'collection_link'
+          assign panel_collection = child.object
+        elsif child.type == 'catalog_link' or child.type == 'collections_link'
+          assign panel_collection = collections.all
+        endif
+      -%}
+      <ul
+        class="shop-mega__products list-unstyled{% if forloop.first %} is-active{% endif %}"
+        data-shop-mega-panel="{{ forloop.index0 }}"
+      >
+        {%- if panel_collection != blank -%}
+          {%- for product in panel_collection.products limit: 3 -%}
+            <li class="shop-mega__product">
+              <a href="{{ product.url }}" class="shop-mega__card">
+                <span class="shop-mega__card-media">
+                  {%- if product.featured_media -%}
+                    {%- assign card_alt = product.title | escape -%}
+                    {{
+                      product.featured_media
+                      | image_url: width: 800
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '300, 450, 600, 800',
+                        sizes: '(min-width: 990px) 22vw, 40vw',
+                        alt: card_alt,
+                        class: 'shop-mega__card-image'
+                    }}
+                  {%- else -%}
+                    <span class="shop-mega__card-image shop-mega__card-image--placeholder"></span>
+                  {%- endif -%}
+                </span>
+                <span class="shop-mega__card-title">{{ product.title }}</span>
+                <span class="shop-mega__card-price">{{ product.price | money }}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    {%- endfor -%}
+  </div>
+</div>

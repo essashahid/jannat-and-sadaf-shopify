@@ -1271,3 +1271,224 @@ img {
   border-radius: 2px;
   vertical-align: middle;
 }
+
+
+/* ============================================================
+   HEADER — text actions + category-rail mega menu
+   ============================================================ */
+
+/* --- Text labels instead of icons (desktop only) --- */
+.header-action__label {
+  display: none;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@media screen and (min-width: 750px) {
+  .header-action__label {
+    display: inline-block;
+  }
+
+  .header__column--right .header-action__icon,
+  .header__column--left .search-action .header-action__icon {
+    display: none;
+  }
+
+  .header__column--right .header-actions__action,
+  .search-action .header-actions__action {
+    gap: 0;
+  }
+
+  /* Cart count reads as "Bag (0)" — keep it visible and unstyled even when empty */
+  .header-actions__cart-icon {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .header-actions__cart-icon .cart-bubble,
+  .header-actions__cart-icon .cart-bubble.visually-hidden:not(:focus, :active) {
+    /* stylelint-disable declaration-no-important */
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    color: inherit !important;
+    /* stylelint-enable declaration-no-important */
+  }
+
+  .header-actions__cart-icon .cart-bubble__background {
+    display: none;
+  }
+
+  .header-actions__cart-icon .cart-bubble__text {
+    display: inline;
+    font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .header-actions__cart-icon .cart-bubble__text-count.hidden {
+    display: inline;
+  }
+}
+
+/* Sit the two right-hand actions on a comfortable rhythm */
+@media screen and (min-width: 750px) {
+  .header__columns .header__column--right {
+    gap: 40px;
+  }
+}
+
+/* --- Mega menu: category rail + product previews --- */
+.shop-mega {
+  display: grid;
+  grid-template-columns: minmax(200px, 22%) 1fr;
+  gap: 0 64px;
+  width: 100%;
+  align-items: start;
+  padding-block: 8px 56px;
+}
+
+.shop-mega__rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.shop-mega__rail-item--divided {
+  margin-block-start: 18px;
+  padding-block-start: 18px;
+  border-block-start: 1px solid rgb(var(--color-foreground-rgb) / 0.14);
+}
+
+.shop-mega__rail-link {
+  display: inline-block;
+  padding-block: 10px;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  text-decoration: none;
+  color: rgb(var(--color-foreground-rgb) / 0.42);
+  transition: color 0.25s ease;
+}
+
+.shop-mega__rail-link.is-active,
+.shop-mega__rail-link:hover,
+.shop-mega__rail-link:focus-visible {
+  color: rgb(var(--color-foreground-rgb) / 1);
+}
+
+.shop-mega__panels {
+  position: relative;
+}
+
+.shop-mega__products {
+  display: none;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+}
+
+.shop-mega__products.is-active {
+  display: grid;
+  animation: shop-mega-fade 0.35s ease both;
+}
+
+@keyframes shop-mega-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.shop-mega__card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.shop-mega__card-media {
+  display: block;
+  overflow: hidden;
+  background: rgb(var(--color-foreground-rgb) / 0.04);
+}
+
+.shop-mega__card-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+.shop-mega__card:hover .shop-mega__card-image {
+  transform: scale(1.03);
+}
+
+.shop-mega__card-image--placeholder {
+  background: rgb(var(--color-foreground-rgb) / 0.06);
+}
+
+.shop-mega__card-title {
+  display: block;
+  margin-block-start: 18px;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground-rgb) / 1);
+}
+
+.shop-mega__card-price {
+  display: block;
+  margin-block-start: 8px;
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: rgb(var(--color-foreground-rgb) / 0.55);
+}
+
+/* The rail owns its own layout — neutralise the theme grid wrapper */
+.mega-menu__grid--rail {
+  display: block;
+}
+
+.menu-list__submenu-inner > .mega-menu {
+  flex: 1 1 100%;
+}
+
+@media screen and (max-width: 989px) {
+  .shop-mega {
+    grid-template-columns: minmax(160px, 30%) 1fr;
+    gap: 0 32px;
+  }
+
+  .shop-mega__products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .shop-mega__product:nth-child(3) {
+    display: none;
+  }
+}

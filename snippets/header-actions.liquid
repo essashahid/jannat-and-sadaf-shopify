@@ -13,13 +13,17 @@
     data-testid="cart-icon"
   >
     <span
-      class="svg-wrapper"
+      class="svg-wrapper header-action__icon"
       aria-hidden="true"
     >
       {{ 'icon-cart.svg' | inline_asset_content }}
     </span>
 
+    <span class="header-action__label" aria-hidden="true">Bag&nbsp;(</span>
+
     {% render 'cart-bubble', limit: 100, live_region: true %}
+
+    <span class="header-action__label" aria-hidden="true">)</span>
   </cart-icon>
 {% endcapture %}
 
