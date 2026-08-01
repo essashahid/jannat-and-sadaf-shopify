@@ -28,7 +28,8 @@
           "settings": {
             "collection_name": "Pret",
             "collection_description": "Everyday eastern wear designed for effortless elegance.",
-            "collection_link": ""
+            "collection_link": "shopify://collections/pret",
+            "source_product": "serenade-beige"
           }
         },
         "fabric_blockprint": {
@@ -36,7 +37,8 @@
           "settings": {
             "collection_name": "Block Print",
             "collection_description": "Artisanal prints, refined silhouettes, and festive-ready details.",
-            "collection_link": ""
+            "collection_link": "shopify://collections/block-print",
+            "source_product": "fuschia-angrakha"
           }
         },
         "fabric_formals": {
@@ -44,7 +46,8 @@
           "settings": {
             "collection_name": "Formals",
             "collection_description": "Handcrafted pieces for occasions that matter.",
-            "collection_link": ""
+            "collection_link": "shopify://collections/formals",
+            "source_product": "muted-iris"
           }
         },
         "journal_1": {
@@ -93,9 +96,9 @@
         "hero_button2_text": "Explore Collections",
         "hero_button2_link": "shopify://collections/all",
         "show_fabrics": true,
-        "fabrics_heading": "Our Collections",
+        "fabrics_heading": "",
         "fabrics_subtitle": "",
-        "fabrics_button_text": "Explore the Collection",
+        "fabrics_button_text": "",
         "fabrics_button_link": "shopify://collections/all",
         "show_bestsellers": true,
         "bestsellers_heading": "New Arrivals",
@@ -136,5 +139,7 @@
       }
     }
   },
-  "order": ["sakatelier_home"]
+  "order": [
+    "sakatelier_home"
+  ]
 }

@@ -113,13 +113,15 @@
 {%- if section.settings.show_fabrics -%}
   <section class="sak-section sak-tiles">
     <div class="sak-wrap">
-      <div class="sak-head">
-        <p class="sak-head__eyebrow">Explore</p>
-        <h2 class="sak-head__title">{{ section.settings.fabrics_heading | default: 'Our Collections' }}</h2>
-        {%- if section.settings.fabrics_subtitle != blank -%}
-          <p class="sak-head__sub">{{ section.settings.fabrics_subtitle }}</p>
-        {%- endif -%}
-      </div>
+      {%- if section.settings.fabrics_heading != blank -%}
+        <div class="sak-head">
+          <p class="sak-head__eyebrow">Explore</p>
+          <h2 class="sak-head__title">{{ section.settings.fabrics_heading }}</h2>
+          {%- if section.settings.fabrics_subtitle != blank -%}
+            <p class="sak-head__sub">{{ section.settings.fabrics_subtitle }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
 
       <div class="sak-tiles__grid">
         {%- if fabric_items.size > 0 -%}
@@ -136,7 +138,15 @@
             <a href="{{ block.settings.collection_link | default: '/collections/all' }}" class="sak-tile" {{ block.shopify_attributes }}>
               <div class="sak-tile__media">
                 {%- if block.settings.collection_image != blank -%}
-                  <img src="{{ block.settings.collection_image | image_url: width: 900 }}" alt="{{ block.settings.collection_name }}" loading="lazy" width="900" height="1125">
+                  <img src="{{ block.settings.collection_image | image_url: width: 1200 }}" alt="{{ block.settings.collection_name }}" loading="lazy" width="1200" height="1500">
+                {%- elsif block.settings.source_product.featured_image != blank -%}
+                  <img
+                    src="{{ block.settings.source_product.featured_image | image_url: width: 1200 }}"
+                    srcset="{{ block.settings.source_product.featured_image | image_url: width: 700 }} 700w, {{ block.settings.source_product.featured_image | image_url: width: 1000 }} 1000w, {{ block.settings.source_product.featured_image | image_url: width: 1400 }} 1400w"
+                    sizes="33vw"
+                    alt="{{ block.settings.collection_name }}"
+                    loading="lazy"
+                  >
                 {%- elsif fabric_asset != '' -%}
                   <img src="{{ fabric_asset | asset_url }}" alt="{{ block.settings.collection_name }}" loading="lazy">
                 {%- else -%}
@@ -145,10 +155,6 @@
               </div>
               <div class="sak-tile__body">
                 <h3 class="sak-tile__name">{{ block.settings.collection_name | default: 'Collection' }}</h3>
-                {%- if block.settings.collection_description != blank -%}
-                  <p class="sak-tile__desc">{{ block.settings.collection_description }}</p>
-                {%- endif -%}
-                <span class="sak-tile__cta">Shop Now</span>
               </div>
             </a>
           {%- endfor -%}
@@ -976,6 +982,7 @@
       "name": "Collection Tile",
       "settings": [
         { "type": "image_picker", "id": "collection_image", "label": "Tile image" },
+        { "type": "product", "id": "source_product", "label": "Use this product's photo", "info": "Used when no tile image is uploaded." },
         { "type": "text", "id": "collection_name", "label": "Collection name", "default": "Collection" },
         { "type": "textarea", "id": "collection_description", "label": "Short description" },
         { "type": "url", "id": "collection_link", "label": "Collection link" }

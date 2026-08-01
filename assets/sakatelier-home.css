@@ -303,17 +303,23 @@
 }
 
 /* ============================================================
-   2. COLLECTION TILES
+   2. COLLECTION TILES - full-bleed editorial band
    ============================================================ */
 .sak-tiles {
   background: var(--sak-cream);
-  padding-block: clamp(64px, 9vw, 116px);
+  padding-block: 0;
+}
+
+/* Break out of the page gutter so the band runs edge to edge */
+.sak-tiles .sak-wrap {
+  max-width: none;
+  padding-inline: 0;
 }
 
 .sak-tiles__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 6px;
 }
 
 .sak-tile {
@@ -321,7 +327,8 @@
   display: block;
   overflow: hidden;
   text-decoration: none;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 2 / 3;
+  max-height: 88vh;
   background: var(--sak-beige);
 }
 
@@ -334,21 +341,22 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.9s var(--sak-ease);
+  transition: transform 1.2s var(--sak-ease);
 }
 .sak-tile:hover .sak-tile__media img {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
+/* Just enough shading under the label to keep it legible */
 .sak-tile::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(28, 24, 20, 0.74) 0%,
-    rgba(28, 24, 20, 0.12) 52%,
-    rgba(28, 24, 20, 0) 78%
+    rgba(28, 24, 20, 0.42) 0%,
+    rgba(28, 24, 20, 0.12) 22%,
+    rgba(28, 24, 20, 0) 42%
   );
   z-index: 1;
 }
@@ -359,43 +367,35 @@
   right: 0;
   bottom: 0;
   z-index: 2;
-  padding: 32px 30px;
+  padding: 34px 40px;
   color: #fff;
-  text-align: center;
+  text-align: left;
 }
 
 .sak-tile__name {
   font-family: var(--sak-serif) !important;
-  font-size: 1.85rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  font-size: clamp(1.4rem, 1.9vw, 2rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
   margin: 0;
+  text-shadow: 0 1px 18px rgba(28, 24, 20, 0.35);
 }
 
-.sak-tile__desc {
-  font-family: var(--sak-sans);
-  font-size: 0.82rem;
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.86);
-  margin: 8px auto 0;
-  max-width: 280px;
-}
+@media (max-width: 749px) {
+  .sak-tiles__grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
 
-.sak-tile__cta {
-  display: inline-block;
-  font-family: var(--sak-sans);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin-top: 16px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
-  transition: border-color 0.3s var(--sak-ease);
-}
-.sak-tile:hover .sak-tile__cta {
-  border-color: #fff;
+  .sak-tile {
+    aspect-ratio: 4 / 5;
+    max-height: none;
+  }
+
+  .sak-tile__body {
+    padding: 26px 24px;
+  }
 }
 
 /* ============================================================
