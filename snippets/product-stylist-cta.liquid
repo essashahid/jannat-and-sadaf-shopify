@@ -1,23 +1,15 @@
 {%- doc -%}
-  Renders a "Speak to a Stylist" WhatsApp CTA on high-touch collections
-  (wedding, formals). Pre-fills a WhatsApp message with the product title and
-  URL so the team has context. Extend collection coverage via the handle list
-  in stylist_cta_collections below.
+  Renders a "Speak to a Stylist" WhatsApp CTA on every product. Pre-fills a
+  WhatsApp message with the product title and URL so the team has context.
+  Every sale is final and made to order, so the pre-purchase conversation is
+  the fit-and-fabric safety net on all products, not just the high-touch ones.
 
   @param {object} product - The current product object
 {%- enddoc -%}
 
 {%- liquid
   assign stylist_cta_number = '923717459654'
-  assign stylist_cta_collections = 'wedding,formals' | split: ','
-
-  assign show_stylist_cta = false
-  for stylist_cta_collection in product.collections
-    if stylist_cta_collections contains stylist_cta_collection.handle
-      assign show_stylist_cta = true
-      break
-    endif
-  endfor
+  assign show_stylist_cta = true
 -%}
 
 {%- if show_stylist_cta -%}
