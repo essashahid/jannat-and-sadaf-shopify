@@ -1,9 +1,15 @@
 {% comment %}
   Feature layout for Journal editorials.
-  The article body carries its own masthead, hero, chapter rail and styles
-  (scoped under .ja-page), so this template renders the content full-bleed
-  with no default title/image chrome. Assign via the article's theme
-  template setting ("feature").
+
+  The design (masthead, hero, sticky chapter rail, shop-the-edit strips,
+  CTA, keep-reading grid) lives here so every feature article shares one
+  stylesheet and one script. Article bodies carry only their content
+  markup, wrapped in a single .ja-page element.
+
+  All selectors are scoped under .ja-page so nothing leaks into the
+  header, footer or any other section.
+
+  Assign to an article via its theme template setting ("feature").
 {% endcomment %}
 
 <script type="application/ld+json">
@@ -18,4 +24,178 @@
   }
 </script>
 
+<style>
+  .ja-page {
+    --ink: #2b2620; --body: #5f574d; --muted: #8a8178; --faint: #a09689;
+    --gold: #a98c5f; --gold-dk: #8a6f47; --rule: #e6ddcd; --rule-2: #d9cdb8;
+    --bg: #fdfbf7; --bg-2: #f7f3ec; --bg-3: #efe7d9;
+    --serif: 'Cormorant', 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+    --pad: clamp(24px, 5vw, 56px); --max: 1320px;
+    background: var(--bg); color: var(--body); font-family: var(--sans);
+    font-size: 1.02rem; line-height: 1.9; -webkit-font-smoothing: antialiased;
+  }
+  .ja-page *, .ja-page *::before, .ja-page *::after { box-sizing: border-box; }
+  .ja-page img { display: block; max-width: 100%; }
+  .ja-page a { color: var(--ink); }
+  .ja-page a:hover { color: var(--gold-dk); }
+  .ja-page [id] { scroll-margin-top: 120px; }
+
+  .ja-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; z-index: 60; background: var(--gold); transition: width .12s linear; }
+
+  .ja-wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--pad); }
+
+  .ja-head { padding-block: clamp(48px, 7vw, 96px) clamp(30px, 4vw, 48px); }
+  .ja-kicker { display: flex; align-items: center; gap: 14px; font-size: .66rem; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
+  .ja-kicker a { color: var(--gold); text-decoration: none; }
+  .ja-kicker i { display: block; width: 22px; height: 1px; background: var(--rule-2); }
+  .ja-page h1 { font-family: var(--serif); font-size: clamp(2.4rem, 5.4vw, 4.4rem); font-weight: 500; line-height: 1.06; color: var(--ink); margin: 26px 0 0; max-width: 17ch; text-wrap: balance; }
+  .ja-stand { font-family: var(--serif); font-style: italic; font-size: clamp(1.15rem, 2vw, 1.6rem); line-height: 1.5; color: #7a7166; margin: 20px 0 0; max-width: 46ch; }
+  .ja-meta { display: flex; flex-wrap: wrap; gap: 26px; margin-top: 38px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: .7rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+
+  .ja-hero { margin: 0; }
+  .ja-hero .ja-frame { overflow: hidden; aspect-ratio: 16/9; background: var(--bg-3); }
+  .ja-hero img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+  .ja-page figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-top: 14px; font-size: .72rem; letter-spacing: .06em; color: var(--faint); }
+  .ja-page figcaption a { color: var(--gold-dk); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
+  .ja-page figcaption a:hover { border-color: var(--gold-dk); }
+
+  .ja-body { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: clamp(36px, 6vw, 88px); align-items: start; padding-top: clamp(52px, 7vw, 96px); }
+  .ja-rail { position: sticky; top: 56px; display: flex; flex-direction: column; }
+  .ja-rail h4 { margin: 0; padding-bottom: 16px; border-bottom: 1px solid var(--rule); font-size: .62rem; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--faint); }
+  .ja-toc { display: flex; flex-direction: column; padding-top: 6px; }
+  .ja-toc a { display: flex; align-items: center; gap: 10px; padding: 9px 0; text-decoration: none; font-size: .78rem; color: var(--faint); transition: color .3s; }
+  .ja-toc a span { flex: none; width: 8px; height: 1px; background: var(--rule-2); transition: width .35s cubic-bezier(.25, .46, .45, .94), background-color .3s; }
+  .ja-toc a.is-active { color: var(--ink); }
+  .ja-toc a.is-active span { width: 20px; background: var(--gold); }
+  .ja-ask { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--rule); display: block; text-decoration: none; }
+  .ja-ask b { display: block; font-family: var(--serif); font-size: 1.25rem; font-weight: 400; line-height: 1.35; color: var(--ink); }
+  .ja-ask em { display: inline-block; margin-top: 12px; font-style: normal; font-size: .68rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-dk); border-bottom: 1px solid var(--rule-2); padding-bottom: 4px; }
+
+  .ja-page article { max-width: 680px; }
+  .ja-page article p { margin: 0 0 20px; }
+  .ja-page article strong { font-weight: 600; color: var(--ink); }
+  .ja-lede { font-size: 1.22rem; line-height: 1.75; color: #3f3931; margin-bottom: 26px; }
+  .ja-lede::first-letter { font-family: var(--serif); font-size: 4.6rem; line-height: .78; float: left; margin: 6px 14px 0 0; color: var(--ink); }
+  .ja-note { margin: 36px 0; padding: 22px 26px; background: var(--bg-2); border-left: 2px solid var(--gold); }
+  .ja-note p { margin: 0; font-size: .92rem; line-height: 1.8; }
+
+  .ja-page h2 { font-family: var(--serif); font-size: clamp(1.75rem, 3.1vw, 2.5rem); font-weight: 500; line-height: 1.18; color: var(--ink); margin: 52px 0 18px; display: flex; align-items: baseline; gap: 16px; }
+  .ja-page h2 span { font-family: var(--sans); font-size: .66rem; font-weight: 600; letter-spacing: .22em; color: var(--gold); flex: none; position: relative; top: -.35em; }
+
+  .ja-page blockquote { margin: 36px 0; padding: 0; border: 0; }
+  .ja-page blockquote p { font-family: var(--serif); font-size: clamp(1.5rem, 2.6vw, 2.05rem); font-style: italic; line-height: 1.4; color: var(--ink); margin: 0; max-width: 22ch; }
+
+  .ja-page ul { margin: 0 0 20px; padding-left: 1.1em; }
+  .ja-page ul li { margin-bottom: 8px; }
+
+  .ja-shop { margin: 34px 0 30px; padding-top: 26px; border-top: 1px solid var(--rule); }
+  .ja-shop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 18px; font-size: .64rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  .ja-shop-head a { font-size: .64rem; letter-spacing: .16em; color: var(--gold-dk); text-decoration: none; white-space: nowrap; }
+  .ja-grid { display: grid; gap: 16px; }
+  .ja-grid.is-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .ja-grid.is-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ja-card { display: block; text-decoration: none; color: var(--ink); }
+  .ja-card .ja-frame { overflow: hidden; aspect-ratio: 3/4; background: var(--bg-3); }
+  .ja-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s cubic-bezier(.25, .46, .45, .94); }
+  .ja-card:hover img { transform: scale(1.045); }
+  .ja-card b { display: block; padding-top: 12px; font-size: .76rem; font-weight: 500; letter-spacing: .05em; }
+  .ja-card:hover b { color: var(--gold-dk); }
+  .ja-card i { display: block; padding-top: 3px; font-style: normal; font-size: .74rem; color: var(--muted); }
+  .ja-card small { display: block; padding-top: 4px; font-size: .72rem; line-height: 1.6; color: var(--faint); }
+  .ja-card .ja-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 12px; }
+  .ja-card .ja-row b, .ja-card .ja-row i { padding-top: 0; white-space: nowrap; }
+  .ja-card .ja-row b { font-size: .78rem; white-space: normal; }
+
+  .ja-fig { margin: 34px 0 26px; }
+  .ja-fig .ja-frame { overflow: hidden; aspect-ratio: 16/10; background: var(--bg-3); }
+  .ja-fig img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
+  .ja-fig figcaption { padding-top: 12px; color: var(--faint); }
+
+  .ja-faq { border-top: 1px solid var(--rule); margin-top: 4px; }
+  .ja-faq div { border-bottom: 1px solid var(--rule); padding: 22px 0; }
+  .ja-faq b { display: block; font-family: var(--serif); font-size: 1.35rem; font-weight: 400; line-height: 1.35; color: var(--ink); }
+  .ja-faq p { margin: 10px 0 0; font-size: .95rem; line-height: 1.8; }
+
+  .ja-cta { margin-top: 56px; padding: clamp(34px, 5vw, 52px); background: var(--ink); color: var(--bg); }
+  .ja-cta .ja-eyebrow { font-size: .66rem; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: var(--gold); margin: 0 0 16px; }
+  .ja-cta h3 { font-family: var(--serif); font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 500; line-height: 1.2; margin: 0; color: var(--bg); max-width: 20ch; }
+  .ja-cta p { margin: 16px 0 30px; font-size: .92rem; line-height: 1.8; color: rgba(247, 243, 236, .72); max-width: 44ch; }
+  .ja-btns { display: flex; flex-wrap: wrap; gap: 14px; }
+  .ja-btn { display: inline-flex; align-items: center; font-size: .72rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; padding: 16px 38px; border: 1px solid; transition: background-color .4s, border-color .4s, color .4s; }
+  .ja-btn-solid { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+  .ja-btn-solid:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+  .ja-btn-ghost { background: transparent; color: var(--bg); border-color: rgba(247, 243, 236, .4); }
+  .ja-btn-ghost:hover { border-color: var(--bg); color: #fff; }
+
+  .ja-more { margin-top: clamp(64px, 9vw, 110px); padding-block: clamp(44px, 5vw, 64px) clamp(64px, 8vw, 104px); border-top: 1px solid var(--rule); }
+  .ja-more-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 34px; }
+  .ja-more-head h2 { margin: 0; display: block; font-size: clamp(1.6rem, 2.6vw, 2.2rem); }
+  .ja-more-head a { font-size: .68rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule-2); padding-bottom: 3px; }
+  .ja-more-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .ja-post { display: block; text-decoration: none; color: var(--ink); }
+  .ja-post .ja-frame { overflow: hidden; aspect-ratio: 3/2; background: var(--bg-3); }
+  .ja-post img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s cubic-bezier(.25, .46, .45, .94); }
+  .ja-post:hover img { transform: scale(1.04); }
+  .ja-post em { display: block; padding-top: 16px; font-style: normal; font-size: .64rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+  .ja-post b { display: block; padding-top: 9px; font-family: var(--serif); font-size: 1.4rem; font-weight: 400; line-height: 1.28; }
+  .ja-post:hover b { color: var(--gold-dk); }
+
+  @media (max-width: 1000px) {
+    .ja-body { grid-template-columns: 1fr; gap: 0; }
+    .ja-rail { position: static; margin-bottom: 40px; }
+    .ja-toc { flex-direction: row; flex-wrap: wrap; gap: 0 22px; }
+  }
+  @media (max-width: 720px) {
+    .ja-grid.is-3, .ja-more-grid { grid-template-columns: 1fr 1fr; }
+    .ja-more-grid > :last-child { display: none; }
+    .ja-hero .ja-frame { aspect-ratio: 4/5; }
+    .ja-meta { gap: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ja-page * { transition: none !important; }
+  }
+</style>
+
 {{ article.content }}
+
+<script>
+  (function () {
+    var bar = document.getElementById('jaProgress');
+    var links = [].slice.call(document.querySelectorAll('#jaToc a'));
+    if (!bar && !links.length) return;
+    var ids = links.map(function (a) {
+      return a.getAttribute('href').slice(1);
+    });
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+      var h = document.documentElement;
+      if (bar) {
+        var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight || 1)) * 100;
+        bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+      }
+      var active = 0;
+      ids.forEach(function (id, i) {
+        var el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 160) active = i;
+      });
+      links.forEach(function (a, i) {
+        a.classList.toggle('is-active', i === active);
+      });
+    }
+
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true }
+    );
+    update();
+  })();
+</script>
