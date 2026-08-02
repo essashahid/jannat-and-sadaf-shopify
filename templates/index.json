@@ -7,8 +7,8 @@
           "type": "hero_slide",
           "settings": {
             "label": "Luxury Pret",
-            "heading": "",
-            "subheading": "",
+            "heading": "Handcrafted luxury pret and formal wear",
+            "subheading": "Block print, pret, formals and bridal pieces, made to order in Pakistan.",
             "button_text": "Discover the Collection",
             "button_link": "shopify://collections/pret"
           }
@@ -129,13 +129,21 @@
         "show_journal": true,
         "journal_heading": "In the Journal",
         "journal_subtitle": "",
-        "show_policies": false,
+        "show_policies": true,
         "policy_1_link": "shopify://pages/delivery-timeframe",
         "policy_2_link": "shopify://pages/shipping-handling",
         "policy_3_link": "shopify://pages/exchange-refund-policy",
-        "show_newsletter": false,
+        "show_newsletter": true,
         "newsletter_heading": "Join the Jannat & Sadaf List",
-        "newsletter_text": "Be the first to discover new collections, styling notes, and early access."
+        "newsletter_text": "Be the first to discover new collections, styling notes, and early access.",
+        "policy_1_title": "Delivery Across Pakistan",
+        "policy_1_text": "Pret in 7 to 10 working days. Formals in 15 to 20.",
+        "policy_2_title": "International Shipping",
+        "policy_2_text": "Available to most destinations worldwide.",
+        "policy_3_title": "Easy Exchange",
+        "policy_3_text": "Within 7 days of delivery, in original condition.",
+        "policy_4_title": "Bank Transfer Payment",
+        "policy_4_text": "Simple bank transfer, confirmed after your order."
       }
     }
   },

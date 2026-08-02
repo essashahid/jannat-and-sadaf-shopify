@@ -14,19 +14,7 @@
   })();
 </script>
 
-<script>
-  (function () {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.documentElement.classList.add('is-animating');
-    window.setTimeout(function () {
-      if (!window.__motionReady) {
-        document.documentElement.classList.remove('is-animating');
-      }
-    }, 3500);
-  })();
-</script>
 {{ 'sakatelier-home.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'premium-animations.js' | asset_url }}" defer></script>
 
 {%- comment -%}
   Jannat & Sadaf — editorial home page
@@ -63,10 +51,12 @@
       >
     {%- else -%}
       <img
-        src="{{ 'hero-banner.png' | asset_url }}"
+        src="{{ 'hero-banner.jpg' | asset_url }}"
         alt="{{ shop.name }}"
         loading="eager"
         fetchpriority="high"
+        width="1024"
+        height="1024"
       >
     {%- endif -%}
   </div>
@@ -76,6 +66,10 @@
   <div class="sak-hero__content" {{ hero.shopify_attributes }}>
     {%- if hero.settings.label != blank -%}
       <p class="sak-hero__label">{{ hero.settings.label }}</p>
+    {%- endif -%}
+    <h1 class="sak-hero__heading">{{ hero.settings.heading | default: shop.name }}</h1>
+    {%- if hero.settings.subheading != blank -%}
+      <p class="sak-hero__sub">{{ hero.settings.subheading }}</p>
     {%- endif -%}
     {%- if hero.settings.button_text != blank -%}
       <a href="{{ hero.settings.button_link | default: '/collections/all' }}" class="sak-hero__link">
@@ -326,7 +320,7 @@
         {%- if section.settings.atelier_image != blank -%}
           <img src="{{ section.settings.atelier_image | image_url: width: 1100 }}" alt="{{ section.settings.atelier_heading | default: 'At the Studio' }}" loading="lazy" width="1100" height="1300">
         {%- else -%}
-          <img src="{{ 'atelier-banner.png' | asset_url }}" alt="{{ section.settings.atelier_heading | default: 'At the Studio' }}" loading="lazy">
+          <img src="{{ 'atelier-banner.jpg' | asset_url }}" alt="{{ section.settings.atelier_heading | default: 'At the Studio' }}" loading="lazy" width="1024" height="1024">
         {%- endif -%}
       </div>
       <div class="sak-craft__content">
@@ -833,7 +827,7 @@
       "type": "text",
       "id": "policy_3_text",
       "label": "Item 3 text",
-      "default": "Within our policy window — see exchange details."
+      "default": "Within 7 days of delivery, in original condition."
     },
     {
       "type": "url",

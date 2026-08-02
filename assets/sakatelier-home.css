@@ -222,6 +222,28 @@
   color: rgba(255, 255, 255, 0.88);
 }
 
+.sak-hero__heading {
+  font-family: var(--sak-serif);
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: 0.015em;
+  margin: 0 0 14px;
+  max-width: 14em;
+  color: #fff;
+}
+
+.sak-hero__sub {
+  font-family: var(--sak-sans);
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  margin: 0 0 26px;
+  max-width: 34em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .sak-hero__link {
   display: inline-block;
   font-family: var(--sak-sans);
@@ -998,57 +1020,33 @@
 }
 
 /* ============================================================
-   PREMIUM ANIMATIONS — Motion One driven (entrance) + CSS (continuous)
-   Initial states live under .is-animating so they only apply when JS
-   will run. Motion One sets inline styles which override these.
+   PREMIUM ANIMATIONS — CSS only (entrance + continuous)
+   No JS/CDN dependency: content can never be stuck hidden.
    ============================================================ */
-
-/* Word-split structural — always applied so layout doesn't shift */
-.sak-hero__heading .reveal-word {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: top;
-  line-height: inherit;
-  padding-bottom: 0.05em;
-}
-.sak-hero__heading .reveal-word > span {
-  display: inline-block;
-  will-change: transform;
-}
-
-/* Initial hidden states — applied only when JS is going to animate */
-.is-animating .sakatelier-home .sak-hero__label,
-.is-animating .sakatelier-home .sak-hero__sub,
-.is-animating .sakatelier-home .sak-hero__actions {
-  opacity: 0;
-}
-.is-animating .sakatelier-home .sak-hero__heading .reveal-word > span {
-  transform: translateY(110%);
-}
-.is-animating .sakatelier-home .sak-tiles__card,
-.is-animating .sakatelier-home .sak-journal__card,
-.is-animating .sakatelier-home .sak-bts__figure,
-.is-animating .sakatelier-home .sak-trust__item,
-.is-animating .sakatelier-home .sak-tiles .sak-head,
-.is-animating .sakatelier-home .sak-products .sak-head,
-.is-animating .sakatelier-home .sak-bts .sak-head,
-.is-animating .sakatelier-home .sak-journal .sak-head,
-.is-animating .sakatelier-home .sak-craft__media,
-.is-animating .sakatelier-home .sak-craft__content,
-.is-animating .sakatelier-home .sak-spotlight__media,
-.is-animating .sakatelier-home .sak-spotlight__content {
-  opacity: 0;
-  transform: translateY(28px);
-}
-.is-animating .sakatelier-home .sak-tiles__card img,
-.is-animating .sakatelier-home .sak-journal__card img,
-.is-animating .sakatelier-home .sak-bts__figure img {
-  clip-path: inset(0 100% 0 0);
-}
-
-/* Magnetic CTA base — Motion One sets inline x/y, this just provides smooth fallback */
-.sak-hero__actions .sak-btn {
-  will-change: transform;
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes sak-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .sakatelier-home .sak-hero__label {
+    animation: sak-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+  .sakatelier-home .sak-hero__heading {
+    animation: sak-fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
+  }
+  .sakatelier-home .sak-hero__sub {
+    animation: sak-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s backwards;
+  }
+  .sakatelier-home .sak-hero__link,
+  .sakatelier-home .sak-hero__actions {
+    animation: sak-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s backwards;
+  }
 }
 
 /* Smooth scroll site-wide */

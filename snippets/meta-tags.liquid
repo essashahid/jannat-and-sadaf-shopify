@@ -13,7 +13,7 @@
 >
 <meta
   name="theme-color"
-  content=""
+  content="#f7f3ec"
 >
 
 {%- liquid
@@ -113,9 +113,15 @@
   href="{{ canonical_url }}"
 >
 
-{% if page_description %}
+{%- liquid
+  assign meta_description = page_description
+  if meta_description == blank and request.page_type == 'index'
+    assign meta_description = 'Jannat and Sadaf is a Pakistani womenswear house crafting luxury pret, block print, formals and bridal pieces to order. Nationwide and worldwide delivery.'
+  endif
+-%}
+{% if meta_description %}
   <meta
     name="description"
-    content="{{ page_description | escape }}"
+    content="{{ meta_description | escape }}"
   >
 {% endif %}

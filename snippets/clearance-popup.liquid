@@ -62,7 +62,8 @@
     .clearance-popup {
       position: fixed;
       inset: 0;
-      z-index: 9999;
+      /* Below the cart/menu drawers (18) so it can never cover them */
+      z-index: 17;
       display: flex;
       align-items: center;
       justify-content: center;

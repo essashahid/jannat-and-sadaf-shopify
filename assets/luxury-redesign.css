@@ -13,11 +13,6 @@
   display: flex !important;
 }
 
-/* Hide the announcement bar entirely (logo is back in header) */
-.announcement-bar,
-[class*="header-announcements"] {
-  display: none !important;
-}
 
 
 /* ============================================================
@@ -1055,26 +1050,37 @@ hr {
   padding-block-end: 0 !important;
 }
 
-/* --- Collection page entrance animations (Motion One driven) --- */
-/* Initial hidden states only apply when .is-animating is on <html>.
-   The inline init script in main-collection.liquid adds it synchronously
-   and the 3.5s fallback strips it if Motion One fails to load. */
-.is-animating .product-grid-container .product-grid__item {
-  opacity: 0;
-}
-.is-animating .product-grid-container .product-grid__item img {
-  clip-path: inset(0 100% 0 0);
-}
-.is-animating .product-grid-container .facets,
-.is-animating .product-grid-container .facets-wrapper,
-.is-animating .product-grid-container .facet-filters,
-.is-animating .product-grid-container .product-count,
-.is-animating .product-grid-container .facets__product-count,
-.is-animating .product-grid-container .facet-filters__sort {
-  opacity: 0;
-}
-.is-animating .shopify-section h1 {
-  opacity: 0;
+/* --- Collection page entrance animations (CSS only) --- */
+/* Pure CSS so content can never be stuck hidden waiting on a script or
+   CDN. Runs once on load; cards injected by infinite scroll animate as
+   they are inserted. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes lux-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .product-grid-container .product-grid__item {
+    animation: lux-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+  .product-grid-container .product-grid__item:nth-child(4n + 2) {
+    animation-delay: 0.06s;
+  }
+  .product-grid-container .product-grid__item:nth-child(4n + 3) {
+    animation-delay: 0.12s;
+  }
+  .product-grid-container .product-grid__item:nth-child(4n + 4) {
+    animation-delay: 0.18s;
+  }
+  .main-collection-banner h1,
+  .collection-hero h1 {
+    animation: lux-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
 }
 
 /* Premium product card hover — slower, more controlled */

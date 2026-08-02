@@ -31,10 +31,8 @@
     {%- render 'theme-styles-variables' -%}
     {%- render 'color-schemes' -%}
 
-    {% comment %} Luxury Redesign - Google Fonts {% endcomment %}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    {% comment %} Cormorant Garamond + Montserrat are loaded via the theme font settings
+       (Shopify-hosted, preloaded in fonts.liquid) — no external Google Fonts request. {% endcomment %}
 
     {% comment %} Luxury Redesign - Custom Styles {% endcomment %}
     {{ 'luxury-redesign.css' | asset_url | stylesheet_tag }}
@@ -132,11 +130,15 @@
       {% render 'quick-add-modal' %}
     {% endif %}
 
-    {% comment %} Clearance Sale Popup {% endcomment %}
-    {% render 'clearance-popup' %}
+    {% comment %} Clearance Sale Popup — homepage only, so it never interrupts shopping or checkout flows {% endcomment %}
+    {% if template == 'index' %}
+      {% render 'clearance-popup' %}
+    {% endif %}
 
-    {% comment %} Clearance Sale Floating Badge {% endcomment %}
-    {% render 'clearance-badge' %}
+    {% comment %} Clearance Sale Floating Badge — not on product/cart, where it would cover the sticky Add to Cart bar {% endcomment %}
+    {% unless template contains 'product' or template contains 'cart' %}
+      {% render 'clearance-badge' %}
+    {% endunless %}
 
     {% comment %} Luxury Redesign - Scroll Animations {% endcomment %}
     <script src="{{ 'luxury-animations.js' | asset_url }}" defer></script>
