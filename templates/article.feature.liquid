@@ -1,0 +1,21 @@
+{% comment %}
+  Feature layout for Journal editorials.
+  The article body carries its own masthead, hero, chapter rail and styles
+  (scoped under .ja-page), so this template renders the content full-bleed
+  with no default title/image chrome. Assign via the article's theme
+  template setting ("feature").
+{% endcomment %}
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ article.title | json }},
+    "image": {{ article.image | image_url: width: 1600 | prepend: 'https:' | json }},
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
+    "author": { "@type": "Organization", "name": {{ shop.name | json }} },
+    "publisher": { "@type": "Organization", "name": {{ shop.name | json }} }
+  }
+</script>
+
+{{ article.content }}
