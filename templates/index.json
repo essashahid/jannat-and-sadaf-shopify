@@ -57,7 +57,7 @@
             "article_title": "Behind the Scenes: Our Craft",
             "article_date": "February 2026",
             "article_excerpt": "Discover the artistry and attention to detail behind every piece we create.",
-            "article_link": "shopify://pages/behind-the-scenes-our-craft"
+            "article_link": "/blogs/journal/behind-the-scenes-our-craft"
           }
         },
         "journal_2": {
@@ -67,7 +67,7 @@
             "article_title": "Spring Styling Guide",
             "article_date": "February 2026",
             "article_excerpt": "Your complete guide to styling our Spring '26 collection for every occasion.",
-            "article_link": "shopify://pages/spring-styling-guide"
+            "article_link": "/blogs/journal/spring-styling-guide"
           }
         },
         "journal_3": {
@@ -77,7 +77,7 @@
             "article_title": "The Art of Linen",
             "article_date": "January 2026",
             "article_excerpt": "Exploring the timeless appeal and modern versatility of our premium linens.",
-            "article_link": "shopify://pages/the-art-of-linen"
+            "article_link": "/blogs/journal/the-art-of-linen"
           }
         }
       },
