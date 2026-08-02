@@ -1,0 +1,26 @@
+{% layout none %}<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>{{ shop.name | escape }} — {{ collection.title | escape }}</title>
+    <link>{{ shop.url }}{{ collection.url }}</link>
+    <description>{{ collection.description | strip_html | default: 'The latest pieces from our atelier, crafted to order.' | escape }}</description>
+    <language>en</language>
+    {%- paginate collection.products by 50 -%}
+      {%- for product in collection.products -%}
+        {%- if product.available or product.selected_or_first_available_variant -%}
+    <item>
+      <title>{{ product.title | escape }}</title>
+      <link>{{ shop.url }}{{ product.url }}</link>
+      <guid isPermaLink="true">{{ shop.url }}{{ product.url }}</guid>
+      <pubDate>{{ product.published_at | date: '%a, %d %b %Y %H:%M:%S %z' }}</pubDate>
+      <description>{{ product.description | strip_html | truncate: 300 | escape }} Price: PKR {{ product.price | money_without_currency }}</description>
+      {%- if product.featured_image -%}
+      <media:content url="https:{{ product.featured_image | image_url: width: 1200 }}" medium="image"/>
+      <enclosure url="https:{{ product.featured_image | image_url: width: 1200 }}" type="image/jpeg"/>
+      {%- endif -%}
+    </item>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endpaginate -%}
+  </channel>
+</rss>
