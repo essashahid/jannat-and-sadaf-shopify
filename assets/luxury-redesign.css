@@ -21,11 +21,11 @@
 
 :root {
   /* Font Family Overrides */
-  --font-heading--family: 'Cormorant Garamond', 'Georgia', serif;
+  --font-heading--family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif;
   --font-heading--weight: 600;
   --font-heading--style: normal;
 
-  --font-accent--family: 'Cormorant Garamond', 'Georgia', serif;
+  --font-accent--family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif;
   --font-accent--weight: 600;
   --font-accent--style: normal;
 
@@ -73,7 +73,7 @@ h1, .h1.h1,
 h2, .h2.h2,
 h3, .h3.h3,
 h4, .h4.h4 {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
@@ -380,7 +380,7 @@ header-component[stuck] .header {
 .hero .h2,
 [class*="hero"] h1,
 [class*="hero"] h2 {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font-weight: 500;
@@ -432,7 +432,7 @@ header-component[stuck] .header {
 /* Section titles */
 .section-header__title,
 .section__title {
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
@@ -527,7 +527,7 @@ header-component[stuck] .header {
 .collection-card__title,
 .collection-card h3,
 .collection-card h2 {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
@@ -555,7 +555,7 @@ dialog[open],
 /* Cart drawer header */
 .drawer__header h2,
 .drawer__header h3 {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
@@ -774,7 +774,7 @@ dialog {
 .product__title,
 .product-information h1,
 .product-information .h1 {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 500;
@@ -842,7 +842,7 @@ dialog {
 
 .article__title,
 .blog-post__title {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -870,7 +870,7 @@ dialog {
 .media-with-content h3,
 .media-with-content .h2,
 .media-with-content .h3 {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
@@ -1114,7 +1114,7 @@ hr {
 
 .main-page h1,
 .main-page .h1 {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1163,7 +1163,7 @@ hr {
 /* Blog listing title */
 .main-blog h1,
 .main-blog .h1 {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   font-size: clamp(2rem, 5vw, 3.5rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1177,7 +1177,7 @@ hr {
 
 .main-blog-post h1,
 .main-blog-post .h1 {
-  font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+  font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif !important;
   font-size: clamp(2rem, 5vw, 3.5rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;

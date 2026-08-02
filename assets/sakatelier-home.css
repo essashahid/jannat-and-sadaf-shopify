@@ -28,7 +28,7 @@
   --sak-gold: #a98c5f;
   --sak-gold-deep: #8a6f47;
   --sak-border: #e6ddcd;
-  --sak-serif: 'Cormorant Garamond', 'Georgia', serif;
+  --sak-serif: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif;
   --sak-sans: 'Montserrat', 'Helvetica Neue', sans-serif;
   --sak-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: block;
