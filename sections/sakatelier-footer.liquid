@@ -1,0 +1,503 @@
+{%- comment -%}
+  Jannat & Sadaf footer
+  ---------------------------------------------------------------------------
+  Two bands: a policy strip (four short reassurances, hairline dividers) and
+  the footer proper — a brand statement with a WhatsApp CTA, three link
+  columns, and the mailing list sign-up.
+
+  The link columns are hardcoded below rather than settings-driven so they
+  only ever point at pages and collections that actually exist. Edit the
+  three lists in the markup to change them.
+{%- endcomment -%}
+
+{%- liquid
+  assign wa_number = section.settings.whatsapp_number | default: '923717459654'
+  assign wa_message = section.settings.whatsapp_message
+    | default: 'Hello Jannat & Sadaf, I have a question about your collection.'
+-%}
+
+<footer class="sak-footer">
+  {%- if section.settings.show_policies -%}
+    <div class="sak-footer__policies">
+      <div class="sak-footer__policies-grid">
+        {%- for i in (1..4) -%}
+          {%- liquid
+            assign label_key = 'policy_' | append: i | append: '_label'
+            assign text_key = 'policy_' | append: i | append: '_text'
+            assign label_val = section.settings[label_key]
+            assign text_val = section.settings[text_key]
+          -%}
+          {%- if label_val != blank -%}
+            <div class="sak-footer__policy">
+              <p class="sak-footer__policy-label">{{ label_val }}</p>
+              <p class="sak-footer__policy-text">{{ text_val }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="sak-footer__main">
+    <div class="sak-footer__grid">
+      <div class="sak-footer__brand">
+        <h2 class="sak-footer__statement">
+          {{ section.settings.statement_line_1 }}<br>{{ section.settings.statement_line_2 }}
+        </h2>
+
+        <a
+          class="sak-footer__wa"
+          href="https://wa.me/{{ wa_number }}?text={{ wa_message | url_encode }}"
+          target="_blank"
+          rel="noopener"
+        >
+          Message us on WhatsApp
+        </a>
+
+        {%- if section.settings.whatsapp_note != blank -%}
+          <p class="sak-footer__note">{{ section.settings.whatsapp_note }}</p>
+        {%- endif -%}
+      </div>
+
+      <nav class="sak-footer__col" aria-label="Shop">
+        <p class="sak-footer__col-title">Wardrobe</p>
+        <ul class="sak-footer__list">
+          <li><a href="{{ routes.collections_url }}/pret">Pret</a></li>
+          <li><a href="{{ routes.collections_url }}/block-print">Block Print</a></li>
+          <li><a href="{{ routes.collections_url }}/formals">Formals</a></li>
+          <li><a href="{{ routes.collections_url }}/wedding">Wedding</a></li>
+          <li><a href="{{ routes.collections_url }}/clearance" class="sak-footer__link--muted">Clearance</a></li>
+        </ul>
+      </nav>
+
+      <nav class="sak-footer__col" aria-label="Before you buy">
+        <p class="sak-footer__col-title">Before you buy</p>
+        <ul class="sak-footer__list">
+          <li><a href="/pages/size-chart">How it fits</a></li>
+          <li><a href="/pages/delivery-timeframe">Delivery times</a></li>
+          <li><a href="/pages/shipping-handling">Shipping &amp; handling</a></li>
+          <li><a href="/pages/exchange-refund-policy">Exchanges</a></li>
+        </ul>
+      </nav>
+
+      <nav class="sak-footer__col" aria-label="The house">
+        <p class="sak-footer__col-title">The house</p>
+        <ul class="sak-footer__list">
+          <li><a href="/pages/behind-the-scenes-our-craft">Our craft</a></li>
+          <li><a href="/pages/the-art-of-linen">Journal</a></li>
+          <li><a href="/pages/contact">Contact us</a></li>
+          {%- if section.settings.instagram_url != blank -%}
+            <li>
+              <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">Instagram</a>
+            </li>
+          {%- endif -%}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="sak-footer__list-signup">
+      <div class="sak-footer__list-intro">
+        <h3 class="sak-footer__list-heading">{{ section.settings.list_heading }}</h3>
+        <p class="sak-footer__list-text">{{ section.settings.list_text }}</p>
+      </div>
+
+      {%- form 'customer', class: 'sak-footer__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="sak-footer__form-success">Thank you — you're on the list.</p>
+        {%- else -%}
+          <label class="sak-footer__form-label" for="sak-footer-email">Email address</label>
+          <input
+            type="email"
+            name="contact[email]"
+            id="sak-footer-email"
+            class="sak-footer__field"
+            placeholder="Email address"
+            autocomplete="email"
+            required
+          >
+          <button type="submit" class="sak-footer__submit">Sign up</button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+
+    <div class="sak-footer__base">
+      <p class="sak-footer__copyright">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+      </p>
+      <ul class="sak-footer__legal">
+        {%- for policy in shop.policies -%}
+          {%- if policy != blank -%}
+            <li><a href="{{ policy.url }}">{{ policy.title }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .sak-footer {
+    --sak-f-ivory: #f7f3ec;
+    --sak-f-beige: #ece5d9;
+    --sak-f-charcoal: #2b2620;
+    --sak-f-body: #5f574d;
+    --sak-f-muted: #9a9188;
+    --sak-f-gold: #a98c5f;
+    --sak-f-rule: #ddd3c2;
+    --sak-f-serif: 'Cormorant Garamond', Georgia, serif;
+    --sak-f-sans: 'Montserrat', 'Helvetica Neue', sans-serif;
+
+    display: block;
+    background: var(--sak-f-ivory);
+  }
+
+  .sak-footer *,
+  .sak-footer *::before,
+  .sak-footer *::after {
+    box-sizing: border-box;
+  }
+
+  /* ---------- Policy strip ---------- */
+  .sak-footer__policies {
+    background: var(--sak-f-beige);
+    padding-block: clamp(38px, 4.5vw, 58px);
+    padding-inline: clamp(24px, 5vw, 72px);
+  }
+
+  .sak-footer__policies-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sak-footer__policy {
+    padding-inline: clamp(20px, 3vw, 46px);
+  }
+
+  .sak-footer__policy:first-child {
+    padding-inline-start: 0;
+  }
+
+  .sak-footer__policy + .sak-footer__policy {
+    border-inline-start: 1px solid rgba(43, 38, 32, 0.12);
+  }
+
+  .sak-footer__policy-label {
+    font-family: var(--sak-f-sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sak-f-gold);
+    margin: 0 0 16px;
+  }
+
+  .sak-footer__policy-text {
+    font-family: var(--sak-f-sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--sak-f-body);
+    margin: 0;
+    max-width: 22ch;
+  }
+
+  /* ---------- Footer body ---------- */
+  .sak-footer__main {
+    padding-block: clamp(56px, 7vw, 96px) clamp(28px, 3vw, 40px);
+    padding-inline: clamp(24px, 5vw, 72px);
+  }
+
+  .sak-footer__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+
+  .sak-footer__statement {
+    font-family: var(--sak-f-serif);
+    font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+    font-weight: 400;
+    line-height: 1.28;
+    letter-spacing: 0.01em;
+    color: var(--sak-f-charcoal);
+    margin: 0 0 36px;
+  }
+
+  .sak-footer__wa {
+    display: inline-block;
+    font-family: var(--sak-f-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sak-f-charcoal);
+    text-decoration: none;
+    padding: 19px 30px;
+    border: 1px solid var(--sak-f-charcoal);
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
+  .sak-footer__wa:hover {
+    background: var(--sak-f-charcoal);
+    color: var(--sak-f-ivory);
+  }
+
+  .sak-footer__note {
+    font-family: var(--sak-f-sans);
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--sak-f-muted);
+    margin: 22px 0 0;
+  }
+
+  .sak-footer__col-title {
+    font-family: var(--sak-f-sans);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sak-f-muted);
+    margin: 8px 0 30px;
+  }
+
+  .sak-footer__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sak-footer__list li + li {
+    margin-top: 18px;
+  }
+
+  .sak-footer__list a {
+    font-family: var(--sak-f-sans);
+    font-size: 0.92rem;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    color: var(--sak-f-charcoal);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .sak-footer__list a:hover {
+    color: var(--sak-f-gold);
+  }
+
+  .sak-footer__link--muted {
+    color: var(--sak-f-muted) !important;
+  }
+
+  .sak-footer__link--muted:hover {
+    color: var(--sak-f-gold) !important;
+  }
+
+  /* ---------- Mailing list ---------- */
+  .sak-footer__list-signup {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: end;
+    margin-top: clamp(48px, 6vw, 82px);
+    padding-top: clamp(38px, 4vw, 56px);
+    border-top: 1px solid var(--sak-f-rule);
+  }
+
+  .sak-footer__list-heading {
+    font-family: var(--sak-f-serif);
+    font-size: clamp(1.3rem, 1.9vw, 1.7rem);
+    font-weight: 400;
+    color: var(--sak-f-charcoal);
+    margin: 0 0 14px;
+  }
+
+  .sak-footer__list-text {
+    font-family: var(--sak-f-sans);
+    font-size: 0.86rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--sak-f-muted);
+    margin: 0;
+    max-width: 40ch;
+  }
+
+  .sak-footer__form {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    border-bottom: 1px solid var(--sak-f-charcoal);
+    padding-bottom: 12px;
+  }
+
+  .sak-footer__form-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .sak-footer__field {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--sak-f-sans);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--sak-f-charcoal);
+    background: transparent;
+    border: 0;
+    padding: 0;
+  }
+
+  .sak-footer__field::placeholder {
+    color: var(--sak-f-muted);
+  }
+
+  .sak-footer__field:focus {
+    outline: none;
+  }
+
+  .sak-footer__submit {
+    flex: 0 0 auto;
+    font-family: var(--sak-f-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sak-f-charcoal);
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .sak-footer__submit:hover {
+    color: var(--sak-f-gold);
+  }
+
+  .sak-footer__form-success {
+    font-family: var(--sak-f-sans);
+    font-size: 0.9rem;
+    color: var(--sak-f-gold);
+    margin: 0;
+  }
+
+  /* ---------- Base line ---------- */
+  .sak-footer__base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 14px 32px;
+    margin-top: clamp(40px, 5vw, 64px);
+    padding-top: 22px;
+    border-top: 1px solid var(--sak-f-rule);
+  }
+
+  .sak-footer__copyright,
+  .sak-footer__legal a {
+    font-family: var(--sak-f-sans);
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    color: var(--sak-f-muted);
+    margin: 0;
+    text-decoration: none;
+  }
+
+  .sak-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sak-footer__legal a:hover {
+    color: var(--sak-f-charcoal);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media screen and (max-width: 989px) {
+    .sak-footer__policies-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 0;
+    }
+
+    .sak-footer__policy:nth-child(odd) {
+      padding-inline-start: 0;
+      border-inline-start: 0;
+    }
+
+    .sak-footer__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sak-footer__brand {
+      grid-column: 1 / -1;
+    }
+
+    .sak-footer__list-signup {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+  }
+
+  @media screen and (max-width: 599px) {
+    .sak-footer__policies-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .sak-footer__policy {
+      padding-inline: 0;
+      border-inline-start: 0;
+    }
+
+    .sak-footer__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .sak-footer__wa {
+      display: block;
+      text-align: center;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "div",
+  "class": "sakatelier-footer",
+  "settings": [
+    { "type": "header", "content": "Brand statement" },
+    { "type": "text", "id": "statement_line_1", "label": "Statement line 1", "default": "Cut in Lahore." },
+    { "type": "text", "id": "statement_line_2", "label": "Statement line 2", "default": "Worn everywhere." },
+    { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number", "info": "Country code, no + or spaces.", "default": "923717459654" },
+    { "type": "text", "id": "whatsapp_message", "label": "Pre-filled WhatsApp message", "default": "Hello Jannat & Sadaf, I have a question about your collection." },
+    { "type": "text", "id": "whatsapp_note", "label": "Note under the button", "default": "Replies within a day, Monday to Saturday." },
+    { "type": "url", "id": "instagram_url", "label": "Instagram", "default": "https://www.instagram.com/jannatandsadaf/" },
+
+    { "type": "header", "content": "Mailing list" },
+    { "type": "text", "id": "list_heading", "label": "Heading", "default": "The list" },
+    { "type": "text", "id": "list_text", "label": "Text", "default": "New pieces, first. A note when a collection drops — nothing else." },
+
+    { "type": "header", "content": "Policy strip" },
+    { "type": "checkbox", "id": "show_policies", "label": "Show policy strip", "default": true },
+    { "type": "text", "id": "policy_1_label", "label": "1 label", "default": "Delivery" },
+    { "type": "text", "id": "policy_1_text", "label": "1 text", "default": "Dispatched nationwide within 3–5 days." },
+    { "type": "text", "id": "policy_2_label", "label": "2 label", "default": "Worldwide" },
+    { "type": "text", "id": "policy_2_text", "label": "2 text", "default": "International shipping on request." },
+    { "type": "text", "id": "policy_3_label", "label": "3 label", "default": "Exchanges" },
+    { "type": "text", "id": "policy_3_text", "label": "3 text", "default": "Within seven days of delivery." },
+    { "type": "text", "id": "policy_4_label", "label": "4 label", "default": "Payment" },
+    { "type": "text", "id": "policy_4_text", "label": "4 text", "default": "Card or bank transfer, confirmed by us." }
+  ],
+  "blocks": [],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

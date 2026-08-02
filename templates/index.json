@@ -129,11 +129,11 @@
         "show_journal": true,
         "journal_heading": "In the Journal",
         "journal_subtitle": "",
-        "show_policies": true,
+        "show_policies": false,
         "policy_1_link": "shopify://pages/delivery-timeframe",
         "policy_2_link": "shopify://pages/shipping-handling",
         "policy_3_link": "shopify://pages/exchange-refund-policy",
-        "show_newsletter": true,
+        "show_newsletter": false,
         "newsletter_heading": "Join the Jannat & Sadaf List",
         "newsletter_text": "Be the first to discover new collections, styling notes, and early access."
       }
