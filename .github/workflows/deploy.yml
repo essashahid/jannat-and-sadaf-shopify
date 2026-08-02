@@ -26,7 +26,15 @@ jobs:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
           SHOPIFY_FLAG_STORE: x1hna4-kw.myshopify.com
         run: |
+          set -o pipefail
           shopify theme push \
             --theme 184572674359 \
             --allow-live \
-            --nodelete
+            --nodelete 2>&1 | tee push.log
+
+          # The CLI exits 0 even when it rejects files, so a rejected section
+          # would otherwise show up here as a green deploy.
+          if grep -q "pushed with errors" push.log; then
+            echo "::error::Theme pushed with errors — some files were rejected."
+            exit 1
+          fi
