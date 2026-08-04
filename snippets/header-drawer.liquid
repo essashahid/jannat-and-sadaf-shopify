@@ -105,7 +105,7 @@
               {%- liquid
                 assign has_clearance_child = false
                 for child_link in link.links
-                  if child_link.url contains '/collections/clearance'
+                  if child_link.url contains '/collections/special-prices'
                     assign has_clearance_child = true
                     break
                   endif
@@ -175,7 +175,7 @@
                                   sizes: 'auto, 400px'
                                 %}
                               {% endif %}
-                              <span class="menu-drawer__menu-item-text wrap-text">{%- if childlink.url contains '/collections/clearance' -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ childlink.title | escape }}</span>
+                              <span class="menu-drawer__menu-item-text wrap-text">{%- if childlink.url contains '/collections/special-prices' -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ childlink.title | escape }}</span>
                             </a>
                           </li>
                         {%- endfor -%}
@@ -228,7 +228,7 @@
                               sizes: 'auto, 400px'
                             %}
                           {% endif %}
-                          <span class="menu-drawer__menu-item-text wrap-text">{%- if childlink.url contains '/collections/clearance' -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ childlink.title | escape }}</span>
+                          <span class="menu-drawer__menu-item-text wrap-text">{%- if childlink.url contains '/collections/special-prices' -%}{% render 'menu-sale-badge' %}{%- endif -%}{{ childlink.title | escape }}</span>
                         </a>
                       </li>
                     {%- endfor -%}

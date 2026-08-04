@@ -82,7 +82,7 @@
         {%- liquid
           assign has_clearance_child = false
           for child_link in link.links
-            if child_link.url contains '/collections/clearance'
+            if child_link.url contains '/collections/special-prices'
               assign has_clearance_child = true
               break
             endif

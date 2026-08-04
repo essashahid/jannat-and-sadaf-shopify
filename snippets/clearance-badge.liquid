@@ -13,7 +13,7 @@
 
 {%- liquid
   assign cb_enabled  = true
-  assign cb_link     = '/collections/clearance'
+  assign cb_link     = '/collections/special-prices'
   assign cb_label    = 'Special Prices'
   assign cb_delay    = 2600
 -%}
@@ -139,7 +139,7 @@
       var closeBtn = badge.querySelector('[data-cb-close]');
       if (closeBtn) closeBtn.addEventListener('click', close);
 
-      var onClearance = /\/collections\/clearance/.test(window.location.pathname);
+      var onClearance = /\/collections\/special-prices/.test(window.location.pathname);
       if (window.Shopify && window.Shopify.designMode) return;
       if (onClearance || isClosed()) return;
 

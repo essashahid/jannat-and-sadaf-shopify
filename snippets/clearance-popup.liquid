@@ -12,7 +12,7 @@
 
 {%- liquid
   assign cp_enabled    = true
-  assign cp_link       = '/collections/clearance'
+  assign cp_link       = '/collections/special-prices'
   assign cp_eyebrow    = 'Now On · Limited Time'
   assign cp_heading    = 'Special Prices'
   assign cp_body       = "Selected pieces from past collections, now at reduced prices. Once they're gone, they're gone."
@@ -256,7 +256,7 @@
       });
 
       // Don't run on the clearance page itself, in the theme editor, or if suppressed.
-      var onClearance = /\/collections\/clearance/.test(window.location.pathname);
+      var onClearance = /\/collections\/special-prices/.test(window.location.pathname);
       if (window.Shopify && window.Shopify.designMode) return;
       if (onClearance || isSuppressed()) return;
 

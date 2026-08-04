@@ -14,7 +14,7 @@
     {%- for child in parent_link.links -%}
       {%- liquid
         assign is_clearance = false
-        if child.url contains '/collections/clearance'
+        if child.url contains '/collections/special-prices'
           assign is_clearance = true
         endif
       -%}
