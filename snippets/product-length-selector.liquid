@@ -69,6 +69,11 @@
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
   {%- assign default_shirt_length = '28' -%}
   {%- assign default_bottom_length = '42 (Standard)' -%}
+{%- elsif product.handle == 'coral-dust' -%}
+  {%- assign shirt_lengths = '28,30,32 (Standard)' | split: ',' -%}
+  {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
+  {%- assign default_shirt_length = '32 (Standard)' -%}
+  {%- assign default_bottom_length = '42 (Standard)' -%}
 {%- else -%}
   {%- assign shirt_lengths = '28,30,32 (Standard),34' | split: ',' -%}
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
