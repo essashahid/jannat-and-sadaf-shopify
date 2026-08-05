@@ -75,12 +75,23 @@
               assign restrict_to_s = true
             endif
           endif
+
+          # An option with a single value would otherwise be stretched to the
+          # full row by the equal-width grid, reading as a giant empty bar.
+          assign rendered_value_count = product_option.values.size
+          if restrict_to_s
+            assign rendered_value_count = 1
+          endif
+          assign is_single_value_option = false
+          if rendered_value_count == 1
+            assign is_single_value_option = true
+          endif
         -%}
 
         {%- if variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
           {%- assign fieldset_index = forloop.index0 -%}
           <fieldset
-            class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}{% if restrict_to_s %} variant-option--single{% endif %}"
+            class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}{% if is_single_value_option %} variant-option--single{% endif %}"
             data-fieldset-index="{{ fieldset_index }}"
             ref="fieldsets[]"
             {{ option_id_attribute }}
