@@ -69,7 +69,8 @@
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
   {%- assign default_shirt_length = '28' -%}
   {%- assign default_bottom_length = '42 (Standard)' -%}
-{%- elsif product.handle == 'coral-dust' -%}
+{%- elsif product.handle == 'coral-dust' or product.handle == 'black-leopard' or product.handle == 'pearly-green' or product.handle == 'ash-blossom' or product.handle == 'ivory-shisha' or product.handle == 'fuschia-floret' or product.handle == 'pink-floret-1' -%}
+  {%- comment -%} Special Prices collection: same lengths as default, minus 34 on the shirt. {%- endcomment -%}
   {%- assign shirt_lengths = '28,30,32 (Standard)' | split: ',' -%}
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
   {%- assign default_shirt_length = '32 (Standard)' -%}
