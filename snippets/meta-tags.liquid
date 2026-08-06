@@ -106,16 +106,50 @@
 >
 
 <title>
-  {{ page_title }}
-  {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-  {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-  {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  {%- if request.page_type == 'index' -%}
+    Jannat and Sadaf | Luxury Pret, Block Print &amp; Formals, Made to Order
+  {%- else -%}
+    {{ page_title }}
+    {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  {%- endif -%}
 </title>
 
 <link
   rel="canonical"
   href="{{ canonical_url }}"
 >
+
+{%- comment -%}
+  BreadcrumbList structured data so search results show
+  Home > Collection > Product paths instead of bare URLs.
+{%- endcomment -%}
+{%- if request.page_type == 'product' or request.page_type == 'collection' -%}
+  {%- liquid
+    assign crumb_collection = null
+    if request.page_type == 'collection'
+      assign crumb_collection = collection
+    elsif product.collections.size > 0
+      assign crumb_collection = product.collections.first
+    endif
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ shop.url | json }} }
+        {%- if crumb_collection -%}
+        ,{ "@type": "ListItem", "position": 2, "name": {{ crumb_collection.title | json }}, "item": {{ crumb_collection.url | prepend: shop.url | json }} }
+        {%- endif -%}
+        {%- if request.page_type == 'product' -%}
+        ,{ "@type": "ListItem", "position": {% if crumb_collection %}3{% else %}2{% endif %}, "name": {{ product.title | json }}, "item": {{ product.url | prepend: shop.url | json }} }
+        {%- endif -%}
+      ]
+    }
+  </script>
+{%- endif -%}
 
 {%- liquid
   assign meta_description = page_description
