@@ -135,6 +135,22 @@ p, .paragraph, .rte {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
+/* Quick add on product cards: compact, icon-led. The global button
+   padding above turns it into an empty-looking slab, especially on
+   mobile where the label is visually hidden and only the icon shows. */
+.quick-add .button.quick-add__button {
+  padding-block: 10px;
+  padding-inline: 14px;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  letter-spacing: 0.1em;
+}
+
+.quick-add .button.quick-add__button .add-to-cart-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
 /* Secondary Button - Refined Outline */
 .button-secondary {
   border-radius: 0 !important;
