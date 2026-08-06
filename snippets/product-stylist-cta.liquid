@@ -14,14 +14,26 @@
 
 {%- liquid
   # Honest scarcity for archive pieces: Special Prices items never restock.
+  # Tiered lead time, Misha Lakhani style: formals and wedding pieces carry
+  # the longer atelier window, everything else ships on the pret timeline.
   assign is_final_piece = false
-  for final_piece_collection in product.collections
-    if final_piece_collection.handle == 'special-prices'
+  assign lead_time_text = 'Dispatched in 7 to 10 working days'
+  for stylist_collection in product.collections
+    if stylist_collection.handle == 'special-prices'
       assign is_final_piece = true
-      break
+    elsif stylist_collection.handle == 'formals' or stylist_collection.handle == 'wedding'
+      assign lead_time_text = 'Dispatched in 15 to 20 working days'
     endif
   endfor
+  if product.handle == 'pistachio-rose' or product.handle == 'sea-mist-panel'
+    assign lead_time_text = 'Made to measure, dispatched in 6 to 8 weeks'
+  endif
 -%}
+
+<p class="lead-time-note">
+  <span class="lead-time-note__badge">Made to order</span>
+  {{ lead_time_text }}
+</p>
 
 {%- if is_final_piece -%}
   <p class="final-piece-note">
@@ -61,6 +73,27 @@
 {%- endif -%}
 
 {% stylesheet %}
+  .lead-time-note {
+    margin: 0 0 var(--padding-md);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
+    opacity: 0.75;
+  }
+
+  .lead-time-note__badge {
+    display: inline-block;
+    margin-inline-end: 0.5em;
+    padding-block: 0.15em;
+    padding-inline: 0.6em;
+    border: var(--options-border-width, 1px) solid var(--color-variant-border, var(--color-border));
+    border-radius: var(--options-border-radius, 0);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
   .final-piece-note {
     display: flex;
     align-items: center;

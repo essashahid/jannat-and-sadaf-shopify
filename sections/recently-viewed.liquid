@@ -1,0 +1,209 @@
+{% comment %}
+  Recently viewed products, client-side.
+
+  Each product page records itself to localStorage (handle, title, image,
+  price), capped at eight entries. The strip renders from that store,
+  excluding the product currently being viewed, and stays hidden until
+  there is at least one card to show. No server dependency.
+{% endcomment %}
+
+<section
+  class="recently-viewed"
+  id="RecentlyViewed"
+  hidden
+  data-current-handle="{{ product.handle | escape }}"
+>
+  <div class="recently-viewed__wrap">
+    <h2 class="recently-viewed__title">Recently viewed</h2>
+    <ul class="recently-viewed__grid" id="RecentlyViewedGrid"></ul>
+  </div>
+</section>
+
+{% if product %}
+  <script type="application/json" id="RecentlyViewedCurrent">
+    {
+      "handle": {{ product.handle | json }},
+      "title": {{ product.title | json }},
+      "image": {{ product.featured_image | image_url: width: 500 | prepend: 'https:' | json }},
+      "price": {{ product.price | money | strip_html | json }}
+    }
+  </script>
+{% endif %}
+
+<script>
+  (function () {
+    var KEY = 'js:recently-viewed';
+    var MAX = 8;
+    var SHOW = 4;
+
+    function read() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        var list = raw ? JSON.parse(raw) : [];
+        return Array.isArray(list) ? list : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function write(list) {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(list.slice(0, MAX)));
+      } catch (e) {}
+    }
+
+    var list = read();
+
+    // Record the current product first, so the next page remembers it.
+    var currentEl = document.getElementById('RecentlyViewedCurrent');
+    var current = null;
+    if (currentEl) {
+      try {
+        current = JSON.parse(currentEl.textContent);
+      } catch (e) {}
+    }
+    if (current && current.handle) {
+      list = list.filter(function (item) {
+        return item && item.handle && item.handle !== current.handle;
+      });
+      list.unshift(current);
+      write(list);
+    }
+
+    // Render everything except the product on screen.
+    var section = document.getElementById('RecentlyViewed');
+    var grid = document.getElementById('RecentlyViewedGrid');
+    if (!section || !grid) return;
+
+    var currentHandle = section.getAttribute('data-current-handle');
+    var items = read().filter(function (item) {
+      return item && item.handle && item.handle !== currentHandle;
+    }).slice(0, SHOW);
+
+    if (!items.length) return;
+
+    items.forEach(function (item) {
+      var li = document.createElement('li');
+      li.className = 'recently-viewed__item';
+
+      var a = document.createElement('a');
+      a.className = 'recently-viewed__card';
+      a.href = '/products/' + encodeURIComponent(item.handle);
+
+      var frame = document.createElement('span');
+      frame.className = 'recently-viewed__frame';
+      if (item.image) {
+        var img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.title || '';
+        img.loading = 'lazy';
+        img.width = 500;
+        img.height = 625;
+        frame.appendChild(img);
+      }
+
+      var name = document.createElement('span');
+      name.className = 'recently-viewed__name';
+      name.textContent = item.title || '';
+
+      var price = document.createElement('span');
+      price.className = 'recently-viewed__price';
+      price.textContent = item.price || '';
+
+      a.appendChild(frame);
+      a.appendChild(name);
+      a.appendChild(price);
+      li.appendChild(a);
+      grid.appendChild(li);
+    });
+
+    section.hidden = false;
+  })();
+</script>
+
+{% stylesheet %}
+  .recently-viewed {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .recently-viewed__wrap {
+    max-width: var(--page-width, 1320px);
+    margin: 0 auto;
+    padding-block: clamp(32px, 5vw, 56px);
+    padding-inline: clamp(16px, 4vw, 48px);
+  }
+
+  .recently-viewed__title {
+    margin: 0 0 20px;
+    font-family: var(--font-primary--family, inherit);
+    font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+
+  .recently-viewed__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px 12px;
+  }
+
+  .recently-viewed__card {
+    display: block;
+    text-decoration: none;
+    color: var(--color-foreground);
+  }
+
+  .recently-viewed__frame {
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background-color: var(--color-border);
+  }
+
+  .recently-viewed__frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .recently-viewed__card:hover .recently-viewed__frame img {
+    transform: scale(1.04);
+  }
+
+  .recently-viewed__name {
+    display: block;
+    padding-top: 10px;
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+  }
+
+  .recently-viewed__price {
+    display: block;
+    padding-top: 2px;
+    font-size: 0.78rem;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 749px) {
+    .recently-viewed__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .recently-viewed__grid .recently-viewed__item:nth-child(n + 3) {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Recently viewed",
+  "settings": [],
+  "presets": [{ "name": "Recently viewed" }]
+}
+{% endschema %}

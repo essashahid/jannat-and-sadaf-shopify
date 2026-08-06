@@ -48,7 +48,7 @@
     "button_border_radius_secondary": 0,
     "cart_type": "drawer",
     "cart_price_font": "secondary",
-    "show_cart_note": false,
+    "show_cart_note": true,
     "show_add_discount_code": true,
     "drawer_drop_shadow": true,
     "icon_stroke": "default",
@@ -60,7 +60,7 @@
     "currency_code_enabled_product_pages": false,
     "currency_code_enabled_product_cards": false,
     "currency_code_enabled_cart_items": false,
-    "quick_add": false,
+    "quick_add": true,
     "product_corner_radius": 0,
     "card_corner_radius": 0,
     "show_variant_image": false,
@@ -353,7 +353,9 @@
         }
       }
     },
-    "favicon": "shopify://shop_images/JannatAndSadafLogo.png"
+    "favicon": "shopify://shop_images/JannatAndSadafLogo.png",
+    "mobile_quick_add": true,
+    "cart_note_open_by_default": false
   },
   "presets": {
     "Horizon": {

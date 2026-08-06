@@ -103,8 +103,8 @@
 
 <details class="length-collapse">
   <summary class="length-collapse__summary">
-    <span class="length-collapse__title">Length &amp; fit</span>
-    <span class="length-collapse__hint">Standard lengths preselected &middot; tap to adjust</span>
+    <span class="length-collapse__title">Free made-to-measure lengths</span>
+    <span class="length-collapse__hint">Standard fit preselected &middot; adjust at no extra cost</span>
     <svg class="length-collapse__caret" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true" focusable="false"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </summary>
 
@@ -181,12 +181,10 @@
 </div>
 </details>
 
-{%- if lead_time != blank -%}
-  <p class="length-selector__lead-time">
-    <span class="length-selector__lead-time-label">Made to order</span>
-    Ships in {{ lead_time }}
-  </p>
-{%- endif -%}
+{%- comment -%}
+  Lead time now renders once, from product-stylist-cta.liquid, so the
+  per-handle lead_time assigns above only feed that single source.
+{%- endcomment -%}
 
 {%- endunless -%}
 
