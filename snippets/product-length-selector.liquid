@@ -101,14 +101,11 @@
   {%- assign default_pants_style = 'Cropped Pants' -%}
 {%- endif -%}
 
-<details class="length-collapse">
-  <summary class="length-collapse__summary">
-    <span class="length-collapse__title">Free made-to-measure lengths</span>
-    <span class="length-collapse__hint">Standard fit preselected &middot; adjust at no extra cost</span>
-    <svg class="length-collapse__caret" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true" focusable="false"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </summary>
-
 <div class="product-length-selectors">
+  <p class="length-selectors__heading">
+    Free made-to-measure lengths
+    <span class="length-selectors__heading-hint">included at no extra cost</span>
+  </p>
   <fieldset class="variant-option variant-option--buttons">
     <legend>Shirt Length</legend>
     {%- for length in shirt_lengths -%}
@@ -179,7 +176,6 @@
   {%- endif -%}
 
 </div>
-</details>
 
 {%- comment -%}
   Lead time now renders once, from product-stylist-cta.liquid, so the
@@ -276,69 +272,25 @@
     opacity: 0.8;
   }
 
-  .length-collapse {
+  .product-length-selectors {
     width: 100%;
-    border: var(--options-border-width) solid var(--color-variant-border);
-    border-radius: var(--options-border-radius);
-    background-color: var(--color-variant-background);
   }
 
-  .length-collapse__summary {
-    display: flex;
-    align-items: baseline;
-    gap: 0.6em;
-    padding-block: var(--padding-sm);
-    padding-inline: var(--padding-lg);
-    min-height: 3.25em;
-    align-items: center;
-    cursor: pointer;
-    list-style: none;
-  }
-
-  .length-collapse__summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .length-collapse__title {
+  .length-selectors__heading {
+    margin: 0 0 var(--padding-sm);
     font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-foreground);
     opacity: 0.9;
-    white-space: nowrap;
   }
 
-  .length-collapse__hint {
-    flex: 1 1 auto;
-    font-size: 0.8125rem;
+  .length-selectors__heading-hint {
+    text-transform: none;
     letter-spacing: 0.01em;
-    color: var(--color-foreground);
-    opacity: 0.6;
-  }
-
-  .length-collapse__caret {
-    flex: 0 0 auto;
-    opacity: 0.6;
-    transition: transform 0.25s ease;
-  }
-
-  .length-collapse[open] .length-collapse__caret {
-    transform: rotate(180deg);
-  }
-
-  .length-collapse[open] .length-collapse__hint {
-    visibility: hidden;
-  }
-
-  .length-collapse:has(summary:focus-visible) {
-    outline: var(--focus-outline-width) solid var(--color-foreground);
-    outline-offset: var(--focus-outline-offset);
-  }
-
-  .product-length-selectors {
-    width: 100%;
-    padding-block: var(--padding-xs) var(--padding-lg);
-    padding-inline: var(--padding-lg);
+    font-size: 0.8125rem;
+    opacity: 0.65;
+    margin-inline-start: 0.5em;
   }
 
   .product-length-selectors .variant-option + .variant-option {
