@@ -12,6 +12,24 @@
   assign show_stylist_cta = true
 -%}
 
+{%- liquid
+  # Honest scarcity for archive pieces: Special Prices items never restock.
+  assign is_final_piece = false
+  for final_piece_collection in product.collections
+    if final_piece_collection.handle == 'special-prices'
+      assign is_final_piece = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if is_final_piece -%}
+  <p class="final-piece-note">
+    <span class="final-piece-note__dot" aria-hidden="true"></span>
+    A final piece from a past collection. Once it sells, it is gone for good.
+  </p>
+{%- endif -%}
+
 {%- if show_stylist_cta -%}
   {%- capture stylist_cta_message -%}Hello Jannat & Sadaf, I would love some styling help with {{ product.title }} ({{ shop.url }}{{ product.url }}). Could you please assist me?{%- endcapture -%}
 
@@ -43,6 +61,26 @@
 {%- endif -%}
 
 {% stylesheet %}
+  .final-piece-note {
+    display: flex;
+    align-items: center;
+    gap: 0.55em;
+    margin: 0 0 var(--padding-md);
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    color: var(--color-foreground);
+    opacity: 0.85;
+  }
+
+  .final-piece-note__dot {
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #b5544d;
+  }
+
   .stylist-cta {
     display: block;
     width: 100%;

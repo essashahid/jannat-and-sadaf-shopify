@@ -101,6 +101,13 @@
   {%- assign default_pants_style = 'Cropped Pants' -%}
 {%- endif -%}
 
+<details class="length-collapse">
+  <summary class="length-collapse__summary">
+    <span class="length-collapse__title">Length &amp; fit</span>
+    <span class="length-collapse__hint">Standard lengths preselected &middot; tap to adjust</span>
+    <svg class="length-collapse__caret" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true" focusable="false"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </summary>
+
 <div class="product-length-selectors">
   <fieldset class="variant-option variant-option--buttons">
     <legend>Shirt Length</legend>
@@ -171,13 +178,15 @@
     </fieldset>
   {%- endif -%}
 
-  {%- if lead_time != blank -%}
-    <p class="length-selector__lead-time">
-      <span class="length-selector__lead-time-label">Made to order</span>
-      Ships in {{ lead_time }}
-    </p>
-  {%- endif -%}
 </div>
+</details>
+
+{%- if lead_time != blank -%}
+  <p class="length-selector__lead-time">
+    <span class="length-selector__lead-time-label">Made to order</span>
+    Ships in {{ lead_time }}
+  </p>
+{%- endif -%}
 
 {%- endunless -%}
 
@@ -269,8 +278,69 @@
     opacity: 0.8;
   }
 
+  .length-collapse {
+    width: 100%;
+    border: var(--options-border-width) solid var(--color-variant-border);
+    border-radius: var(--options-border-radius);
+    background-color: var(--color-variant-background);
+  }
+
+  .length-collapse__summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6em;
+    padding-block: var(--padding-sm);
+    padding-inline: var(--padding-lg);
+    min-height: 3.25em;
+    align-items: center;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .length-collapse__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .length-collapse__title {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    opacity: 0.9;
+    white-space: nowrap;
+  }
+
+  .length-collapse__hint {
+    flex: 1 1 auto;
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
+    opacity: 0.6;
+  }
+
+  .length-collapse__caret {
+    flex: 0 0 auto;
+    opacity: 0.6;
+    transition: transform 0.25s ease;
+  }
+
+  .length-collapse[open] .length-collapse__caret {
+    transform: rotate(180deg);
+  }
+
+  .length-collapse[open] .length-collapse__hint {
+    visibility: hidden;
+  }
+
+  .length-collapse:has(summary:focus-visible) {
+    outline: var(--focus-outline-width) solid var(--color-foreground);
+    outline-offset: var(--focus-outline-offset);
+  }
+
   .product-length-selectors {
     width: 100%;
+    padding-block: var(--padding-xs) var(--padding-lg);
+    padding-inline: var(--padding-lg);
   }
 
   .product-length-selectors .variant-option + .variant-option {

@@ -253,6 +253,34 @@
   </div>
 </div>
 
+{%- liquid
+  # Free-delivery nudge: PKR 30,000 threshold, domestic. Mirrors the
+  # Free Delivery rate configured in shipping settings.
+  assign free_delivery_threshold = 3000000
+  assign remaining_for_free = free_delivery_threshold | minus: cart.total_price
+-%}
+{%- if cart != empty -%}
+  <div class="cart-reassurance">
+    {%- if remaining_for_free > 0 -%}
+      <p class="cart-reassurance__shipping">
+        You are <strong>{{ remaining_for_free | money }}</strong> away from free delivery across Pakistan.
+      </p>
+      <div class="cart-reassurance__bar" aria-hidden="true">
+        {%- assign progress_pct = cart.total_price | times: 100 | divided_by: free_delivery_threshold -%}
+        <span class="cart-reassurance__bar-fill" style="width: {{ progress_pct | at_most: 100 }}%;"></span>
+      </div>
+    {%- else -%}
+      <p class="cart-reassurance__shipping cart-reassurance__shipping--unlocked">
+        Free delivery across Pakistan unlocked.
+      </p>
+    {%- endif -%}
+    <p class="cart-reassurance__note">
+      Crafted to order &middot; Pret ships in 7&ndash;10 working days &middot;
+      <a href="https://wa.me/923717459654?text=Hello%20Jannat%20%26%20Sadaf%2C%20I%20have%20a%20question%20before%20placing%20my%20order.">Questions? WhatsApp us</a>
+    </p>
+  </div>
+{%- endif -%}
+
 <div class="cart__ctas">
   <button
     type="submit"
@@ -282,6 +310,50 @@
 </div>
 
 {% stylesheet %}
+  .cart-reassurance {
+    margin-block-end: var(--padding-md);
+  }
+
+  .cart-reassurance__shipping {
+    margin: 0 0 6px;
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
+  }
+
+  .cart-reassurance__shipping--unlocked {
+    opacity: 0.85;
+  }
+
+  .cart-reassurance__bar {
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background-color: var(--color-border);
+    overflow: hidden;
+    margin-block-end: 8px;
+  }
+
+  .cart-reassurance__bar-fill {
+    display: block;
+    height: 100%;
+    background-color: #a98c5f;
+    transition: width 0.4s ease;
+  }
+
+  .cart-reassurance__note {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
+    opacity: 0.7;
+  }
+
+  .cart-reassurance__note a {
+    color: inherit;
+  }
+
   .cart-actions {
     display: flex;
     flex-direction: column;
