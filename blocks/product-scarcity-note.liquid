@@ -1,0 +1,97 @@
+{%- liquid
+  # Special Prices pieces are one-of-one archive finals: exactly one piece
+  # exists, in one size, and it never restocks. Inventory counts in admin do
+  # not reflect this (quantities sit at 0 with continue-selling on), so the
+  # note is gated on collection membership rather than variant inventory.
+  assign is_final_piece = false
+  for scarcity_collection in closest.product.collections
+    if scarcity_collection.handle == 'special-prices'
+      assign is_final_piece = true
+    endif
+  endfor
+-%}
+
+{%- if is_final_piece -%}
+  <p
+    class="scarcity-note spacing-style"
+    style="{% render 'spacing-style', settings: block.settings %}"
+    {{ block.shopify_attributes }}
+  >
+    Only 1 left
+  </p>
+{%- endif -%}
+
+{% stylesheet %}
+  .scarcity-note {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-style: italic;
+    font-size: 0.9375rem;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    color: #b5544d;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Only 1 left note",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows an \"Only 1 left\" note on products in the Special Prices collection. Edit the copy in blocks/product-scarcity-note.liquid."
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Only 1 left note",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
