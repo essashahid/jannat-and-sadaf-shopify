@@ -66,6 +66,21 @@
         <input
           type="radio"
           name="grid"
+          value="medium"
+          class="column-options__option-input"
+          aria-label="Denser grid"
+          on:change="results-list/updateLayout"
+          data-skip-node-update
+        >
+        <span class="column-picker column-picker--medium">
+          {{- 'icon-grid-dense.svg' | inline_asset_content -}}
+        </span>
+      </label>
+
+      <label class="column-options__option">
+        <input
+          type="radio"
+          name="grid"
           value="zoom-out"
           class="column-options__option-input"
           aria-label="{{ 'content.grid_view.zoom_out' | t }}"
@@ -73,7 +88,12 @@
           data-skip-node-update
         >
         <span class="column-picker column-picker--zoom-out">
-          {{- 'icon-grid-dense.svg' | inline_asset_content -}}
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="4.4" width="12" height="1.6" rx="0.8" fill="currentColor"/>
+            <rect x="4" y="7.6" width="12" height="1.6" rx="0.8" fill="currentColor"/>
+            <rect x="4" y="10.8" width="12" height="1.6" rx="0.8" fill="currentColor"/>
+            <rect x="4" y="14" width="12" height="1.6" rx="0.8" fill="currentColor"/>
+          </svg>
         </span>
       </label>
     {% endif %}
@@ -135,6 +155,7 @@
   }
 
   .column-options__option:has(.column-picker--default),
+  .column-options__option:has(.column-picker--medium),
   .column-options__option:has(.column-picker--zoom-out) {
     @media screen and (min-width: 750px) {
       display: flex;
@@ -150,6 +171,7 @@
   }
 
   .column-options-wrapper .column-options__option:has(input[type="radio"]):has(.column-picker--default),
+  .column-options-wrapper .column-options__option:has(input[type="radio"]):has(.column-picker--medium),
   .column-options-wrapper .column-options__option:has(input[type="radio"]):has(.column-picker--zoom-out) {
     @media screen and (min-width: 750px) {
       display: flex;

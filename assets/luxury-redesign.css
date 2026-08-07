@@ -1682,19 +1682,19 @@ img {
    Triple-class + view scoping: outranks Horizon's
    .product-grid__card.product-grid__card{display:flex} and stays out of
    the native zoom-out density view (image-only 100px tiles). */
-.product-grid[product-grid-view='default'] .product-card__content.product-grid__card {
+.product-grid:is([product-grid-view='default'], [product-grid-view='medium']) .product-card__content.product-grid__card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: baseline;
   column-gap: 14px;
 }
 
-.product-grid[product-grid-view='default'] .product-card__content.product-grid__card > .card-gallery {
+.product-grid:is([product-grid-view='default'], [product-grid-view='medium']) .product-card__content.product-grid__card > .card-gallery {
   grid-column: 1 / -1;
 }
 
-.product-grid[product-grid-view='default'] .product-card__content .product-title,
-.product-grid[product-grid-view='default'] .product-card__content [ref="productTitleLink"] {
+.product-grid:is([product-grid-view='default'], [product-grid-view='medium']) .product-card__content .product-title,
+.product-grid:is([product-grid-view='default'], [product-grid-view='medium']) .product-card__content [ref="productTitleLink"] {
   text-align: left;
   letter-spacing: 0.1em;
   min-width: 0;
@@ -1720,4 +1720,22 @@ img {
   background: var(--color-background);
   border-block: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
   padding-block: 10px;
+}
+
+/* Medium density view inherits the default view's card chrome */
+[product-grid-view='medium'] {
+  --product-grid-gap: 16px;
+  --padding-block-start: 24px;
+  --padding-block-end: 24px;
+  --padding-inline-start: 0px;
+  --padding-inline-end: 0px;
+}
+
+[product-grid-view='medium'] .product-grid__item {
+  padding-block: 0;
+}
+
+/* Densest view: images only, hide the compact caption Horizon adds */
+[product-grid-view='zoom-out'] .product-grid-view-zoom-out--details {
+  display: none !important;
 }
