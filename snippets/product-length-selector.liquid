@@ -102,12 +102,8 @@
 {%- endif -%}
 
 <div class="product-length-selectors">
-  <p class="length-selectors__heading">
-    Free made-to-measure lengths
-    <span class="length-selectors__heading-hint">included at no extra cost</span>
-  </p>
   <fieldset class="variant-option variant-option--buttons">
-    <legend>Shirt Length</legend>
+    <legend>Shirt length</legend>
     {%- for length in shirt_lengths -%}
       <label class="length-selector__label">
         <input
@@ -124,7 +120,7 @@
 
   {%- if bottom_lengths.size > 0 -%}
     <fieldset class="variant-option variant-option--buttons">
-      <legend>Bottom Length</legend>
+      <legend>Trouser length</legend>
       {%- for length in bottom_lengths -%}
         <label class="length-selector__label">
           <input
@@ -175,6 +171,7 @@
     </fieldset>
   {%- endif -%}
 
+  <p class="length-selectors__note">Tailored to your chosen length, at no extra cost.</p>
 </div>
 
 {%- comment -%}
@@ -276,21 +273,12 @@
     width: 100%;
   }
 
-  .length-selectors__heading {
-    margin: 0 0 var(--padding-sm);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  .length-selectors__note {
+    margin: var(--padding-sm) 0 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
     color: var(--color-foreground);
-    opacity: 0.9;
-  }
-
-  .length-selectors__heading-hint {
-    text-transform: none;
-    letter-spacing: 0.01em;
-    font-size: 0.8125rem;
-    opacity: 0.65;
-    margin-inline-start: 0.5em;
+    opacity: 0.55;
   }
 
   .product-length-selectors .variant-option + .variant-option {

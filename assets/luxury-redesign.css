@@ -1522,3 +1522,141 @@ img {
     display: none;
   }
 }
+
+/* ============================================================
+   PDP compact redesign (2026-08-07) — buy column matches the
+   approved one-view mockup: tight title/price, compact chips,
+   inline size-chart link, single primary CTA + stylist CTA,
+   description separated by a hairline. Quantity, Buy-it-now and
+   the old popup text link are hidden rather than removed so the
+   underlying form still submits correctly.
+   ============================================================ */
+
+/* Title + price */
+.product-information h1 {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 1.32rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.product-information .price,
+.product-information price-component {
+  font-size: 0.92rem;
+  letter-spacing: 0.14em;
+}
+
+/* Option labels: "Shirt size:" style, colon added here */
+.product-information .variant-option legend,
+.product-information .product-length-selectors legend {
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  padding-bottom: 9px;
+}
+
+.product-information .variant-option legend::after,
+.product-information .product-length-selectors legend::after {
+  content: ':';
+}
+
+/* Inline size-chart link on the first option row */
+.product-information .variant-option {
+  position: relative;
+}
+
+.size-chart-inline {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.74rem;
+  color: var(--color-foreground);
+  opacity: 0.75;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.size-chart-inline:hover {
+  opacity: 1;
+}
+
+/* No dialog exists inside the quick-add modal, so no link there */
+.quick-add-modal .size-chart-inline {
+  display: none;
+}
+
+/* Old popup text link: keep the dialog, hide the trigger */
+.product-information .popup-link__button {
+  display: none;
+}
+
+/* Compact chips: variant pills and length pills */
+.product-information .variant-option__button-label,
+.product-information .length-selector__label {
+  min-height: 2.75em;
+  padding-block: 9px;
+  padding-inline: 10px;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+}
+
+@media screen and (min-width: 750px) {
+  .product-information .length-selector__label {
+    padding: 9px 12px;
+  }
+}
+
+.product-information .product-length-selectors .variant-option + .variant-option {
+  margin-top: var(--padding-md);
+}
+
+/* Hide quantity + accelerated checkout: one quiet primary CTA */
+.product-form-buttons quantity-selector-component,
+.product-form-buttons .quantity-label,
+.product-form-buttons .accelerated-checkout-block {
+  display: none !important;
+}
+
+/* CTA pair spacing */
+.product-information .product-form-buttons {
+  gap: 9px;
+}
+
+.product-information .stylist-cta__button {
+  min-height: 0;
+  padding-block: 13px;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+}
+
+.product-information .stylist-cta__icon {
+  width: 16px;
+  height: 16px;
+  color: #8a6f47;
+}
+
+/* Description: hairline above, calm rhythm */
+.product-information .rte {
+  margin-top: var(--padding-sm);
+  padding-top: var(--padding-xl);
+  border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+}
+
+.product-information .rte p {
+  font-size: 0.86rem;
+  line-height: 1.85;
+}
+
+.product-information .rte ul {
+  font-size: 0.86rem;
+  line-height: 2;
+  padding-inline-start: 18px;
+}

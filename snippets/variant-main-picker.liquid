@@ -96,12 +96,31 @@
             ref="fieldsets[]"
             {{ option_id_attribute }}
           >
+            {%- liquid
+              # Customer-facing option labels: the catalog options are named
+              # "Shirt" and "Pants", but the page reads better as garment+size.
+              assign option_label = product_option.name
+              if option_label == 'Shirt'
+                assign option_label = 'Shirt size'
+              elsif option_label == 'Pants'
+                assign option_label = 'Trouser size'
+              endif
+            -%}
             <legend>
-              {{ product_option.name | escape -}}
+              {{ option_label | escape -}}
               {%- if variant_style == 'swatch' -%}
                 <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
               {%- endif %}
             </legend>
+            {%- if forloop.first -%}
+              <button
+                type="button"
+                class="size-chart-inline"
+                onclick="var b=this.closest('.product-information,dialog,body').querySelector('.popup-link__button');if(b)b.click()"
+              >
+                Size chart
+              </button>
+            {%- endif -%}
             {%- for product_option_value in product_option.values -%}
               {%- if restrict_to_s and product_option_value != 'S' -%}
                 {%- continue -%}
