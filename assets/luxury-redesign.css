@@ -1660,3 +1660,60 @@ img {
   line-height: 2;
   padding-inline-start: 18px;
 }
+
+/* ============================================================
+   Collection grid redesign (2026-08-07) — gallery-style grid
+   matching the approved mockup: uniform 3:4 crops, name/price on
+   one baseline row, quiet badges, sticky toolbar with density
+   controls. SEO description moved below the grid via template.
+   ============================================================ */
+
+/* Uniform 3:4 crop (portrait setting is 4:5; the ratio is a var) */
+.product-grid .card-gallery {
+  --gallery-aspect-ratio: 3 / 4 !important;
+}
+
+.product-grid .card-gallery .product-media img {
+  object-fit: cover;
+  height: 100%;
+}
+
+/* Name left, price right on one baseline row under the photo */
+.product-grid .product-card__content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  column-gap: 14px;
+}
+
+.product-grid .product-card__content > .card-gallery {
+  grid-column: 1 / -1;
+}
+
+.product-grid .product-card__content .product-title,
+.product-grid .product-card__content [ref="productTitleLink"] {
+  text-align: left;
+  letter-spacing: 0.1em;
+}
+
+/* Quiet badges: ink chip, small tracking */
+.product-card__badge {
+  padding: 6px 11px;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Sticky toolbar: filters/sort/density row keeps context while
+   scrolling, frosted paper background */
+.facets.facets--horizontal {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(247, 243, 236, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-block: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+  padding-block: 10px;
+}
