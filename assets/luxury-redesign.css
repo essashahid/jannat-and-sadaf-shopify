@@ -1678,22 +1678,26 @@ img {
   height: 100%;
 }
 
-/* Name left, price right on one baseline row under the photo */
-.product-grid .product-card__content {
+/* Name left, price right on one baseline row under the photo.
+   Triple-class + view scoping: outranks Horizon's
+   .product-grid__card.product-grid__card{display:flex} and stays out of
+   the native zoom-out density view (image-only 100px tiles). */
+.product-grid[product-grid-view='default'] .product-card__content.product-grid__card {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: baseline;
   column-gap: 14px;
 }
 
-.product-grid .product-card__content > .card-gallery {
+.product-grid[product-grid-view='default'] .product-card__content.product-grid__card > .card-gallery {
   grid-column: 1 / -1;
 }
 
-.product-grid .product-card__content .product-title,
-.product-grid .product-card__content [ref="productTitleLink"] {
+.product-grid[product-grid-view='default'] .product-card__content .product-title,
+.product-grid[product-grid-view='default'] .product-card__content [ref="productTitleLink"] {
   text-align: left;
   letter-spacing: 0.1em;
+  min-width: 0;
 }
 
 /* Quiet badges: ink chip, small tracking */
@@ -1706,14 +1710,14 @@ img {
 }
 
 /* Sticky toolbar: filters/sort/density row keeps context while
-   scrolling, frosted paper background */
+   scrolling. Solid background (translucency read as a floating band
+   over card images) and a LOW z-index so header menus and drawers
+   always render above it. */
 .facets.facets--horizontal {
   position: sticky;
   top: 0;
-  z-index: 20;
-  background: rgba(247, 243, 236, 0.94);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  z-index: 2;
+  background: var(--color-background);
   border-block: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
   padding-block: 10px;
 }
