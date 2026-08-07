@@ -334,6 +334,17 @@ header-component[stuck] .header {
   color: #a98c5f !important;
 }
 
+/* Product card titles must wrap only at word boundaries. The title inherits
+   overflow-wrap: break-word, which on a narrow mobile card (e.g. the sale card,
+   where the two-value strikethrough price squeezes the row) let the title
+   collapse into a vertical, one-letter-per-line column. Break at spaces only. */
+.product-card__content a p,
+.product-card__content [ref="productTitleLink"] p,
+.product-card .product-title {
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
 /* Price Styling */
 .product-card .price,
 .product-card price-component,
