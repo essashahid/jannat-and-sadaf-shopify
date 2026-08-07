@@ -30,10 +30,17 @@
   endif
 -%}
 
-<p class="lead-time-note">
-  <span class="lead-time-note__badge">Made to order</span>
-  {{ lead_time_text }}
-</p>
+{%- if is_final_piece -%}
+  <p class="lead-time-note">
+    <span class="lead-time-note__badge">Ready to ship</span>
+    Cash on delivery available across Pakistan
+  </p>
+{%- else -%}
+  <p class="lead-time-note">
+    <span class="lead-time-note__badge">Made to order</span>
+    {{ lead_time_text }}
+  </p>
+{%- endif -%}
 
 {%- if is_final_piece -%}
   <p class="final-piece-note">

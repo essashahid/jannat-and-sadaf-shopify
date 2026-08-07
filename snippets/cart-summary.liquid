@@ -274,6 +274,25 @@
         Free delivery across Pakistan unlocked.
       </p>
     {%- endif -%}
+    {%- liquid
+      assign has_special_prices_item = false
+      for reassurance_item in cart.items
+        for reassurance_collection in reassurance_item.product.collections
+          if reassurance_collection.handle == 'special-prices'
+            assign has_special_prices_item = true
+            break
+          endif
+        endfor
+        if has_special_prices_item
+          break
+        endif
+      endfor
+    -%}
+    {%- if has_special_prices_item -%}
+      <p class="cart-reassurance__cod">
+        Cash on delivery available for Special Prices pieces (Pakistan)
+      </p>
+    {%- endif -%}
     <p class="cart-reassurance__note">
       Crafted to order &middot; Pret ships in 7&ndash;10 working days &middot;
       <a href="https://wa.me/923717459654?text=Hello%20Jannat%20%26%20Sadaf%2C%20I%20have%20a%20question%20before%20placing%20my%20order.">Questions? WhatsApp us</a>
@@ -339,6 +358,14 @@
     height: 100%;
     background-color: #a98c5f;
     transition: width 0.4s ease;
+  }
+
+  .cart-reassurance__cod {
+    margin: 0 0 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
+    opacity: 0.85;
   }
 
   .cart-reassurance__note {
