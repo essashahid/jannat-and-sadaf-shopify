@@ -1692,16 +1692,22 @@ img {
 /* Name left, price right on one baseline row under the photo.
    Triple-class + view scoping: outranks Horizon's
    .product-grid__card.product-grid__card{display:flex} and stays out of
-   the native zoom-out density view (image-only 100px tiles). */
-.product-grid:is([product-grid-view='default'], [product-grid-view='medium']) .product-card__content.product-grid__card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  column-gap: 14px;
-}
+   the native zoom-out density view (image-only 100px tiles).
+   Desktop/tablet only: on the 2-column mobile grid a sale price
+   ("Rs.35,000.00 Rs.50,000.00") is wider than the whole card, so the two
+   columns can't coexist — the title collapsed onto the price. On mobile the
+   card keeps the theme's default stacked layout (title above price). */
+@media screen and (min-width: 750px) {
+  .product-grid:is([product-grid-view='default'], [product-grid-view='medium']) .product-card__content.product-grid__card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: 14px;
+  }
 
-.product-grid:is([product-grid-view='default'], [product-grid-view='medium']) .product-card__content.product-grid__card > .card-gallery {
-  grid-column: 1 / -1;
+  .product-grid:is([product-grid-view='default'], [product-grid-view='medium']) .product-card__content.product-grid__card > .card-gallery {
+    grid-column: 1 / -1;
+  }
 }
 
 .product-grid:is([product-grid-view='default'], [product-grid-view='medium']) .product-card__content .product-title,
