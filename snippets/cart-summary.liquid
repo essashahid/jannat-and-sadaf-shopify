@@ -275,22 +275,24 @@
       </p>
     {%- endif -%}
     {%- liquid
-      assign has_special_prices_item = false
+      # Collections whose pieces ship with cash on delivery (Pakistan).
+      assign cod_collection_handles = 'special-prices,summer-collection' | split: ','
+      assign has_cod_item = false
       for reassurance_item in cart.items
         for reassurance_collection in reassurance_item.product.collections
-          if reassurance_collection.handle == 'special-prices'
-            assign has_special_prices_item = true
+          if cod_collection_handles contains reassurance_collection.handle
+            assign has_cod_item = true
             break
           endif
         endfor
-        if has_special_prices_item
+        if has_cod_item
           break
         endif
       endfor
     -%}
-    {%- if has_special_prices_item -%}
+    {%- if has_cod_item -%}
       <p class="cart-reassurance__cod">
-        Cash on delivery available for Special Prices pieces (Pakistan)
+        Cash on delivery available for Special Prices &amp; Summer Collection pieces (Pakistan)
       </p>
     {%- endif -%}
     <p class="cart-reassurance__note">
