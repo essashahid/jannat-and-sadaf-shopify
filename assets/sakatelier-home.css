@@ -184,6 +184,27 @@
   object-position: center 15%;
 }
 
+/* Campaign film sits above the poster img.
+   Vertical 720p source: film on mobile only; desktop keeps the hero photo
+   until a 16:9 edit exists. */
+.sak-hero__video {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .sak-hero__video {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Vertical source: keep the head in frame when the sides/top crop */
+    object-position: center 12%;
+  }
+}
+
 /* Just enough scrim at the top for the header type and at the foot for the label */
 .sak-hero__overlay {
   position: absolute;

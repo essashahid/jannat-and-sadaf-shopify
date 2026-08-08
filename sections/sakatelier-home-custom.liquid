@@ -38,6 +38,24 @@
 -%}
 <section class="sak-section sak-hero" id="sak-hero" data-section-id="{{ section.id }}">
   <div class="sak-hero__media">
+    {%- if section.settings.hero_video_enabled -%}
+      {%- comment -%}
+        Campaign film (vertical 9:16 source). Poster paints first, the video
+        takes over. Muted + playsinline + autoplay keeps autoplay eligible
+        everywhere. Same clip serves all viewports for now.
+      {%- endcomment -%}
+      <video
+        class="sak-hero__video"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="metadata"
+        poster="{{ 'js-hero-motiya-poster.jpg' | asset_url }}"
+      >
+        <source src="{{ 'js-hero-motiya.mp4' | asset_url }}" type="video/mp4">
+      </video>
+    {%- endif -%}
     {%- if hero.settings.image != blank -%}
       <img
         src="{{ hero.settings.image | image_url: width: 2400 }}"
@@ -548,6 +566,13 @@
     {
       "type": "paragraph",
       "content": "Hero slides (image, heading, primary button) are managed as blocks below."
+    },
+    {
+      "type": "checkbox",
+      "id": "hero_video_enabled",
+      "label": "Show hero film",
+      "info": "Plays the campaign film (js-hero-motiya.mp4 in theme assets) over the hero image.",
+      "default": true
     },
     {
       "type": "text",
