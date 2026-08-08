@@ -628,10 +628,22 @@
   min-height: 460px;
   overflow: hidden;
 }
-.sak-craft__media img {
+.sak-craft__media img,
+.sak-craft__media video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+}
+/* Horizon's video_tag wraps the <video> in a media element */
+.sak-craft__media > video,
+.sak-craft__media > .video-wrapper,
+.sak-craft__media deferred-media,
+.sak-craft__media video-component {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .sak-craft__content {

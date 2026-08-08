@@ -318,6 +318,29 @@
     <div class="sak-craft__inner">
       <div class="sak-craft__media">
         {%- if section.settings.atelier_image != blank -%}
+          {%- assign atelier_poster = section.settings.atelier_image | image_url: width: 1100 -%}
+        {%- else -%}
+          {%- assign atelier_poster = section.settings.atelier_video_poster -%}
+        {%- endif -%}
+        {%- if section.settings.atelier_video != blank -%}
+          {{ section.settings.atelier_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', poster: atelier_poster }}
+        {%- elsif section.settings.atelier_video_url != blank -%}
+          <video
+            class="sak-craft__video"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            disablepictureinpicture
+            aria-label="{{ section.settings.atelier_heading | default: 'Handcrafted With Care' }}"
+            {% if atelier_poster != blank %}poster="{{ atelier_poster }}"{% endif %}
+            width="1280"
+            height="720"
+          >
+            <source src="{{ section.settings.atelier_video_url }}" type="video/mp4">
+          </video>
+        {%- elsif section.settings.atelier_image != blank -%}
           <img src="{{ section.settings.atelier_image | image_url: width: 1100 }}" alt="{{ section.settings.atelier_heading | default: 'At the Studio' }}" loading="lazy" width="1100" height="1300">
         {%- else -%}
           <img src="{{ 'atelier-banner.jpg' | asset_url }}" alt="{{ section.settings.atelier_heading | default: 'At the Studio' }}" loading="lazy" width="1024" height="1024">
@@ -653,7 +676,27 @@
     {
       "type": "image_picker",
       "id": "atelier_image",
-      "label": "Image"
+      "label": "Image",
+      "info": "Used as the video's poster frame when a video is set."
+    },
+    {
+      "type": "video",
+      "id": "atelier_video",
+      "label": "Video"
+    },
+    {
+      "type": "text",
+      "id": "atelier_video_url",
+      "label": "Video file URL (MP4)",
+      "info": "Used when no video is picked above. Paste a Shopify Files MP4 URL.",
+      "default": "https://cdn.shopify.com/videos/c/vp/941db36b286c4f6ab55e6227bdc7de8d/941db36b286c4f6ab55e6227bdc7de8d.HD-720p-1.6Mbps-91093243.mp4"
+    },
+    {
+      "type": "text",
+      "id": "atelier_video_poster",
+      "label": "Video poster URL",
+      "info": "Fallback poster when no image is set above.",
+      "default": "https://cdn.shopify.com/s/files/1/0977/7636/9975/files/preview_images/941db36b286c4f6ab55e6227bdc7de8d.thumbnail.0000000000.jpg?v=1786187652"
     },
     {
       "type": "text",
