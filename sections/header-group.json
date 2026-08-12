@@ -15,7 +15,8 @@
             "font_size": "0.75rem",
             "weight": "",
             "letter_spacing": "0.04em",
-            "case": "none"
+            "case": "none",
+            "duration": 2
           },
           "blocks": {}
         },
@@ -29,14 +30,15 @@
             "font_size": "0.75rem",
             "weight": "",
             "letter_spacing": "0.04em",
-            "case": "none"
+            "case": "none",
+            "duration": 8
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "announcement_BxgCk9",
-        "announcement_sale"
+        "announcement_sale",
+        "announcement_BxgCk9"
       ],
       "name": "t:names.announcement_bar",
       "settings": {

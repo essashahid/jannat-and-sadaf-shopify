@@ -41,18 +41,37 @@ export class AnnouncementBar extends Component {
 
   /**
    * Starts automatic slide playback.
-   * @param {number} [interval] - The time interval in seconds between slides.
    */
-  play(interval = this.autoplayInterval) {
+  play() {
     if (!this.autoplay) return;
 
     this.paused = false;
+    this.#scheduleNext();
+  }
 
-    this.#interval = setInterval(() => {
-      if (this.matches(':hover') || document.hidden) return;
+  /**
+   * Schedules the next slide change. A slide may carry a `data-duration`
+   * (seconds) to override the bar's global speed, so individual messages
+   * can stay on screen longer or shorter than the rest.
+   */
+  #scheduleNext() {
+    clearTimeout(this.#interval);
 
-      this.next();
-    }, interval);
+    const slides = this.refs.slides ?? [];
+    if (slides.length < 2) return;
+
+    let index = this.current % slides.length;
+    if (index < 0) index += slides.length;
+
+    const slideDuration = parseInt(`${slides[index]?.dataset.duration}`, 10);
+    const duration = Number.isNaN(slideDuration) ? this.autoplayInterval : slideDuration * 1000;
+
+    this.#interval = setTimeout(() => {
+      if (!this.matches(':hover') && !document.hidden) {
+        this.next();
+      }
+      this.#scheduleNext();
+    }, duration);
   }
 
   /**
@@ -75,7 +94,7 @@ export class AnnouncementBar extends Component {
    * Suspends automatic slide playback.
    */
   suspend() {
-    clearInterval(this.#interval);
+    clearTimeout(this.#interval);
     this.#interval = undefined;
   }
 
