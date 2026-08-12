@@ -5,21 +5,6 @@
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
       "blocks": {
-        "announcement_BxgCk9": {
-          "type": "_announcement",
-          "settings": {
-            "logo_width": 300,
-            "text": "Free nationwide delivery on orders over PKR 30,000. Worldwide shipping available.",
-            "link": "",
-            "font": "var(--font-subheading--family)",
-            "font_size": "0.75rem",
-            "weight": "",
-            "letter_spacing": "0.04em",
-            "case": "none",
-            "duration": 2
-          },
-          "blocks": {}
-        },
         "announcement_sale": {
           "type": "_announcement",
           "settings": {
@@ -37,8 +22,7 @@
         }
       },
       "block_order": [
-        "announcement_sale",
-        "announcement_BxgCk9"
+        "announcement_sale"
       ],
       "name": "t:names.announcement_bar",
       "settings": {

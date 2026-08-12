@@ -12,7 +12,9 @@
 {% endcomment %}
 
 {%- liquid
-  assign cb_enabled  = true
+  # Switched off during the Independence Day sale so the sale is the only
+  # promotion on screen. Flip back to true to bring the pill back.
+  assign cb_enabled  = false
   assign cb_link     = '/collections/special-prices'
   assign cb_label    = 'Special Prices'
   assign cb_delay    = 2600
