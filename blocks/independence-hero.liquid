@@ -1,0 +1,131 @@
+{%- doc -%}
+  Hero for the Independence Day Sale landing collection. Mirrors the brand's
+  promo language: thin gold rule, tracked eyebrow, Cormorant headline.
+{%- enddoc -%}
+
+<header
+  class="independence-hero spacing-style"
+  style="{% render 'spacing-style', settings: block.settings %}"
+  {{ block.shopify_attributes }}
+>
+  <span class="independence-hero__rule" aria-hidden="true"></span>
+  <p class="independence-hero__eyebrow">Now On &middot; Ends Sunday, Aug 16</p>
+  <h1 class="independence-hero__title">Independence Day Sale</h1>
+  <p class="independence-hero__body">
+    10% off our Pret &amp; Block Print collections &mdash; applied automatically
+    at checkout. No code needed.
+  </p>
+</header>
+
+{% stylesheet %}
+  .independence-hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .independence-hero__rule {
+    display: block;
+    width: 44px;
+    height: 1px;
+    margin-bottom: 22px;
+    background: #a98c5f;
+  }
+
+  .independence-hero__eyebrow {
+    margin: 0 0 14px;
+    font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #2b5e43;
+  }
+
+  .independence-hero__title {
+    margin: 0 0 16px;
+    font-family: 'Cormorant', 'Cormorant Garamond', 'Georgia', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #2b2620;
+  }
+
+  .independence-hero__body {
+    margin: 0 auto;
+    max-width: 420px;
+    font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    color: #5a534a;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Independence hero",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Hero for the Independence Day Sale landing page. Copy lives in blocks/independence-hero.liquid."
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Independence hero",
+      "category": "t:categories.collection"
+    }
+  ]
+}
+{% endschema %}

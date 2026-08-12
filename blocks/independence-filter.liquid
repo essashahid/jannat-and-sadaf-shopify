@@ -1,0 +1,173 @@
+{%- doc -%}
+  Collection filter pills for the Independence Day Sale landing page.
+  Lets shoppers narrow the combined grid to Pret or Block Print pieces.
+  Filtering is client-side: each pill carries the product ids of its source
+  collection and the script hides grid items outside the active group.
+{%- enddoc -%}
+
+{%- liquid
+  assign pret_ids = ''
+  for pret_product in collections['pret'].products
+    assign pret_ids = pret_ids | append: pret_product.id | append: ','
+  endfor
+
+  assign blockprint_ids = ''
+  for bp_product in collections['block-print'].products
+    assign blockprint_ids = blockprint_ids | append: bp_product.id | append: ','
+  endfor
+-%}
+
+<nav
+  class="independence-filter spacing-style"
+  style="{% render 'spacing-style', settings: block.settings %}"
+  aria-label="Filter by collection"
+  {{ block.shopify_attributes }}
+>
+  <button type="button" class="independence-filter__pill is-active" data-filter-ids="" aria-pressed="true">
+    All Pieces
+  </button>
+  <button type="button" class="independence-filter__pill" data-filter-ids="{{ pret_ids }}" aria-pressed="false">
+    Pret
+  </button>
+  <button type="button" class="independence-filter__pill" data-filter-ids="{{ blockprint_ids }}" aria-pressed="false">
+    Block Print
+  </button>
+</nav>
+
+<script>
+  (function () {
+    var nav = document.currentScript.previousElementSibling;
+    if (!nav || !nav.classList.contains('independence-filter')) {
+      nav = document.querySelector('.independence-filter');
+    }
+    if (!nav) return;
+
+    var pills = nav.querySelectorAll('.independence-filter__pill');
+    var activeIds = null; // null = show all
+
+    function applyFilter() {
+      document.querySelectorAll('.product-grid__item').forEach(function (item) {
+        var card = item.querySelector('product-card[data-product-id], .product-card[data-product-id]');
+        var id = card ? card.getAttribute('data-product-id') : null;
+        var show = !activeIds || (id && activeIds.indexOf(id) !== -1);
+        item.style.display = show ? '' : 'none';
+      });
+    }
+
+    pills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        pills.forEach(function (p) {
+          p.classList.toggle('is-active', p === pill);
+          p.setAttribute('aria-pressed', p === pill ? 'true' : 'false');
+        });
+        var ids = pill.getAttribute('data-filter-ids');
+        activeIds = ids ? ids.split(',').filter(Boolean) : null;
+        applyFilter();
+      });
+    });
+
+    // Re-apply if the grid changes (e.g. infinite scroll appends items).
+    var grid = document.querySelector('.product-grid');
+    if (grid && 'MutationObserver' in window) {
+      new MutationObserver(applyFilter).observe(grid, { childList: true, subtree: true });
+    }
+  })();
+</script>
+
+{% stylesheet %}
+  .independence-filter {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .independence-filter__pill {
+    padding: 11px 22px;
+    border: 1px solid #e6ddcd;
+    background: transparent;
+    font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #2b2620;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .independence-filter__pill:hover {
+    border-color: #a98c5f;
+    color: #a98c5f;
+  }
+
+  .independence-filter__pill.is-active {
+    background: #2b2620;
+    border-color: #2b2620;
+    color: #f7f3ec;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Independence filter",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Pret / Block Print filter pills for the Independence Day Sale landing page."
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Independence filter",
+      "category": "t:categories.collection"
+    }
+  ]
+}
+{% endschema %}
