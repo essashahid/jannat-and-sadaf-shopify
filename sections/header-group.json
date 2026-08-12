@@ -18,10 +18,25 @@
             "case": "none"
           },
           "blocks": {}
+        },
+        "announcement_sale": {
+          "type": "_announcement",
+          "settings": {
+            "logo_width": 300,
+            "text": "Independence Day Sale — 10% off Pret & Block Print, applied automatically at checkout · ends Sunday",
+            "link": "/collections/pret",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "weight": "",
+            "letter_spacing": "0.04em",
+            "case": "none"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "announcement_BxgCk9"
+        "announcement_BxgCk9",
+        "announcement_sale"
       ],
       "name": "t:names.announcement_bar",
       "settings": {
