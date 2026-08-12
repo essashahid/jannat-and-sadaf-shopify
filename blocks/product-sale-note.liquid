@@ -14,11 +14,20 @@
   endif
 
   assign in_sale_collection = false
+  assign in_excluded_collection = false
   for sale_note_collection in closest.product.collections
     if sale_note_collection.handle == 'pret' or sale_note_collection.handle == 'block-print'
       assign in_sale_collection = true
     endif
+    # Special Prices pieces are already reduced and sit outside the discount,
+    # so they must not advertise it.
+    if sale_note_collection.handle == 'special-prices'
+      assign in_excluded_collection = true
+    endif
   endfor
+  if in_excluded_collection
+    assign in_sale_collection = false
+  endif
 -%}
 
 {%- if in_sale_window and in_sale_collection -%}
