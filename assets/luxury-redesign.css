@@ -1574,39 +1574,27 @@ img {
   content: ':';
 }
 
-/* Inline size-chart link on the first option row */
-.product-information .variant-option {
-  position: relative;
-}
-
-.size-chart-inline {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: transparent;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.74rem;
+/* Size chart: the standalone "Size chart" link below the pickers is the
+   visible trigger (restored 2026-08-12 — the tiny inline corner link that
+   replaced it was too easy to miss). Style it to match the compact PDP. */
+.product-information .popup-link__button {
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
   color: var(--color-foreground);
-  opacity: 0.75;
+  opacity: 0.8;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-.size-chart-inline:hover {
+.product-information .popup-link__button:hover {
   opacity: 1;
 }
 
-/* No dialog exists inside the quick-add modal, so no link there */
-.quick-add-modal .size-chart-inline {
-  display: none;
-}
-
-/* Old popup text link: keep the dialog, hide the trigger */
-.product-information .popup-link__button {
-  display: none;
+.product-information .popup-link__button svg {
+  width: 15px;
+  height: 15px;
+  vertical-align: text-bottom;
 }
 
 /* Compact chips: variant pills and length pills */

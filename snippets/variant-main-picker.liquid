@@ -112,15 +112,6 @@
                 <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
               {%- endif %}
             </legend>
-            {%- if forloop.first -%}
-              <button
-                type="button"
-                class="size-chart-inline"
-                onclick="var b=this.closest('.product-information,dialog,body').querySelector('.popup-link__button');if(b)b.click()"
-              >
-                Size chart
-              </button>
-            {%- endif -%}
             {%- for product_option_value in product_option.values -%}
               {%- if restrict_to_s and product_option_value != 'S' -%}
                 {%- continue -%}
