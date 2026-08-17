@@ -5,24 +5,24 @@
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
       "blocks": {
-        "announcement_sale": {
+        "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
             "logo_width": 300,
-            "text": "Independence Day Sale — 10% off Pret & Block Print, applied automatically at checkout · ends Sunday",
-            "link": "/collections/independence-day-sale",
+            "text": "Free nationwide delivery on orders over PKR 30,000. Worldwide shipping available.",
+            "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
             "weight": "",
             "letter_spacing": "0.04em",
             "case": "none",
-            "duration": 8
+            "duration": 0
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "announcement_sale"
+        "announcement_BxgCk9"
       ],
       "name": "t:names.announcement_bar",
       "settings": {
