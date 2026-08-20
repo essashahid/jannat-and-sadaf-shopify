@@ -47,8 +47,15 @@
         loading. Skipped entirely on Save-Data, very slow connections, and for
         visitors who prefer reduced motion.
       {%- endcomment -%}
+      {%- comment -%}
+        autoplay is safe here: the element ships without a source, so nothing
+        is fetched until the script attaches one. Keeping the attribute means
+        the browser starts playback itself once enough data has buffered,
+        which is more reliable than a single play() call.
+      {%- endcomment -%}
       <video
         class="sak-hero__video"
+        autoplay
         loop
         muted
         playsinline
@@ -71,6 +78,20 @@
             return c.saveData === true || /^(slow-)?2g$/.test(c.effectiveType || '');
           }
 
+          function attempt() {
+            var played = video.play();
+            if (played && played.catch) {
+              played.catch(function () {
+                // Autoplay can be refused while the film is still buffering,
+                // and iOS blocks it outright in Low Power Mode. Try again when
+                // more data arrives, and once more on the first interaction.
+                video.addEventListener('canplay', attempt, { once: true });
+                document.addEventListener('touchstart', attempt, { once: true, passive: true });
+                document.addEventListener('scroll', attempt, { once: true, passive: true });
+              });
+            }
+          }
+
           function start() {
             if (started || !mobile.matches || reducedMotion.matches || tooExpensive()) return;
             started = true;
@@ -81,8 +102,7 @@
             video.appendChild(source);
             video.load();
 
-            var played = video.play();
-            if (played && played.catch) played.catch(function () {});
+            attempt();
           }
 
           function schedule() {
