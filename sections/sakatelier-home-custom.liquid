@@ -40,21 +40,66 @@
   <div class="sak-hero__media">
     {%- if section.settings.hero_video_enabled -%}
       {%- comment -%}
-        Campaign film (vertical 9:16 source). Poster paints first, the video
-        takes over. Muted + playsinline + autoplay keeps autoplay eligible
-        everywhere. Same clip serves all viewports for now.
+        Campaign film (vertical 9:16 source), shown on mobile only. The file is
+        several megabytes, so the source is attached by script rather than in
+        the markup: desktop never fetches it at all, and on mobile the poster
+        paints first and the film is fetched once the page has finished
+        loading. Skipped entirely on Save-Data, very slow connections, and for
+        visitors who prefer reduced motion.
       {%- endcomment -%}
       <video
         class="sak-hero__video"
-        autoplay
         loop
         muted
         playsinline
-        preload="metadata"
+        preload="none"
         poster="{{ 'js-hero-motiya-poster.jpg' | asset_url }}"
-      >
-        <source src="{{ 'js-hero-motiya.mp4' | asset_url }}" type="video/mp4">
-      </video>
+        data-hero-film="{{ 'js-hero-motiya.mp4' | asset_url }}"
+      ></video>
+      <script>
+        (function () {
+          var video = document.currentScript.previousElementSibling;
+          if (!video || !video.dataset.heroFilm) return;
+
+          var mobile = window.matchMedia('(max-width: 767px)');
+          var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+          var started = false;
+
+          function tooExpensive() {
+            var c = navigator.connection;
+            if (!c) return false;
+            return c.saveData === true || /^(slow-)?2g$/.test(c.effectiveType || '');
+          }
+
+          function start() {
+            if (started || !mobile.matches || reducedMotion.matches || tooExpensive()) return;
+            started = true;
+
+            var source = document.createElement('source');
+            source.src = video.dataset.heroFilm;
+            source.type = 'video/mp4';
+            video.appendChild(source);
+            video.load();
+
+            var played = video.play();
+            if (played && played.catch) played.catch(function () {});
+          }
+
+          function schedule() {
+            if (started || !mobile.matches) return;
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(start, { timeout: 2500 });
+            } else {
+              setTimeout(start, 1200);
+            }
+          }
+
+          if (document.readyState === 'complete') schedule();
+          else window.addEventListener('load', schedule, { once: true });
+
+          if (mobile.addEventListener) mobile.addEventListener('change', schedule);
+        })();
+      </script>
     {%- endif -%}
     {%- if hero.settings.image != blank -%}
       <img
