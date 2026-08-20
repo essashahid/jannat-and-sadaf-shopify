@@ -385,16 +385,22 @@
         {%- else -%}
           {%- assign atelier_poster = section.settings.atelier_video_poster -%}
         {%- endif -%}
+        {%- comment -%}
+          This film sits well below the fold. Autoplaying it from the markup
+          made every visitor download it during page load, competing with the
+          hero and the product grid. preload="none" plus no autoplay attribute
+          means nothing is fetched until the script below plays it, which it
+          only does once the section scrolls into view.
+        {%- endcomment -%}
         {%- if section.settings.atelier_video != blank -%}
-          {{ section.settings.atelier_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', poster: atelier_poster }}
+          {{ section.settings.atelier_video | video_tag: autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'none', poster: atelier_poster }}
         {%- elsif section.settings.atelier_video_url != blank -%}
           <video
             class="sak-craft__video"
-            autoplay
             loop
             muted
             playsinline
-            preload="metadata"
+            preload="none"
             disablepictureinpicture
             aria-label="{{ section.settings.atelier_heading | default: 'Handcrafted With Care' }}"
             {% if atelier_poster != blank %}poster="{{ atelier_poster }}"{% endif %}
@@ -408,6 +414,36 @@
         {%- else -%}
           <img src="{{ 'atelier-banner.jpg' | asset_url }}" alt="{{ section.settings.atelier_heading | default: 'At the Studio' }}" loading="lazy" width="1024" height="1024">
         {%- endif -%}
+        <script>
+          (function () {
+            var media = document.currentScript.parentElement;
+            var video = media && media.querySelector('video');
+            if (!video) return;
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            var c = navigator.connection;
+            if (c && (c.saveData === true || /^(slow-)?2g$/.test(c.effectiveType || ''))) return;
+
+            if (!('IntersectionObserver' in window)) return;
+
+            var observer = new IntersectionObserver(
+              function (entries) {
+                entries.forEach(function (entry) {
+                  if (entry.isIntersecting) {
+                    var played = video.play();
+                    if (played && played.catch) played.catch(function () {});
+                  } else if (!video.paused) {
+                    video.pause();
+                  }
+                });
+              },
+              { rootMargin: '200px 0px' }
+            );
+
+            observer.observe(video);
+          })();
+        </script>
       </div>
       <div class="sak-craft__content">
         {%- if section.settings.atelier_subtitle != blank -%}
