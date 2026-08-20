@@ -28,19 +28,51 @@
   #
   # if section has section.settings.columns:
   # assume grid-template repeat(column-count, 1fr) and calculate the sizes attribute based on the number of columns
+  # The mobile grid is two-up unless the card size is set to large, so the
+  # sizes attribute must say 50vw there. Claiming 100vw made phones download
+  # an image twice as wide as the card it lands in.
+  assign mobile_columns = 2
+  if section.settings.mobile_product_card_size == 'large'
+    assign mobile_columns = 1
+  endif
+  assign mobile_size = 100 | divided_by: mobile_columns
+
   if section.settings.product_card_size
     capture card_size
       render 'util-product-grid-card-size', section: section
     endcapture
     assign card_size = card_size | strip | replace: 'px', '' | plus: 0
     capture sizes_attribute
-      render 'util-autofill-img-size-attr', card_size: card_size, card_gap: section.settings.columns_gap_horizontal
+      render 'util-autofill-img-size-attr',
+        card_size: card_size,
+        card_gap: section.settings.columns_gap_horizontal,
+        mobile_size: mobile_size
     endcapture
     assign image_sizes = sizes_attribute | strip
   elsif section.settings.columns and section.settings.layout_type != 'editorial'
     assign viewport_width = 100.0 | divided_by: section.settings.columns
-    assign sizes_attribute = '(min-width: 750px) [viewport_width]vw, 100vw' | replace: '[viewport_width]', viewport_width
+    assign sizes_attribute = '(min-width: 750px) [viewport_width]vw, [mobile_size]vw' | replace: '[viewport_width]', viewport_width | replace: '[mobile_size]', mobile_size
     assign image_sizes = sizes_attribute | strip
+  endif
+
+  # Which cards may load eagerly. Liquid resolves `a and b or c` as
+  # `a and (b or c)`, and section.index is identical for every card in a
+  # product grid, so the old condition below made all 24 cards on a
+  # collection page eager: two dozen full-size images racing each other on
+  # first paint. Restrict eager loading to the first row of the grid.
+  assign in_product_grid = false
+  if section.settings.product_card_size or section.settings.columns
+    assign in_product_grid = true
+  endif
+
+  assign is_first_row_card = false
+  if in_product_grid and product != blank
+    for first_row_product in collection.products limit: 4
+      if first_row_product.id == product.id
+        assign is_first_row_card = true
+        break
+      endif
+    endfor
   endif
 
   assign ratio = '1'
@@ -134,9 +166,21 @@
             continue
           endif
 
-          if forloop.first and section.index == null or section.index < 5
-            assign loading = 'eager'
-            assign sizes = image_sizes
+          if forloop.first
+            assign eager_candidate = false
+            if section.index == null or section.index < 5
+              assign eager_candidate = true
+            endif
+            # In a product grid only the first row is worth eager-loading;
+            # everything below the fold lazy-loads as the shopper scrolls.
+            if in_product_grid and is_first_row_card == false
+              assign eager_candidate = false
+            endif
+
+            if eager_candidate
+              assign loading = 'eager'
+              assign sizes = image_sizes
+            endif
           endif
 
           assign class = 'product-media-container media-fit product-media-container--[media_type]' | replace: '[media_type]', media.media_type
