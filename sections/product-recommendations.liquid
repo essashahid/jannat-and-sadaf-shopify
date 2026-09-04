@@ -58,6 +58,8 @@
 
     {%- if recommendations.performed or section.settings.product == blank -%}
       {% liquid
+        assign current_product = section.settings.product | default: product
+
         if section.settings.product == blank
           assign products = null
           # Onboarding mode: Show placeholder products
@@ -68,24 +70,72 @@
         elsif recommendations.performed and recommendations.products_count == 0
           # No recommendations found, pull from catalog
           if section.settings.recommendation_type == 'related'
-            assign products = collections.all.products | reject: 'id', section.settings.product.id
+            assign products = collections.all.products | reject: 'id', current_product.id
           elsif section.settings.recommendation_type == 'complementary'
             # Do not recommend the All collection as complementary products
             assign products = null
           endif
 
         else
-          assign products = recommendations.products
+          # `reject` also turns the recommendations drop into a plain array so it can be concatenated below
+          assign products = recommendations.products | reject: 'id', current_product.id
+        endif
+
+        # Lead "related" recommendations with pieces from the same family as the
+        # current product (its most specific merchandising collection), then let
+        # Shopify's own suggestions top up the remaining slots. Keeps a co-ord set
+        # page recommending other co-ord sets rather than formals.
+        if section.settings.recommendation_type == 'related' and current_product != blank
+          assign family_handles = 'co-ord-sets,summer-collection,block-print,formals,wedding,pret,special-prices' | split: ','
+          assign family_collection = null
+          for family_handle in family_handles
+            for product_collection in current_product.collections
+              if product_collection.handle == family_handle
+                assign family_collection = product_collection
+                break
+              endif
+            endfor
+            if family_collection != null
+              break
+            endif
+          endfor
+
+          if family_collection != null
+            assign family_products = family_collection.products | reject: 'id', current_product.id
+            if products != blank and products.size > 0
+              assign products = family_products | concat: products
+            else
+              assign products = family_products
+            endif
+          endif
         endif
       %}
       {% capture list_items %}
-        {% for product in products limit: section.settings.max_products %}
+        {% liquid
+          assign seen_product_ids = ','
+          assign shown_products = 0
+        %}
+        {% for product in products %}
+          {% liquid
+            if shown_products >= section.settings.max_products
+              break
+            endif
+            # Skip the current product and anything already listed (family + Shopify picks can overlap)
+            if product.id != blank
+              assign product_id_key = ',' | append: product.id | append: ','
+              if product.id == current_product.id or seen_product_ids contains product_id_key
+                continue
+              endif
+              assign seen_product_ids = seen_product_ids | append: product.id | append: ','
+            endif
+          %}
+          {% if shown_products > 0 %}
+            <!--@list/split-->
+          {% endif %}
+          {% assign shown_products = shown_products | plus: 1 %}
           <div class="resource-list__item">
             {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
           </div>
-          {% unless forloop.last %}
-            <!--@list/split-->
-          {% endunless %}
         {% endfor %}
       {% endcapture %}
 
