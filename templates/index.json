@@ -50,6 +50,15 @@
             "source_product": "muted-iris"
           }
         },
+        "fabric_coord": {
+          "type": "fabric_collection",
+          "settings": {
+            "collection_name": "Co-ord Sets",
+            "collection_description": "Matching two-piece sets, made to be worn together.",
+            "collection_link": "shopify://collections/co-ord-sets",
+            "source_product": "cape-set"
+          }
+        },
         "journal_1": {
           "type": "journal_article",
           "settings": {
@@ -87,6 +96,7 @@
         "fabric_pret",
         "fabric_blockprint",
         "fabric_formals",
+        "fabric_coord",
         "journal_1",
         "journal_2",
         "journal_3"

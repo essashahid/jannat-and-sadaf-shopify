@@ -310,9 +310,16 @@
 
 .sak-tiles__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Four tiles (Pret, Block Print, Formals, Co-ord Sets): 2x2 on tablet, one row on desktop */
+  grid-template-columns: repeat(2, 1fr);
   /* Flush: any gap lets the near-white section background show between tiles */
   gap: 0;
+}
+
+@media (min-width: 1024px) {
+  .sak-tiles__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 /* 4:5 matches how Pret and Formals are shot, so those two are never cropped.
