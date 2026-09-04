@@ -46,9 +46,12 @@
           </svg>
           Co-ord Sets &middot; {{ offer_percent }}% off
         </span>
-        <span class="coord-offer__auto">Applied automatically at checkout &middot; no code needed</span>
+        <span class="coord-offer__auto">Taken off for you at checkout &middot; nothing to enter</span>
       </div>
 
+      <p class="coord-offer__label">
+        Your price{% if customer.first_name != blank %}, {{ customer.first_name | escape }}{% endif %}
+      </p>
       <p class="coord-offer__math">
         <span class="coord-offer__was" aria-label="Full price">
           <s>{{ offer_price | money_without_trailing_zeros }}</s>
@@ -59,10 +62,7 @@
         <span class="coord-offer__now" aria-label="Price at checkout" data-coord-offer-now>
           {{- offer_final | money_without_trailing_zeros -}}
         </span>
-        <span class="coord-offer__save">
-          <span class="visually-hidden">You save </span>
-          <span aria-hidden="true">Save </span>{{ offer_saving | money_without_trailing_zeros }}
-        </span>
+        <span class="coord-offer__save">You save {{ offer_saving | money_without_trailing_zeros }}</span>
       </p>
 
       <details class="coord-offer__how">
@@ -75,8 +75,8 @@
         <div class="coord-offer__how-body">
           <ol class="coord-offer__steps">
             <li><span class="coord-offer__step-num">1</span><span>Add the set to your bag at the full price shown above.</span></li>
-            <li><span class="coord-offer__step-num">2</span><span>At checkout, {{ offer_percent }}% comes off every Co-ord Set on its own. Nothing to type in.</span></li>
-            <li><span class="coord-offer__step-num">3</span><span>You pay <strong>{{ offer_final | money_without_trailing_zeros }}</strong> for this piece by bank transfer, confirmed after your order.</span></li>
+            <li><span class="coord-offer__step-num">2</span><span>At checkout, {{ offer_percent }}% comes off every Co-ord Set for you. Nothing to type in.</span></li>
+            <li><span class="coord-offer__step-num">3</span><span>You pay <strong>{{ offer_final | money_without_trailing_zeros }}</strong> for this piece, by bank transfer confirmed after your order.</span></li>
           </ol>
         </div>
       </details>
@@ -249,6 +249,15 @@
     font-size: 0.74rem;
     letter-spacing: 0.03em;
     color: var(--coord-muted);
+  }
+
+  .coord-offer__label {
+    margin: 0 0 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coord-gold);
   }
 
   .coord-offer__math {
