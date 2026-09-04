@@ -303,11 +303,23 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "coord_offer": {
+              "type": "product-coord-offer",
+              "name": "Co-ord Sets offer",
+              "settings": {
+                "padding-block-start": 6,
+                "padding-block-end": 6,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "group_icgrde",
             "sale_note",
+            "coord_offer",
             "variant_picker_R3rGDr",
             "length_selector_xL9mKq",
             "popup_link_yakcFc",

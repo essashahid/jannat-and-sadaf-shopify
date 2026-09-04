@@ -1,0 +1,502 @@
+{%- liquid
+  # Co-ord Sets offer card.
+  # The 10% automatic discount only surfaces at checkout, so this card tells
+  # shoppers on the product page what they will actually pay. Gated on
+  # collection membership so it switches off the moment a piece leaves the
+  # Co-ord Sets collection. Flip offer_enabled to false to hide it everywhere
+  # (e.g. when the discount in Shopify admin ends).
+  assign offer_enabled = true
+  assign offer_percent = 10
+
+  assign in_offer_collection = false
+  assign in_excluded_collection = false
+  for offer_collection in closest.product.collections
+    if offer_collection.handle == 'co-ord-sets'
+      assign in_offer_collection = true
+    endif
+    # Special Prices pieces are already reduced and sit outside the discount.
+    if offer_collection.handle == 'special-prices'
+      assign in_excluded_collection = true
+    endif
+  endfor
+  if in_excluded_collection
+    assign in_offer_collection = false
+  endif
+
+  assign offer_variant = closest.product.selected_or_first_available_variant
+  assign offer_price = offer_variant.price | default: closest.product.price
+  assign offer_saving = offer_price | times: offer_percent | divided_by: 100.0 | round
+  assign offer_final = offer_price | minus: offer_saving
+-%}
+
+{%- if offer_enabled and in_offer_collection and offer_price > 0 -%}
+  <div
+    class="coord-offer spacing-style"
+    style="{% render 'spacing-style', settings: block.settings %}"
+    data-coord-offer
+    data-price-from="{{ offer_price | divided_by: 100.0 }}"
+    data-price-to="{{ offer_final | divided_by: 100.0 }}"
+    {{ block.shopify_attributes }}
+  >
+    <div class="coord-offer__card">
+      <div class="coord-offer__head">
+        <span class="coord-offer__chip">
+          <svg class="coord-offer__spark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M8 1.5l1.6 4.4L14 7.5l-4.4 1.6L8 13.5 6.4 9.1 2 7.5l4.4-1.6z" fill="currentColor"/>
+          </svg>
+          Co-ord Sets &middot; {{ offer_percent }}% off
+        </span>
+        <span class="coord-offer__auto">Applied automatically at checkout &middot; no code needed</span>
+      </div>
+
+      <p class="coord-offer__math">
+        <span class="coord-offer__was" aria-label="Full price">
+          <s>{{ offer_price | money_without_trailing_zeros }}</s>
+        </span>
+        <svg class="coord-offer__arrow" viewBox="0 0 24 8" aria-hidden="true" focusable="false">
+          <path d="M0 4h22M18 1l4 3-4 3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="coord-offer__now" aria-label="Price at checkout" data-coord-offer-now>
+          {{- offer_final | money_without_trailing_zeros -}}
+        </span>
+        <span class="coord-offer__save">
+          <span class="visually-hidden">You save </span>
+          <span aria-hidden="true">Save </span>{{ offer_saving | money_without_trailing_zeros }}
+        </span>
+      </p>
+
+      <details class="coord-offer__how">
+        <summary>
+          <span>How it works</span>
+          <svg class="coord-offer__caret" viewBox="0 0 12 8" aria-hidden="true" focusable="false">
+            <path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="coord-offer__how-body">
+          <ol class="coord-offer__steps">
+            <li><span class="coord-offer__step-num">1</span><span>Add the set to your bag at the full price shown above.</span></li>
+            <li><span class="coord-offer__step-num">2</span><span>At checkout, {{ offer_percent }}% comes off every Co-ord Set on its own. Nothing to type in.</span></li>
+            <li><span class="coord-offer__step-num">3</span><span>You pay <strong>{{ offer_final | money_without_trailing_zeros }}</strong> for this piece. Cash on delivery and bank transfer both count.</span></li>
+          </ol>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      if (window.__coordOfferInit) return;
+      window.__coordOfferInit = true;
+
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function formatLike(sample, value) {
+        // Keep the store's own money format (prefix/suffix, grouping) and only swap the digits.
+        var match = sample.match(/[\d.,]+/);
+        if (!match) return sample;
+        var grouped = Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return sample.replace(match[0], grouped);
+      }
+
+      function reveal(el) {
+        if (el.dataset.coordRevealed) return;
+        el.dataset.coordRevealed = 'true';
+        el.classList.add('is-revealed');
+        if (reduceMotion) return;
+
+        var now = el.querySelector('[data-coord-offer-now]');
+        var from = parseFloat(el.dataset.priceFrom);
+        var to = parseFloat(el.dataset.priceTo);
+        if (!now || isNaN(from) || isNaN(to)) return;
+
+        var finalText = now.textContent.trim();
+        var start = null;
+        var duration = 1100;
+
+        function frame(ts) {
+          if (start === null) start = ts;
+          var t = Math.min(1, (ts - start) / duration);
+          var eased = 1 - Math.pow(1 - t, 3);
+          now.textContent = formatLike(finalText, from + (to - from) * eased);
+          if (t < 1) requestAnimationFrame(frame);
+          else now.textContent = finalText;
+        }
+        requestAnimationFrame(frame);
+      }
+
+      function init(scope) {
+        var cards = (scope || document).querySelectorAll('[data-coord-offer]');
+        if (!cards.length) return;
+        if (!('IntersectionObserver' in window)) {
+          cards.forEach(reveal);
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            io.unobserve(entry.target);
+            reveal(entry.target);
+          });
+        }, { threshold: 0.4 });
+        cards.forEach(function (card) { io.observe(card); });
+      }
+
+      init();
+      // Horizon re-renders product info on variant change; pick up the fresh card.
+      new MutationObserver(function () { init(); }).observe(document.body, { childList: true, subtree: true });
+    })();
+  </script>
+{%- endif -%}
+
+{% stylesheet %}
+  .coord-offer {
+    --coord-cream: #fdfbf7;
+    --coord-ink: #2b2620;
+    --coord-muted: #7b7268;
+    --coord-gold: #a98c5f;
+    --coord-gold-soft: #e3d6bf;
+    --coord-green: #2b5e43;
+    margin: 0;
+    font-family: var(--font-body--family);
+    color: var(--coord-ink);
+  }
+
+  .coord-offer__card {
+    position: relative;
+    padding: 0.95rem 1.05rem 0.85rem;
+    background: var(--coord-cream);
+    border: 1px solid var(--coord-gold-soft);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.3s ease;
+  }
+
+  .coord-offer.is-revealed .coord-offer__card {
+    opacity: 1;
+    transform: none;
+  }
+
+  .coord-offer__card:hover {
+    border-color: var(--coord-gold);
+  }
+
+  /* One slow gold sheen across the card when it first appears */
+  .coord-offer__card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgba(169, 140, 95, 0.14) 50%,
+      transparent 70%
+    );
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  .coord-offer.is-revealed .coord-offer__card::before {
+    animation: coord-offer-sheen 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s 1 forwards;
+  }
+
+  @keyframes coord-offer-sheen {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  .coord-offer__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.75rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .coord-offer__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.32em 0.7em 0.3em;
+    background: var(--coord-green);
+    color: #f7f3ec;
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  .coord-offer__spark {
+    width: 0.8em;
+    height: 0.8em;
+    color: #d9c79f;
+  }
+
+  .coord-offer.is-revealed .coord-offer__spark {
+    animation: coord-offer-spark 1.4s ease-in-out 0.6s 2;
+  }
+
+  @keyframes coord-offer-spark {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1.35) rotate(20deg); opacity: 0.75; }
+  }
+
+  .coord-offer__auto {
+    font-size: 0.74rem;
+    letter-spacing: 0.03em;
+    color: var(--coord-muted);
+  }
+
+  .coord-offer__math {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.6rem;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .coord-offer__was {
+    position: relative;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    color: var(--coord-muted);
+  }
+
+  .coord-offer__was s {
+    text-decoration: none;
+  }
+
+  /* Strike line draws itself across the old price */
+  .coord-offer__was::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 55%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.45s;
+  }
+
+  .coord-offer.is-revealed .coord-offer__was::after {
+    transform: scaleX(1);
+  }
+
+  .coord-offer__arrow {
+    width: 1.35rem;
+    height: 0.5rem;
+    color: var(--coord-gold);
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  .coord-offer__now {
+    font-family: var(--font-heading--family);
+    font-size: 1.55rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--coord-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .coord-offer__save {
+    display: inline-block;
+    padding: 0.28em 0.6em;
+    border: 1px solid var(--coord-gold);
+    color: var(--coord-gold);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.45s ease 0.9s, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.9s;
+  }
+
+  .coord-offer.is-revealed .coord-offer__save {
+    opacity: 1;
+    transform: none;
+  }
+
+  .coord-offer__how {
+    margin-top: 0.75rem;
+    border-top: 1px solid rgba(169, 140, 95, 0.25);
+    padding-top: 0.55rem;
+  }
+
+  .coord-offer__how summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--coord-ink);
+    opacity: 0.75;
+    transition: opacity 0.25s ease;
+  }
+
+  .coord-offer__how summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .coord-offer__how summary:hover,
+  .coord-offer__how[open] summary {
+    opacity: 1;
+  }
+
+  .coord-offer__caret {
+    width: 0.65rem;
+    height: 0.45rem;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .coord-offer__how[open] .coord-offer__caret {
+    transform: rotate(180deg);
+  }
+
+  .coord-offer__how-body {
+    animation: coord-offer-open 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes coord-offer-open {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .coord-offer__steps {
+    list-style: none;
+    margin: 0.7rem 0 0.15rem;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .coord-offer__steps li {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--coord-ink);
+  }
+
+  .coord-offer__steps strong {
+    font-weight: 600;
+  }
+
+  .coord-offer__step-num {
+    flex-shrink: 0;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    border: 1px solid var(--coord-gold);
+    color: var(--coord-gold);
+    font-family: var(--font-heading--family);
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.05rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .coord-offer__card,
+    .coord-offer__save,
+    .coord-offer__was::after,
+    .coord-offer__caret {
+      transition: none;
+    }
+    .coord-offer__card::before,
+    .coord-offer__spark,
+    .coord-offer__how-body {
+      animation: none !important;
+    }
+    .coord-offer__card {
+      opacity: 1;
+      transform: none;
+    }
+    .coord-offer__save {
+      opacity: 1;
+      transform: none;
+    }
+    .coord-offer__was::after {
+      transform: scaleX(1);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Co-ord Sets offer",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows the automatic 10% Co-ord Sets discount on products in that collection, with the price the shopper will pay at checkout. Copy and the on/off switch live in blocks/product-coord-offer.liquid."
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Co-ord Sets offer",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
