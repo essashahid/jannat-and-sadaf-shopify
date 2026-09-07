@@ -3,9 +3,11 @@
   # The 10% automatic discount only surfaces at checkout, so this card tells
   # shoppers on the product page what they will actually pay. Gated on
   # collection membership so it switches off the moment a piece leaves the
-  # Co-ord Sets collection. Flip offer_enabled to false to hide it everywhere
-  # (e.g. when the discount in Shopify admin ends).
-  assign offer_enabled = true
+  # Co-ord Sets collection.
+  # Switched off on 2026-09-07: the matching automatic discount in Shopify
+  # admin has ended, so the card must not promise a reduction that no longer
+  # applies at checkout. Set back to true if the offer runs again.
+  assign offer_enabled = false
   assign offer_percent = 10
 
   assign in_offer_collection = false
