@@ -86,7 +86,7 @@
         # Shopify's own suggestions top up the remaining slots. Keeps a co-ord set
         # page recommending other co-ord sets rather than formals.
         if section.settings.recommendation_type == 'related' and current_product != blank
-          assign family_handles = 'co-ord-sets,summer-collection,block-print,formals,wedding,pret,special-prices' | split: ','
+          assign family_handles = 'co-ord-sets,hue,summer-collection,block-print,formals,wedding,pret,special-prices' | split: ','
           assign family_collection = null
           for family_handle in family_handles
             for product_collection in current_product.collections
