@@ -83,11 +83,12 @@
 {%- endif -%}
 
 {%- comment -%}
-  Shirt-only pieces, which have no bottom to measure. Clearing the list here
-  rather than in the chain above lets them keep their shirt lengths.
+  Pieces sold without a bottom — shirts and jackets on their own — so there is
+  no trouser to measure. Clearing the list here rather than in the chain above
+  lets them keep their own length selector.
 {%- endcomment -%}
-{%- assign shirt_only_handles = 'black-leopard' | split: ',' -%}
-{%- if shirt_only_handles contains product.handle -%}
+{%- assign no_bottom_handles = 'black-leopard,lali,lumina,aura,taupe' | split: ',' -%}
+{%- if no_bottom_handles contains product.handle -%}
   {%- assign bottom_lengths = '' | split: ',' -%}
 {%- endif -%}
 
