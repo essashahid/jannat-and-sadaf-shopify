@@ -1,8 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
-    "logo": "shopify://shop_images/JannatAndSadafLogo.png",
-    "logo_height": 100,
-    "logo_height_mobile": 100,
+    "logo": "shopify://shop_images/jannat-sadaf-logo-dark.png",
+    "logo_inverse": "shopify://shop_images/jannat-sadaf-logo-white.png",
+    "logo_height": 46,
+    "logo_height_mobile": 38,
     "type_body_font": "montserrat_n4",
     "type_subheading_font": "montserrat_n5",
     "type_heading_font": "cormorant_n6",
@@ -35,7 +45,7 @@
     "type_line_height_h6": "display-loose",
     "page_width": "wide",
     "page_transition_enabled": false,
-    "transition_to_main_product": true,
+    "transition_to_main_product": false,
     "card_hover_effect": "none",
     "badge_position": "top-left",
     "badge_corner_radius": 0,

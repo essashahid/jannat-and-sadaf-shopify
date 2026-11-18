@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "sakatelier_home": {
@@ -6,6 +15,7 @@
         "hero_slide_1": {
           "type": "hero_slide",
           "settings": {
+            "image": "shopify://shop_images/hero-banner.jpg",
             "label": "Luxury Pret",
             "heading": "Handcrafted luxury pret and formal wear",
             "subheading": "Block print, pret, formals and bridal pieces, made to order in Pakistan.",
@@ -26,37 +36,37 @@
         "fabric_pret": {
           "type": "fabric_collection",
           "settings": {
+            "source_product": "serenade-beige",
             "collection_name": "Pret",
             "collection_description": "Everyday eastern wear designed for effortless elegance.",
-            "collection_link": "shopify://collections/pret",
-            "source_product": "serenade-beige"
+            "collection_link": "shopify://collections/pret"
           }
         },
         "fabric_blockprint": {
           "type": "fabric_collection",
           "settings": {
+            "source_product": "fuschia-angrakha",
             "collection_name": "Block Print",
             "collection_description": "Artisanal prints, refined silhouettes, and festive-ready details.",
-            "collection_link": "shopify://collections/block-print",
-            "source_product": "fuschia-angrakha"
+            "collection_link": "shopify://collections/block-print"
           }
         },
         "fabric_formals": {
           "type": "fabric_collection",
           "settings": {
+            "source_product": "muted-iris",
             "collection_name": "Formals",
             "collection_description": "Handcrafted pieces for occasions that matter.",
-            "collection_link": "shopify://collections/formals",
-            "source_product": "muted-iris"
+            "collection_link": "shopify://collections/formals"
           }
         },
         "fabric_coord": {
           "type": "fabric_collection",
           "settings": {
+            "source_product": "cape-set",
             "collection_name": "Co-ord Sets",
             "collection_description": "Matching two-piece sets, made to be worn together.",
-            "collection_link": "shopify://collections/co-ord-sets",
-            "source_product": "cape-set"
+            "collection_link": "shopify://collections/co-ord-sets"
           }
         },
         "journal_1": {
@@ -103,6 +113,7 @@
       ],
       "name": "Jannat & Sadaf Home",
       "settings": {
+        "hero_video_enabled": false,
         "hero_button2_text": "",
         "hero_button2_link": "shopify://collections/all",
         "show_fabrics": true,
@@ -113,9 +124,9 @@
         "show_bestsellers": true,
         "bestsellers_heading": "New Arrivals",
         "bestsellers_subtitle": "",
-        "bestsellers_collection": "",
+        "bestsellers_collection": "new-in",
         "bestsellers_button_text": "Shop New Arrivals",
-        "bestsellers_button_link": "shopify://collections/all",
+        "bestsellers_button_link": "shopify://collections/new-in",
         "show_spotlight": true,
         "spotlight_product": "quiet-sage",
         "spotlight_eyebrow": "Most Loved",
@@ -123,6 +134,8 @@
         "spotlight_body": "A piece our community keeps coming back to. Hand-finished in the atelier — quietly confident, easy to live in.",
         "spotlight_button": "Shop Quiet Sage",
         "show_atelier": true,
+        "atelier_video_url": "https://cdn.shopify.com/videos/c/vp/941db36b286c4f6ab55e6227bdc7de8d/941db36b286c4f6ab55e6227bdc7de8d.HD-720p-1.6Mbps-91093243.mp4",
+        "atelier_video_poster": "https://cdn.shopify.com/s/files/1/0977/7636/9975/files/preview_images/941db36b286c4f6ab55e6227bdc7de8d.thumbnail.0000000000.jpg?v=1786187652",
         "atelier_subtitle": "At the Studio",
         "atelier_heading": "Handcrafted With Care",
         "atelier_body": "Every Jannat & Sadaf piece is shaped slowly — hand embroidery, traditional techniques, and a quiet attention to detail that machines cannot replicate. We believe in fewer, finer things.",
@@ -139,21 +152,25 @@
         "show_journal": true,
         "journal_heading": "In the Journal",
         "journal_subtitle": "",
+        "journal_blog": "",
+        "journal_button_text": "",
+        "journal_button_link": "",
         "show_policies": true,
-        "policy_1_link": "shopify://pages/delivery-timeframe",
-        "policy_2_link": "shopify://pages/shipping-handling",
-        "policy_3_link": "shopify://pages/exchange-refund-policy",
-        "show_newsletter": true,
-        "newsletter_heading": "Join the Jannat & Sadaf List",
-        "newsletter_text": "Be the first to discover new collections, styling notes, and early access.",
         "policy_1_title": "Delivery Across Pakistan",
         "policy_1_text": "Pret in 7 to 10 working days. Formals in 15 to 20.",
+        "policy_1_link": "shopify://pages/delivery-timeframe",
         "policy_2_title": "International Shipping",
         "policy_2_text": "Available to most destinations worldwide.",
+        "policy_2_link": "shopify://pages/shipping-handling",
         "policy_3_title": "Made to Order",
         "policy_3_text": "Each piece is crafted for you. All sales are final.",
+        "policy_3_link": "shopify://pages/exchange-refund-policy",
         "policy_4_title": "Bank Transfer Payment",
-        "policy_4_text": "Simple bank transfer, confirmed after your order."
+        "policy_4_text": "Simple bank transfer, confirmed after your order.",
+        "policy_4_link": "",
+        "show_newsletter": true,
+        "newsletter_heading": "Join the Jannat & Sadaf List",
+        "newsletter_text": "Be the first to discover new collections, styling notes, and early access."
       }
     }
   },

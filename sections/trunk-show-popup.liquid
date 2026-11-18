@@ -1,0 +1,285 @@
+{%- comment -%}
+  Trunk Show promo popup. Shows once per visitor on the homepage.
+  Auto-disables after end_date.
+{%- endcomment -%}
+
+{%- if section.settings.enabled -%}
+  <trunk-show-popup
+    class="trunk-show-popup"
+    data-storage-key="trunk-show-popup-2026-05-20"
+    data-end-date="{{ section.settings.end_date }}"
+    hidden
+  >
+    <div class="trunk-show-popup__backdrop" data-tsp-close></div>
+
+    <div
+      class="trunk-show-popup__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="trunk-show-popup-title"
+    >
+      <button
+        type="button"
+        class="trunk-show-popup__close"
+        aria-label="Close"
+        data-tsp-close
+      >
+        &times;
+      </button>
+
+      <div class="trunk-show-popup__inner">
+        <p class="trunk-show-popup__eyebrow">@nichetrunkshow</p>
+
+        <div class="trunk-show-popup__brand">
+          <span class="trunk-show-popup__nl">NL</span>
+          <p class="trunk-show-popup__brand-title">THE TRUNK SHOW</p>
+          <p class="trunk-show-popup__brand-sub">BY NICHE LIFESTYLE</p>
+        </div>
+
+        <p class="trunk-show-popup__x">×</p>
+
+        <p
+          id="trunk-show-popup-title"
+          class="trunk-show-popup__name"
+        >
+          JANNAT<br>&amp; SADAF
+        </p>
+
+        <div class="trunk-show-popup__details">
+          <p class="trunk-show-popup__detail">
+            <strong>{{ section.settings.date_text }}</strong>
+          </p>
+          <p class="trunk-show-popup__detail">
+            {{ section.settings.time_text }}
+          </p>
+          <p class="trunk-show-popup__detail">
+            {{ section.settings.location_text }}
+          </p>
+        </div>
+
+        {%- if section.settings.cta_link != blank -%}
+          <a
+            class="trunk-show-popup__cta button button--primary"
+            href="{{ section.settings.cta_link }}"
+            target="_blank"
+            rel="noopener"
+          >
+            {{ section.settings.cta_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </trunk-show-popup>
+
+  <style>
+    .trunk-show-popup[hidden] { display: none; }
+    .trunk-show-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .trunk-show-popup__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      cursor: pointer;
+    }
+    .trunk-show-popup__dialog {
+      position: relative;
+      background: #ebe5d9;
+      width: 100%;
+      max-width: 460px;
+      padding: 3rem 2rem 2.5rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      font-family: var(--font-body--family, serif);
+      color: #1a1a1a;
+      animation: trunkShowPopupIn 0.35s ease;
+    }
+    @keyframes trunkShowPopupIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to   { opacity: 1; transform: none; }
+    }
+    .trunk-show-popup__close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.75rem;
+      background: transparent;
+      border: 0;
+      font-size: 1.75rem;
+      line-height: 1;
+      cursor: pointer;
+      color: #1a1a1a;
+      padding: 0.25rem 0.5rem;
+    }
+    .trunk-show-popup__eyebrow {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      margin: 0;
+      opacity: 0.7;
+    }
+    .trunk-show-popup__brand { margin: 1rem 0 0.5rem; }
+    .trunk-show-popup__nl {
+      font-family: var(--font-heading--family, serif);
+      font-size: 4rem;
+      font-weight: 400;
+      color: #8a6d3b;
+      letter-spacing: 0.05em;
+      display: inline-block;
+      line-height: 1;
+    }
+    .trunk-show-popup__brand-title {
+      margin: 0.75rem 0 0.25rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: #6e5526;
+    }
+    .trunk-show-popup__brand-sub {
+      margin: 0;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: #6e5526;
+    }
+    .trunk-show-popup__x {
+      font-size: 1.5rem;
+      margin: 1.25rem 0;
+      color: #6e5526;
+      letter-spacing: 0.1em;
+    }
+    .trunk-show-popup__name {
+      font-family: var(--font-heading--family, serif);
+      font-size: 2.4rem;
+      line-height: 1;
+      margin: 0 0 1.75rem;
+      letter-spacing: 0.02em;
+    }
+    .trunk-show-popup__details {
+      border-top: 1px solid rgba(110, 85, 38, 0.3);
+      padding-top: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .trunk-show-popup__detail {
+      margin: 0.35rem 0;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .trunk-show-popup__cta {
+      display: inline-block;
+      background: #1a1a1a;
+      color: #ebe5d9;
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 0;
+    }
+    .trunk-show-popup__cta:hover { background: #333; }
+    @media (max-width: 500px) {
+      .trunk-show-popup__dialog { padding: 2.5rem 1.5rem 2rem; }
+      .trunk-show-popup__name { font-size: 1.9rem; }
+      .trunk-show-popup__nl { font-size: 3rem; }
+    }
+  </style>
+
+  <script>
+    (function () {
+      class TrunkShowPopup extends HTMLElement {
+        connectedCallback() {
+          const endDate = this.dataset.endDate;
+          if (endDate) {
+            const cutoff = new Date(endDate + 'T23:59:59');
+            if (Date.now() > cutoff.getTime()) return;
+          }
+          const key = this.dataset.storageKey || 'trunk-show-popup';
+          try {
+            if (localStorage.getItem(key) === 'dismissed') return;
+          } catch (e) { /* localStorage blocked, still show */ }
+
+          setTimeout(() => {
+            this.hidden = false;
+            document.body.style.overflow = 'hidden';
+          }, 1200);
+
+          this.addEventListener('click', (e) => {
+            if (e.target.closest('[data-tsp-close]')) this.dismiss(key);
+          });
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !this.hidden) this.dismiss(key);
+          });
+        }
+        dismiss(key) {
+          this.hidden = true;
+          document.body.style.overflow = '';
+          try { localStorage.setItem(key, 'dismissed'); } catch (e) {}
+        }
+      }
+      if (!customElements.get('trunk-show-popup')) {
+        customElements.define('trunk-show-popup', TrunkShowPopup);
+      }
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Trunk Show Popup",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable popup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Auto-disable after (YYYY-MM-DD)",
+      "default": "2026-05-20",
+      "info": "Popup will not show after this date."
+    },
+    {
+      "type": "text",
+      "id": "date_text",
+      "label": "Date line",
+      "default": "Wed, 20 May 2026"
+    },
+    {
+      "type": "text",
+      "id": "time_text",
+      "label": "Time line",
+      "default": "12 Noon – 7 PM"
+    },
+    {
+      "type": "text",
+      "id": "location_text",
+      "label": "Location line",
+      "default": "Ejaz Art Gallery, Gulberg, Lahore"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "Get Directions"
+    },
+    {
+      "type": "text",
+      "id": "cta_link",
+      "label": "Button link (full URL)",
+      "default": "https://maps.google.com/?q=Ejaz+Art+Gallery+Gulberg+Lahore"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trunk Show Popup"
+    }
+  ]
+}
+{% endschema %}

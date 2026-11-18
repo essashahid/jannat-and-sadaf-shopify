@@ -1744,3 +1744,23 @@ img {
 [product-grid-view='zoom-out'] .product-grid-view-zoom-out--details {
   display: none !important;
 }
+
+/* ============================================================
+   Mobile header: logo sits left of centre, just after the menu icon,
+   so it never lands on the model's face in the hero (17 Nov 2026)
+   ============================================================ */
+@media (max-width: 749px) {
+  #header-component[data-menu-style='drawer'] .header__columns .header-logo {
+    justify-self: start;
+    margin-inline-start: -40px;
+    transform: translateY(-3px);
+  }
+}
+
+/* Phones: keep the product name and price close together, less empty space below (17 Nov 2026) */
+@media (max-width: 749px) {
+  .product-grid__card.product-grid__card {
+    gap: 0;
+    padding-block-end: 2px;
+  }
+}

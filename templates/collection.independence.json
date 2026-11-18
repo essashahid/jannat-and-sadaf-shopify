@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "section": {
@@ -150,7 +159,7 @@
                 "show_tax_info": false,
                 "type_preset": "custom",
                 "width": "100%",
-                "alignment": "right",
+                "alignment": "left",
                 "font": "var(--font-body--family)",
                 "font_size": "0.74rem",
                 "line_height": "normal",

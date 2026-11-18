@@ -1111,7 +1111,7 @@ html {
     transform: scale(1) translate(0, 0);
   }
   to {
-    transform: scale(1.1) translate(-1.5%, -0.8%);
+    transform: scale(1.04) translate(-0.4%, 0);
   }
 }
 
@@ -1169,4 +1169,82 @@ html {
   .sak-marquee__track {
     animation: none !important;
   }
+}
+
+/* ============================================================
+   Speed + readability pass (17 Nov 2026)
+   - No zoom animation on phones (keeps the head in frame, less paint work)
+   - Stronger scrim behind the hero text so it reads over the pale robe
+   ============================================================ */
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .sak-hero__media img {
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+}
+.sak-hero__overlay {
+  background:
+    linear-gradient(to bottom, rgba(28, 24, 20, 0.34) 0%, rgba(28, 24, 20, 0) 24%),
+    linear-gradient(to right, rgba(28, 24, 20, 0.42) 0%, rgba(28, 24, 20, 0.16) 50%, rgba(28, 24, 20, 0) 80%),
+    linear-gradient(to top, rgba(28, 24, 20, 0.55) 0%, rgba(28, 24, 20, 0.2) 30%, rgba(28, 24, 20, 0) 55%);
+}
+@media (max-width: 767px) {
+  .sak-hero__overlay {
+    background:
+      linear-gradient(to bottom, rgba(28, 24, 20, 0.34) 0%, rgba(28, 24, 20, 0) 22%),
+      linear-gradient(to top, rgba(28, 24, 20, 0.72) 0%, rgba(28, 24, 20, 0.42) 32%, rgba(28, 24, 20, 0) 62%);
+  }
+}
+
+/* Mobile hero type: lighter headline, stronger label (17 Nov 2026) */
+@media (max-width: 749px) {
+  .sakatelier-home .sak-hero .sak-hero__label {
+    font-size: 0.85rem;
+    letter-spacing: 0.26em;
+    margin-bottom: 14px;
+  }
+  .sakatelier-home .sak-hero .sak-hero__heading {
+    font-size: 1.78rem;
+    line-height: 1.14;
+  }
+  .sakatelier-home .sak-hero .sak-hero__sub {
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+}
+
+/* Mobile hero: text left edge lines up with the menu icon (17 Nov 2026) */
+@media (max-width: 749px) {
+  .sakatelier-home .sak-hero .sak-hero__content {
+    padding-inline: 18px;
+  }
+}
+
+/* Speed + contrast pass, round 3 (17 Nov 2026) */
+.sak-head__eyebrow {
+  color: #7a6038;
+}
+.sak-product__price,
+.sak-product__price--was {
+  color: #6f665c;
+}
+/* Hover-swap photos are irrelevant on phones/touch; display:none stops the
+   lazy loader from downloading them at all. */
+@media (max-width: 749px), (hover: none) {
+  .sak-product__img--hover {
+    display: none;
+  }
+}
+
+/* Accessibility round: remaining contrast fixes (17 Nov 2026) */
+.sak-spotlight__sub,
+.sak-journal__meta {
+  color: #7a6038;
+}
+.sak-marquee__item {
+  color: #6f665c;
+}
+.sak-trust__link {
+  color: #6b532f;
 }
