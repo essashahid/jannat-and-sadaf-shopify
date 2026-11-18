@@ -16,7 +16,7 @@
           "type": "hero_slide",
           "settings": {
             "image": "shopify://shop_images/hero-banner.jpg",
-            "label": "Luxury Pret",
+            "label": "Everyday Wear",
             "heading": "Handcrafted luxury pret and formal wear",
             "subheading": "Block print, pret, formals and bridal pieces, made to order in Pakistan.",
             "button_text": "Discover the Collection",
@@ -37,7 +37,7 @@
           "type": "fabric_collection",
           "settings": {
             "source_product": "serenade-beige",
-            "collection_name": "Pret",
+            "collection_name": "Everyday Wear",
             "collection_description": "Everyday eastern wear designed for effortless elegance.",
             "collection_link": "shopify://collections/pret"
           }
@@ -55,7 +55,7 @@
           "type": "fabric_collection",
           "settings": {
             "source_product": "muted-iris",
-            "collection_name": "Formals",
+            "collection_name": "Occasion Wear",
             "collection_description": "Handcrafted pieces for occasions that matter.",
             "collection_link": "shopify://collections/formals"
           }
@@ -64,7 +64,7 @@
           "type": "fabric_collection",
           "settings": {
             "source_product": "cape-set",
-            "collection_name": "Co-ord Sets",
+            "collection_name": "Matching Sets",
             "collection_description": "Matching two-piece sets, made to be worn together.",
             "collection_link": "shopify://collections/co-ord-sets"
           }

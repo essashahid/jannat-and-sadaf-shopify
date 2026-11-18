@@ -181,21 +181,23 @@
           {%- for block in fabric_items -%}
             {%- liquid
               assign fabric_name_lower = block.settings.collection_name | downcase | strip
+              # Tiles were renamed on 2026-11-18 (Pret -> Everyday Wear, Formals -> Occasion Wear);
+              # both names keep the same fallbacks.
               assign fabric_asset = ''
-              if fabric_name_lower == 'pret'
+              if fabric_name_lower == 'pret' or fabric_name_lower == 'everyday wear'
                 assign fabric_asset = 'collection-pret.jpg'
-              elsif fabric_name_lower == 'formals'
+              elsif fabric_name_lower == 'formals' or fabric_name_lower == 'occasion wear'
                 assign fabric_asset = 'collection-formals.jpg'
               endif
 
               # Catalogue photo each tile falls back to when no image is set in the editor
               assign fabric_product = block.settings.source_product
               if fabric_product == blank
-                if fabric_name_lower == 'pret'
+                if fabric_name_lower == 'pret' or fabric_name_lower == 'everyday wear'
                   assign fabric_product = all_products['serenade-beige']
                 elsif fabric_name_lower == 'block print'
                   assign fabric_product = all_products['fuschia-angrakha']
-                elsif fabric_name_lower == 'formals'
+                elsif fabric_name_lower == 'formals' or fabric_name_lower == 'occasion wear'
                   assign fabric_product = all_products['muted-iris']
                 endif
               endif
