@@ -338,13 +338,13 @@
                             >
                               {%- if childlink.links == blank -%}
                                 {%- comment -%}
-                                  Simple links for links with no children (regardless of accordion setting), in menus with 3 levels of links
-                                  This link is currently using --parent class style but --child would match the pattern on desktop
+                                  Simple links for links with no children (regardless of accordion setting), in menus with 3 levels of links.
+                                  Uses --child so it looks like the other links, not like a group heading.
                                 {%- endcomment -%}
                                 <a
                                   id="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}"
                                   href="{{ childlink.url }}"
-                                  class="menu-drawer__menu-item menu-drawer__menu-item--parent focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
+                                  class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
                                   {% if childlink.current %}
                                     aria-current="page"
                                   {% endif %}
@@ -436,15 +436,17 @@
                                   {%- comment -%}
                                     Flat menus for links with children, in menus with 3 levels of links
                                   {%- endcomment -%}
-                                  <a
+                                  {%- comment -%}
+                                    Group heading (plain text, not a link) labelling the grandchild list below.
+                                  {%- endcomment -%}
+                                  <span
                                     id="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}"
-                                    href="{{ childlink.url }}"
-                                    class="menu-drawer__menu-item menu-drawer__menu-item--parent focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
+                                    class="menu-drawer__menu-item menu-drawer__group-heading"
                                   >
                                     <span class="menu-drawer__menu-item-text wrap-text">
                                       {{- childlink.title | escape -}}
                                     </span>
-                                  </a>
+                                  </span>
                                   {% liquid
                                     assign render_link_image = false
                                     if block_settings.menu_style == 'collection_images'
@@ -460,6 +462,7 @@
                                     class="menu-drawer__menu menu-drawer__menu--grandchildlist details-content{% if render_link_image %} menu-drawer__menu--grid{% endif %}"
                                     role="list"
                                     tabindex="-1"
+                                    aria-labelledby="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}"
                                   >
                                     {%- for grandchildlink in childlink.links -%}
                                       <li

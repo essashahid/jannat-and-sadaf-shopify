@@ -1,0 +1,52 @@
+{%- doc -%}
+  Renders one product preview panel for a rail link in the shop mega menu.
+  Collection links preview that collection; catalog and collection-list links
+  preview all products.
+
+  @param {object} link - The menu link the panel belongs to.
+  @param {number} index - Panel index, matching the rail trigger's data-shop-mega-trigger.
+
+  @example
+  {% render 'shop-mega-products', link: child, index: 0 %}
+{%- enddoc -%}
+
+{%- liquid
+  assign panel_collection = blank
+  if link.type == 'collection_link'
+    assign panel_collection = link.object
+  elsif link.type == 'catalog_link' or link.type == 'collections_link'
+    assign panel_collection = collections.all
+  endif
+-%}
+<ul
+  class="shop-mega__products list-unstyled{% if index == 0 %} is-active{% endif %}"
+  data-shop-mega-panel="{{ index }}"
+>
+  {%- if panel_collection != blank -%}
+    {%- for product in panel_collection.products limit: 3 -%}
+      <li class="shop-mega__product">
+        <a href="{{ product.url }}" class="shop-mega__card">
+          <span class="shop-mega__card-media">
+            {%- if product.featured_media -%}
+              {%- assign card_alt = product.title | escape -%}
+              {{
+                product.featured_media
+                | image_url: width: 800
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '300, 450, 600, 800',
+                  sizes: '(min-width: 990px) 22vw, 40vw',
+                  alt: card_alt,
+                  class: 'shop-mega__card-image'
+              }}
+            {%- else -%}
+              <span class="shop-mega__card-image shop-mega__card-image--placeholder"></span>
+            {%- endif -%}
+          </span>
+          <span class="shop-mega__card-title">{{ product.title }}</span>
+          <span class="shop-mega__card-price">{{ product.price | money }}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  {%- endif -%}
+</ul>

@@ -1430,6 +1430,37 @@ img {
   color: rgb(var(--color-foreground-rgb) / 1);
 }
 
+/* Third menu level: a rail item with children becomes a group heading
+   (plain text, not a link) with its children listed beneath it. */
+.shop-mega__rail-group + .shop-mega__rail-group,
+.shop-mega__rail-item + .shop-mega__rail-group {
+  margin-block-start: 22px;
+}
+
+/* Links keep the header's global uppercase style; the heading uses the
+   brand serif so it reads as a label rather than another link. */
+.shop-mega__rail-heading,
+.menu-drawer__group-heading {
+  display: block;
+  padding-block-end: 4px;
+  font-family: var(--font-heading--family);
+  font-size: 19px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  color: rgb(var(--color-foreground-rgb) / 1);
+}
+
+.shop-mega__rail-sublist {
+  margin: 0;
+  padding: 0;
+}
+
+.shop-mega__rail-link--nested {
+  padding-block: 7px;
+}
+
 .shop-mega__panels {
   position: relative;
 }

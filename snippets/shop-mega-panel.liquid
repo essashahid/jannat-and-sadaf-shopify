@@ -2,6 +2,11 @@
   Renders the desktop mega menu as a vertical category rail on the left with a
   preview of products from the hovered category on the right.
 
+  A rail item that has its own child links (a third menu level, e.g.
+  SHOP > By Collection > Everyday Wear) renders as a plain-text group heading
+  with its children listed beneath it as rail links. Every rail link gets its
+  own product panel; triggers and panels share one running index.
+
   @param {object} parent_link - The top level link whose children build the rail.
   @param {string} id - Unique id used to scope the panel.
 
@@ -11,67 +16,60 @@
 
 <div class="shop-mega" data-shop-mega="{{ id }}">
   <ul class="shop-mega__rail list-unstyled">
+    {%- assign panel_index = 0 -%}
     {%- for child in parent_link.links -%}
-      {%- liquid
-        assign is_clearance = false
-        if child.url contains '/collections/special-prices'
-          assign is_clearance = true
-        endif
-      -%}
-      <li class="shop-mega__rail-item{% if is_clearance %} shop-mega__rail-item--divided{% endif %}">
-        <a
-          href="{{ child.url }}"
-          class="shop-mega__rail-link{% if forloop.first %} is-active{% endif %}"
-          data-shop-mega-trigger="{{ forloop.index0 }}"
-        >
-          <span class="wrap-text">{{- child.title -}}</span>
-        </a>
-      </li>
+      {%- if child.links != blank -%}
+        {%- assign heading_id = id | append: '-group-' | append: forloop.index -%}
+        <li class="shop-mega__rail-group">
+          <span class="shop-mega__rail-heading" id="{{ heading_id }}">{{- child.title -}}</span>
+          <ul class="shop-mega__rail-sublist list-unstyled" aria-labelledby="{{ heading_id }}">
+            {%- for grandchild in child.links -%}
+              <li class="shop-mega__rail-item">
+                <a
+                  href="{{ grandchild.url }}"
+                  class="shop-mega__rail-link shop-mega__rail-link--nested{% if panel_index == 0 %} is-active{% endif %}"
+                  data-shop-mega-trigger="{{ panel_index }}"
+                >
+                  <span class="wrap-text">{{- grandchild.title -}}</span>
+                </a>
+              </li>
+              {%- assign panel_index = panel_index | plus: 1 -%}
+            {%- endfor -%}
+          </ul>
+        </li>
+      {%- else -%}
+        {%- liquid
+          assign is_clearance = false
+          if child.url contains '/collections/special-prices'
+            assign is_clearance = true
+          endif
+        -%}
+        <li class="shop-mega__rail-item{% if is_clearance %} shop-mega__rail-item--divided{% endif %}">
+          <a
+            href="{{ child.url }}"
+            class="shop-mega__rail-link{% if panel_index == 0 %} is-active{% endif %}"
+            data-shop-mega-trigger="{{ panel_index }}"
+          >
+            <span class="wrap-text">{{- child.title -}}</span>
+          </a>
+        </li>
+        {%- assign panel_index = panel_index | plus: 1 -%}
+      {%- endif -%}
     {%- endfor -%}
   </ul>
 
   <div class="shop-mega__panels">
+    {%- assign panel_index = 0 -%}
     {%- for child in parent_link.links -%}
-      {%- liquid
-        assign panel_collection = blank
-        if child.type == 'collection_link'
-          assign panel_collection = child.object
-        elsif child.type == 'catalog_link' or child.type == 'collections_link'
-          assign panel_collection = collections.all
-        endif
-      -%}
-      <ul
-        class="shop-mega__products list-unstyled{% if forloop.first %} is-active{% endif %}"
-        data-shop-mega-panel="{{ forloop.index0 }}"
-      >
-        {%- if panel_collection != blank -%}
-          {%- for product in panel_collection.products limit: 3 -%}
-            <li class="shop-mega__product">
-              <a href="{{ product.url }}" class="shop-mega__card">
-                <span class="shop-mega__card-media">
-                  {%- if product.featured_media -%}
-                    {%- assign card_alt = product.title | escape -%}
-                    {{
-                      product.featured_media
-                      | image_url: width: 800
-                      | image_tag:
-                        loading: 'lazy',
-                        widths: '300, 450, 600, 800',
-                        sizes: '(min-width: 990px) 22vw, 40vw',
-                        alt: card_alt,
-                        class: 'shop-mega__card-image'
-                    }}
-                  {%- else -%}
-                    <span class="shop-mega__card-image shop-mega__card-image--placeholder"></span>
-                  {%- endif -%}
-                </span>
-                <span class="shop-mega__card-title">{{ product.title }}</span>
-                <span class="shop-mega__card-price">{{ product.price | money }}</span>
-              </a>
-            </li>
-          {%- endfor -%}
-        {%- endif -%}
-      </ul>
+      {%- if child.links != blank -%}
+        {%- for grandchild in child.links -%}
+          {% render 'shop-mega-products', link: grandchild, index: panel_index %}
+          {%- assign panel_index = panel_index | plus: 1 -%}
+        {%- endfor -%}
+      {%- else -%}
+        {% render 'shop-mega-products', link: child, index: panel_index %}
+        {%- assign panel_index = panel_index | plus: 1 -%}
+      {%- endif -%}
     {%- endfor -%}
   </div>
 </div>
