@@ -3,15 +3,24 @@
   "api_version": "2026-10",
   "online_store_publication_title_contains": "Online Store",
 
+  "auth": {
+    "_note": "apply.mjs reads credentials from the environment only. Either SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET (Dev Dashboard app, client credentials grant, 24-hour token) or SHOPIFY_ADMIN_TOKEN. Optional SHOPIFY_SHOP must match store above. The run stops if any scope below is missing.",
+    "required_scopes": [
+      "read_products", "write_products",
+      "read_online_store_navigation", "write_online_store_navigation",
+      "read_publications", "write_publications"
+    ]
+  },
+
   "hard_rules": {
     "_note": "Enforced by apply.mjs. The script never changes a collection handle or a product title, and stops if a planned change would delete a pre-existing collection or touch anything listed under do_not_touch.",
     "collections_created_during_task_on_or_after": "2026-11-18T10:00:00Z"
   },
 
   "do_not_touch": {
-    "_note": "Revised list 2026-11-18: Summer Collection stays exactly as it is (title, handle, unpublished, products incl. Olive Whisper) and so does its redirect.",
+    "_note": "Summer Collection stays exactly as it is (title, handle, unpublished, products incl. Olive Whisper). Its redirect is changed under redirects.ensure (revised list, item 5).",
     "collections": ["summer-collection"],
-    "redirect_paths": ["/collections/summer-collection"]
+    "redirect_paths": []
   },
 
   "matching": {
@@ -39,7 +48,7 @@
   },
 
   "hide_products": {
-    "_note": "Status set to DRAFT only. Memberships are kept, except in collections below whose product list is set exactly.",
+    "_note": "Status set to DRAFT only. Memberships are kept, except in collections whose product list is set exactly.",
     "status": "DRAFT",
     "titles": [
       "Vintage Coral", "Soft Petals", "Saffron Check", "Black Leopard", "Pistachio Rose",
@@ -57,74 +66,140 @@
       "group": "by_collection",
       "title": "Everyday Wear",
       "handle": "pret",
+      "membership": "exact",
       "products": [
         "Quiet Sage", "Quiet Ivory", "Stone Willow", "Misty Blue", "Desert Blush", "Ash Blue Wrap",
         "Blue Haze", "Buttercream Wrap", "Soft Scallop", "Pearly Green", "Ivory Lattice", "Sand Stone"
-      ]
+      ],
+      "copy": {
+        "description_html": "<p>Everyday wear from the Jannat and Sadaf atelier: tailored linen co-ord sets, easy shirts and tunics, and cotton silk pieces finished with hand embroidery. Every piece is made to order in Lahore and dispatches in 7 to 10 working days, with free delivery across Pakistan on orders over Rs 30,000. Read <a href=\"/blogs/journal/the-art-of-linen\">The Art of Linen</a> for how to wear and care for it, or see the warm-weather edit in <a href=\"/collections/summer\">Summer</a>.</p>",
+        "seo_title": "Everyday Wear | Linen Co-ord Sets, Shirts & Tunics",
+        "seo_description": "Everyday wear by Jannat and Sadaf: linen co-ords, shirts and tunics, made to order in Lahore. Free delivery in Pakistan over Rs 30,000. Ships worldwide."
+      }
     },
     {
       "_note": "Existing collection, renamed from Co-ord Sets. Handle unchanged.",
       "group": "by_collection",
       "title": "Matching Sets",
       "handle": "co-ord-sets",
+      "membership": "exact",
       "products": [
         "Pressed Fern", "Olive Ease Set", "Pink Ease Set", "Cape Set", "Green Forest", "Blue Forest",
         "Rust Scroll", "Zebra Set", "Navy Scroll", "Riviera", "Marrakech", "Emerald Wrap",
         "Vintage Blossom", "Cabana", "Saffron Ruffles"
-      ]
+      ],
+      "copy": {
+        "description_html": "<p>Matching sets from Jannat and Sadaf, cut from the same cloth and made to be worn together, so the outfit is decided before you are. The collection brings our hand block printed sets, from Marrakech and Emerald Wrap to the three-piece Cabana and Saffron Ruffles, together with silk, crepe and textured co-ords. Every set is made to order in Lahore; read how the printing is done in <a href=\"/blogs/journal/what-is-block-print\">our journal</a>, or see every printed piece in <a href=\"/collections/block-print\">block print</a>.</p>",
+        "seo_title": "Matching Sets | Block Print & Silk Pakistani Co-ord Sets",
+        "seo_description": "Matching sets by Jannat and Sadaf: hand block printed co-ords and silk and crepe two-pieces, cut from the same cloth, made to order in Lahore. Ships worldwide."
+      }
     },
     {
       "_note": "Existing collection, renamed from Formals. Handle unchanged.",
       "group": "by_collection",
       "title": "Occasion Wear",
       "handle": "formals",
-      "products": ["Midnight Vintage", "Coral Dust", "Midnight Lace", "Teal Brocade", "Gold Heritage"]
+      "membership": "exact",
+      "products": ["Midnight Vintage", "Coral Dust", "Midnight Lace", "Teal Brocade", "Gold Heritage"],
+      "copy": {
+        "description_html": "<p>Occasion wear from the Jannat and Sadaf atelier: hand-embroidered jackets and ensembles in raw silk, jacquard and brocade, worked with gold handwork, mukesh and sequins for weddings, dinners and the evenings that matter. Each piece is made to order in Lahore over 15 to 20 working days, so it arrives crafted for you alone. For lighter celebrations, see <a href=\"/collections/festive-wear\">Festive Wear</a>, or message our stylist on WhatsApp for guidance.</p>",
+        "seo_title": "Occasion Wear | Hand-Embroidered Pakistani Formals",
+        "seo_description": "Occasion wear by Jannat and Sadaf: hand-embroidered jackets and ensembles with gold handwork, mukesh and brocade, made to order in Lahore. Ships worldwide."
+      }
     },
     {
       "group": "by_collection",
       "title": "Festive Wear",
       "handle": "festive-wear",
-      "products": ["Ivory Shisha", "Ash Blossom", "Lali", "Lumina", "Fuchsia Angrakha"]
+      "membership": "exact",
+      "products": ["Ivory Shisha", "Ash Blossom", "Lali", "Lumina", "Fuchsia Angrakha"],
+      "copy": {
+        "description_html": "<p>Festive wear from Jannat and Sadaf for Eid, mehndis and family celebrations: shisha work on ivory, tonal hand embroidery on ash blue and ruby, lace on antique blush, and hand block print on fuchsia raw silk. Every piece is made to order in Lahore and finished by hand in our atelier. For grander evenings, see <a href=\"/collections/formals\">Occasion Wear</a>.</p>",
+        "seo_title": "Festive Wear | Embroidered Pakistani Outfits for Eid & Mehndi",
+        "seo_description": "Festive wear by Jannat and Sadaf: shisha work, tonal hand embroidery, lace and hand block print for Eid and mehndi, made to order in Lahore. Ships worldwide."
+      }
     },
     {
       "group": "by_collection",
       "title": "Dinner Wear",
       "handle": "dinner-wear",
+      "membership": "exact",
       "products": [
         "Black Boom", "Midnight Blossom", "Pressed Lilac", "Pine Pink", "Rose Blush",
         "Blue Roses", "Sea Glass", "Cobalt Charm", "Taupe"
-      ]
+      ],
+      "copy": {
+        "description_html": "<p>Dinner wear from Jannat and Sadaf: co-ord sets and three-piece suits with hand embroidery, in black, ocean blue, dusty rose, lilac and soft pastels, polished enough for an evening out and comfortable enough to wear all night. Layer Taupe, a silk jacket with metallic embroidery, over any of them. Every piece is made to order in Lahore; for bigger occasions, see <a href=\"/collections/formals\">Occasion Wear</a>.</p>",
+        "seo_title": "Dinner Wear | Embroidered Pakistani Co-ord Sets & Suits",
+        "seo_description": "Dinner wear by Jannat and Sadaf: hand-embroidered co-ord sets and three-piece suits for evenings out, made to order in Lahore. Ships worldwide."
+      }
     },
     {
       "group": "by_season",
       "title": "Winter",
       "handle": "winter",
+      "membership": "exact",
       "products": [
         "Riviera", "Blue Roses", "Marrakech", "Rust Scroll", "Emerald Wrap", "Cobalt Charm",
         "Zebra Set", "Navy Scroll", "Saffron Ruffles", "Cabana", "Vintage Blossom", "Taupe",
         "Blue Forest", "Green Forest", "Cape Set", "Pressed Fern"
-      ]
+      ],
+      "copy": {
+        "description_html": "<p>The Jannat and Sadaf winter edit: hand block printed raw silk, silk and textured crepe co-ords in deeper colours, made for cooler days and long evenings. Every piece is made to order in Lahore, with the Cape Set and the Taupe jacket to layer when the temperature drops. Read how our prints are made in <a href=\"/blogs/journal/what-is-block-print\">our journal</a>.</p>",
+        "seo_title": "Winter | Block Print Raw Silk & Silk Co-ord Sets",
+        "seo_description": "Winter by Jannat and Sadaf: hand block printed raw silk, silk and crepe co-ord sets and layering jackets, made to order in Lahore. Ships worldwide."
+      }
     },
     {
       "_note": "The collection created 2026-11-18 (gid://shopify/Collection/578491515191), not Summer Collection.",
       "group": "by_season",
       "title": "Summer",
       "handle": "summer",
+      "membership": "exact",
       "products": [
         "Quiet Sage", "Quiet Ivory", "Stone Willow", "Misty Blue", "Desert Blush", "Ash Blue Wrap",
         "Blue Haze", "Buttercream Wrap", "Soft Scallop", "Pearly Green", "Ivory Lattice", "Lali"
-      ]
+      ],
+      "copy": {
+        "description_html": "<p>Summer from Jannat and Sadaf: breathable linen co-ord sets, a lemon linen shirt and light cotton pieces in soft pastels, with Lali in ruby for contrast, all cut to stay composed in the heat. Every piece is made to order in Lahore. Read <a href=\"/blogs/journal/the-art-of-linen\">The Art of Linen</a> for how to care for linen, or see more in <a href=\"/collections/pret\">Everyday Wear</a>.</p>",
+        "seo_title": "Summer | Linen Co-ord Sets & Shirts in Soft Pastels",
+        "seo_description": "Summer by Jannat and Sadaf: breathable linen co-ord sets, shirts and light cotton pieces in soft pastels, made to order in Lahore. Ships worldwide."
+      }
     },
     {
       "group": "by_season",
       "title": "All Year Round",
       "handle": "all-year-round",
+      "membership": "exact",
       "products": [
         "Sea Glass", "Pine Pink", "Black Boom", "Pressed Lilac", "Sand Stone",
         "Midnight Blossom", "Lumina", "Midnight Lace"
-      ]
+      ],
+      "copy": {
+        "description_html": "<p>Pieces from Jannat and Sadaf that work in any season: hand-embroidered sets in quiet tones, and two jackets, Lumina and Midnight Lace, to layer over them. Every piece is made to order in Lahore. For warm-weather linen see <a href=\"/collections/summer\">Summer</a>, and for richer fabrics see <a href=\"/collections/winter\">Winter</a>.</p>",
+        "seo_title": "All Year Round | Embroidered Sets & Layering Jackets",
+        "seo_description": "Pieces for every season by Jannat and Sadaf: hand-embroidered sets in quiet tones and jackets to layer, made to order in Lahore. Ships worldwide."
+      }
+    },
+    {
+      "_note": "Revised list item 2: add only, remove nothing. Black Leopard and Saffron Check are also hidden in Step 1, so they join as DRAFT and show once un-hidden.",
+      "group": "other",
+      "title": "Block Print",
+      "handle": "block-print",
+      "membership": "add_only",
+      "products": ["Zebra Set", "Navy Scroll", "Black Leopard", "Saffron Check"]
     }
   ],
+
+  "copy_edits": {
+    "_note": "Exact text replacements in existing collection copy. Link targets stay /collections/pret. A replacement whose text is no longer found, and whose new text is not there either, stops the run.",
+    "edits": [
+      { "handle": "block-print", "field": "description_html", "from": "<a href=\"/collections/pret\">luxury pret</a>", "to": "<a href=\"/collections/pret\">everyday wear</a>" },
+      { "handle": "new-in", "field": "description_html", "from": "<a href=\"/collections/pret\">luxury pret</a>", "to": "<a href=\"/collections/pret\">everyday wear</a>" },
+      { "handle": "hue", "field": "description_html", "from": "<a href=\"/collections/pret\">luxury pret</a>", "to": "<a href=\"/collections/pret\">everyday wear</a>" },
+      { "handle": "new-in", "field": "seo_description", "from": "luxury pret, block print and formals", "to": "everyday wear, block print and formals" }
+    ]
+  },
 
   "assertions": {
     "_note": "by_collection lists must cover the active products after hiding exactly once each. Season lists plus unassigned_season must do the same.",
@@ -148,15 +223,23 @@
   },
 
   "redirects": {
-    "_note": "Must exist after the run. Missing ones are created after the cleanup deletes, so the path is free when the redirect is added. An existing redirect with a different target stops the run.",
+    "_note": "Must exist after the run. Missing ones are created after the cleanup deletes. An existing redirect is repointed only if its current target equals replace_target; any other target stops the run. A path held by an unpublished collection is fine: it returns 404, so the redirect applies (checked 2026-11-18 on /collections/summer-collection).",
     "ensure": [
-      { "path": "/collections/occasion-wear", "target": "/collections/formals" }
+      { "path": "/collections/occasion-wear", "target": "/collections/formals" },
+      { "path": "/collections/summer-collection", "target": "/collections/summer", "replace_target": "/collections/pret" }
     ]
   },
 
   "menu": {
     "handle": "main-menu",
     "title": "Main menu",
+    "menu_order": {
+      "_note": "Authoritative order of each item's children: collection links by handle, headings by title. Must list every child exactly once.",
+      "(top)": ["new-in", "SHOP"],
+      "SHOP": ["By Collection", "By Season", "special-prices"],
+      "By Collection": ["pret", "co-ord-sets", "formals", "festive-wear", "dinner-wear"],
+      "By Season": ["winter", "all-year-round", "summer"]
+    },
     "items": [
       { "title": "NEW IN", "collection": "new-in" },
       {

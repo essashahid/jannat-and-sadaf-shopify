@@ -1,16 +1,22 @@
 #!/usr/bin/env node
 // Applies scripts/nav-restructure/config.json to the store through the Admin GraphQL API.
 //
-//   SHOPIFY_ADMIN_TOKEN=shpat_... node scripts/nav-restructure/apply.mjs --dry-run
-//   SHOPIFY_ADMIN_TOKEN=shpat_... node scripts/nav-restructure/apply.mjs
-//   node scripts/nav-restructure/apply.mjs --dry-run --state <captured-state.json>   (offline plan)
+// Credentials come from the environment only (never from files in this repo):
+//   SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET  Dev Dashboard app; exchanged for a 24-hour token
+//                                              with the client credentials grant.
+//   SHOPIFY_ADMIN_TOKEN                        Alternative: an existing Admin API access token.
+//   SHOPIFY_SHOP (optional)                    Must match config.store; guards against the wrong store.
+// Required scopes are listed in config.auth.required_scopes; the run stops if any is missing.
+//
+//   node scripts/nav-restructure/apply.mjs --dry-run            plan only, nothing written
+//   node scripts/nav-restructure/apply.mjs                      live run (snapshot first)
+//   node scripts/nav-restructure/apply.mjs --dry-run --state <file>        offline plan from captured state
+//   node scripts/nav-restructure/apply.mjs --dry-run --state <file> --print-menu-json
+//                                                               print the menu items payload only
 //
 // Idempotent: every step compares current state with config and only writes the difference.
-// A live run saves a snapshot of the current state to snapshots/<timestamp>.json before writing.
-//
-// Hard rules enforced here: collection handles and product titles are never written; only
-// collections created during this task (by id and createdAt) can be deleted; anything under
-// config.do_not_touch stops the run if a change would reach it.
+// Hard rules: collection handles and product titles are never written; only collections created
+// during this task (by id and createdAt) can be deleted; do_not_touch items stop the run.
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -19,26 +25,61 @@ import { fileURLToPath } from 'node:url';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
 const DRY = args.includes('--dry-run');
+const PRINT_MENU = args.includes('--print-menu-json');
 const stateArg = args.includes('--state') ? args[args.indexOf('--state') + 1] : null;
 if (stateArg && !DRY) die('--state is only allowed together with --dry-run.');
+if (PRINT_MENU && !DRY) die('--print-menu-json is only allowed together with --dry-run.');
 
 const config = JSON.parse(readFileSync(join(HERE, 'config.json'), 'utf8'));
-const TOKEN = process.env.SHOPIFY_ADMIN_TOKEN;
-const ENDPOINT = `https://${config.store}/admin/api/${config.api_version}/graphql.json`;
+const STORE = config.store;
+const ENDPOINT = `https://${STORE}/admin/api/${config.api_version}/graphql.json`;
 
 function die(msg) {
   console.error(`\nSTOPPED: ${msg}`);
   process.exit(1);
 }
 
+// ---------------------------------------------------------------- Auth
+
+const bare = (s) => String(s).replace(/^https?:\/\//, '').replace(/\.myshopify\.com\/?$/, '');
+if (process.env.SHOPIFY_SHOP && bare(process.env.SHOPIFY_SHOP) !== bare(STORE)) {
+  die(`SHOPIFY_SHOP is "${process.env.SHOPIFY_SHOP}" but config.store is "${STORE}".`);
+}
+
+let token = process.env.SHOPIFY_ADMIN_TOKEN || null;
+let tokenExpiresAt = token ? Infinity : 0;
+
+async function getToken() {
+  if (token && Date.now() < tokenExpiresAt - 60_000) return token;
+  const clientId = process.env.SHOPIFY_CLIENT_ID;
+  const clientSecret = process.env.SHOPIFY_CLIENT_SECRET;
+  if (!clientId || !clientSecret) {
+    die('No credentials. Set SHOPIFY_CLIENT_ID and SHOPIFY_CLIENT_SECRET (Dev Dashboard app), or SHOPIFY_ADMIN_TOKEN.');
+  }
+  const res = await fetch(`https://${STORE}/admin/oauth/access_token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ grant_type: 'client_credentials', client_id: clientId, client_secret: clientSecret }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.access_token) {
+    const hint = JSON.stringify(body).includes('shop_not_permitted')
+      ? ' The app is not in the same Shopify organization as the store: create it from the store admin (Settings > Apps > Develop apps).'
+      : '';
+    die(`Token request failed (${res.status}): ${body.error_description ?? body.error ?? 'no details'}.${hint}`);
+  }
+  token = body.access_token;
+  tokenExpiresAt = Date.now() + (body.expires_in ?? 86399) * 1000;
+  return token;
+}
+
 // ---------------------------------------------------------------- GraphQL
 
 async function gql(query, variables = {}) {
-  if (!TOKEN) die('SHOPIFY_ADMIN_TOKEN is not set.');
   for (let attempt = 1; ; attempt++) {
     const res = await fetch(ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Shopify-Access-Token': TOKEN },
+      headers: { 'Content-Type': 'application/json', 'X-Shopify-Access-Token': await getToken() },
       body: JSON.stringify({ query, variables }),
     });
     const body = await res.json().catch(() => ({}));
@@ -58,6 +99,14 @@ function checkUserErrors(label, payload) {
   return payload;
 }
 
+async function checkScopes() {
+  const granted = new Set((await gql(`{ currentAppInstallation { accessScopes { handle } } }`)).currentAppInstallation.accessScopes.map((s) => s.handle));
+  // A write scope includes the matching read scope.
+  const has = (s) => granted.has(s) || (s.startsWith('read_') && granted.has(`write_${s.slice(5)}`));
+  const missing = config.auth.required_scopes.filter((s) => !has(s));
+  if (missing.length) die(`The app is missing scopes: ${missing.join(', ')}. Add them in a new app version and approve it on the store.`);
+}
+
 // ---------------------------------------------------------------- Read state
 
 const PRODUCTS_Q = `query($after: String) { products(first: 100, after: $after) {
@@ -66,7 +115,7 @@ const PRODUCTS_Q = `query($after: String) { products(first: 100, after: $after) 
 
 const COLLECTIONS_Q = `query($after: String, $pub: ID!) { collections(first: 50, after: $after) {
   pageInfo { hasNextPage endCursor }
-  nodes { id title handle createdAt publishedOnPublication(publicationId: $pub)
+  nodes { id title handle createdAt descriptionHtml seo { title description } publishedOnPublication(publicationId: $pub)
     sources { __typename id ... on CollectionConditionsSource { inclusion {
       conditions { __typename }
       selections(first: 250) { pageInfo { hasNextPage } nodes { product { id } } } } } } } } }`;
@@ -120,14 +169,40 @@ function normalizeState(raw) {
       if (src[0].inclusion.selections.pageInfo?.hasNextPage) die(`Collection ${c.handle} has more than 250 selections; paging not implemented.`);
       membership = { kind: 'manual', sourceId: src[0].id, productIds: src[0].inclusion.selections.nodes.map((n) => n.product.id) };
     } else membership = { kind: 'rule-based', sourceId: null, productIds: null };
-    return { id: c.id, title: c.title, handle: c.handle, createdAt: c.createdAt, published: c.publishedOnPublication, membership };
+    return {
+      id: c.id, title: c.title, handle: c.handle, createdAt: c.createdAt, published: c.publishedOnPublication, membership,
+      descriptionHtml: c.descriptionHtml ?? '', seoTitle: c.seo?.title ?? null, seoDescription: c.seo?.description ?? null,
+    };
   });
   return { ...raw, products, collections };
+}
+
+// ---------------------------------------------------------------- Menu helpers
+
+const menuKey = (i) => i.collection ?? i.title;
+
+// Returns config.menu.items with every child list ordered by config.menu.menu_order.
+function orderedMenu(errors) {
+  const order = config.menu.menu_order ?? {};
+  const sortLevel = (items, parent) => {
+    const list = order[parent];
+    let out = items;
+    if (list) {
+      const keys = items.map(menuKey);
+      const missing = keys.filter((k) => !list.includes(k));
+      const extra = list.filter((k) => !keys.includes(k));
+      if (missing.length || extra.length) errors.push(`menu_order["${parent}"] must list exactly ${JSON.stringify(keys)}; missing ${JSON.stringify(missing)}, unknown ${JSON.stringify(extra)}.`);
+      else out = [...items].sort((a, b) => list.indexOf(menuKey(a)) - list.indexOf(menuKey(b)));
+    }
+    return out.map((i) => (i.items ? { ...i, items: sortLevel(i.items, i.title) } : i));
+  };
+  return sortLevel(config.menu.items, '(top)');
 }
 
 // ---------------------------------------------------------------- Plan
 
 const norm = (s) => String(s).trim().replace(/\s+/g, ' ').toLowerCase();
+const sameHtml = (a, b) => String(a ?? '').replace(/\s+/g, ' ').trim() === String(b ?? '').replace(/\s+/g, ' ').trim();
 
 function plan(state) {
   const errors = [];
@@ -175,6 +250,7 @@ function plan(state) {
   if (activeAfter.size !== config.hide_products.expected_active_after) {
     errors.push(`Active products after hiding would be ${activeAfter.size}, expected ${config.hide_products.expected_active_after}.`);
   }
+  const statusAfter = (p) => (hidden.has(p.id) && p.status !== 'ARCHIVED' ? config.hide_products.status : p.status);
 
   // Collection lists -> product ids
   const desired = new Map();
@@ -183,7 +259,10 @@ function plan(state) {
     for (const t of spec.products) {
       const p = resolve(t);
       if (!p) continue;
-      if (hidden.has(p.id)) errors.push(`${spec.title}: "${t}" is in the hide list.`);
+      if (hidden.has(p.id)) {
+        if (spec.membership === 'add_only') notes.push(`${spec.title}: "${t}" is added but also hidden in Step 1, so it will not show until un-hidden.`);
+        else errors.push(`${spec.title}: "${t}" is in the hide list.`);
+      }
       if (ids.includes(p.id)) errors.push(`${spec.title}: "${t}" listed twice.`);
       ids.push(p.id);
     }
@@ -243,23 +322,31 @@ function plan(state) {
     const occupant = pathHandle ? byHandle(pathHandle) : null;
     const targetHandle = r.target.startsWith('/collections/') ? r.target.slice('/collections/'.length) : null;
     const target = targetHandle ? byHandle(targetHandle) : null;
-    if (occupant && !deleting.has(occupant.id)) errors.push(`Redirect ${r.path}: collection ${occupant.handle} would still occupy the path, so the redirect could not fire.`);
+    let pathNote = '';
+    if (occupant && deleting.has(occupant.id)) pathNote = ` Takes effect once ${occupant.handle} is deleted.`;
+    else if (occupant && !occupant.published) pathNote = ` ${occupant.handle} is unpublished, so the path returns 404 and the redirect applies.`;
+    else if (occupant) errors.push(`Redirect ${r.path}: published collection ${occupant.handle} occupies the path, so the redirect could not fire.`);
     if (targetHandle && (!target || !target.published)) errors.push(`Redirect ${r.path}: target ${r.target} is missing or unpublished.`);
-    if (existing && existing.target !== r.target) {
-      errors.push(`Redirect ${r.path} exists with target ${existing.target}, expected ${r.target}; not changing it.`);
+    if (existing && existing.target === r.target) {
+      notes.push(`Redirect ${r.path} -> ${r.target}: exists (${existing.id}).${pathNote}`);
+    } else if (existing && r.replace_target && existing.target === r.replace_target) {
+      notes.push(`Redirect ${r.path}: currently -> ${existing.target}; planned to point at ${r.target}.${pathNote}`);
+      ops.push({ step: 0, kind: 'redirect.update', id: existing.id, path: r.path, target: r.target, desc: `Repoint redirect ${r.path}: ${existing.target} -> ${r.target}` });
     } else if (existing) {
-      notes.push(`Redirect ${r.path} -> ${r.target}: exists (${existing.id}).${occupant ? ` Takes effect once ${occupant.handle} is deleted.` : ''}`);
+      errors.push(`Redirect ${r.path} exists with target ${existing.target}, expected ${r.target}${r.replace_target ? ` or ${r.replace_target}` : ''}; not changing it.`);
     } else {
-      notes.push(`Redirect ${r.path} -> ${r.target}: does NOT exist now; planned to be created${occupant ? ` after ${occupant.handle} is deleted` : ''}.`);
+      notes.push(`Redirect ${r.path} -> ${r.target}: does NOT exist now; planned to be created.${pathNote}`);
       ops.push({ step: 0, kind: 'redirect.create', path: r.path, target: r.target, desc: `Create redirect ${r.path} -> ${r.target}` });
     }
   }
 
-  // Step 2: collections (title and exact product list; handles never change)
+  // Step 2: collections (title, products, copy; handles never change)
   const target = new Map(config.collections.map((s) => [s.handle, byHandle(s.handle) ?? null]));
+  const copyChecks = [];
   for (const spec of config.collections) {
     const c = target.get(spec.handle);
     const want = desired.get(spec.handle);
+    const mode = spec.membership ?? 'exact';
     if (c && deleting.has(c.id)) { errors.push(`${spec.handle} is both a target and scheduled for deletion.`); continue; }
     if (!c) {
       ops.push({ step: 2, kind: 'collection.create', handle: spec.handle, title: spec.title, add: want, desc: `Create "${spec.title}" (${spec.handle}) with ${want.length} products` });
@@ -272,20 +359,66 @@ function plan(state) {
     if (c.membership.kind === 'rule-based') { errors.push(`${spec.title}: existing collection ${c.handle} is rule-based, not manual.`); continue; }
     const have = new Set(c.membership.productIds);
     const add = want.filter((id) => !have.has(id));
-    const remove = [...have].filter((id) => !want.includes(id));
-    for (const id of add) ops.push({ step: 2, kind: 'note', desc: `  ${spec.handle} + ${label(byId.get(id))}` });
+    const remove = mode === 'add_only' ? [] : [...have].filter((id) => !want.includes(id));
+    for (const id of add) {
+      const p = byId.get(id);
+      ops.push({ step: 2, kind: 'note', desc: `  ${spec.handle} + ${label(p)}${statusAfter(p) !== 'ACTIVE' ? ` (${statusAfter(p)} after Step 1)` : ''}` });
+    }
     for (const id of remove) {
       const p = byId.get(id);
       const why = !p ? '' : hidden.has(id) ? ' (being hidden)' : p.status !== 'ACTIVE' ? ` (${p.status})` : '';
       ops.push({ step: 2, kind: 'note', desc: `  ${spec.handle} - ${label(p)}${why}` });
     }
+    const result = mode === 'add_only' ? new Set([...have, ...add]) : new Set(want);
+    const visible = [...result].filter((id) => byId.get(id) && statusAfter(byId.get(id)) === 'ACTIVE').length;
     if (add.length || remove.length) {
-      ops.push({ step: 2, kind: 'collection.members', id: c.id, handle: spec.handle, sourceId: c.membership.sourceId, add, remove, desc: `${spec.handle} ("${spec.title}"): add ${add.length}, remove ${remove.length} (result ${want.length})` });
+      ops.push({ step: 2, kind: 'collection.members', id: c.id, handle: spec.handle, sourceId: c.membership.sourceId, add, remove, desc: `${spec.handle} ("${spec.title}", ${mode}): add ${add.length}, remove ${remove.length} (result ${result.size}, ${visible} visible)` });
     }
     if (!c.published) ops.push({ step: 2, kind: 'collection.publish', handle: spec.handle, id: c.id, desc: `Publish ${spec.handle} to Online Store` });
+
+    if (spec.copy) {
+      const next = { descriptionHtml: spec.copy.description_html, seoTitle: spec.copy.seo_title, seoDescription: spec.copy.seo_description };
+      copyChecks.push({ handle: spec.handle, ...next });
+      const changed = !sameHtml(c.descriptionHtml, next.descriptionHtml) || c.seoTitle !== next.seoTitle || c.seoDescription !== next.seoDescription;
+      if (changed) ops.push({ step: 2, kind: 'collection.copy', id: c.id, handle: spec.handle, ...next, before: { descriptionHtml: c.descriptionHtml, seoTitle: c.seoTitle, seoDescription: c.seoDescription }, desc: `${spec.handle} ("${spec.title}"): set intro and SEO` });
+    }
   }
 
-  // Step 3: menu
+  // Exact text edits in existing collection copy
+  const fieldKey = { description_html: 'descriptionHtml', seo_description: 'seoDescription', seo_title: 'seoTitle' };
+  const editsByHandle = new Map();
+  for (const e of config.copy_edits.edits) {
+    if (!editsByHandle.has(e.handle)) editsByHandle.set(e.handle, []);
+    editsByHandle.get(e.handle).push(e);
+  }
+  for (const [handle, edits] of editsByHandle) {
+    const c = byHandle(handle);
+    if (!c) { errors.push(`copy_edits: collection ${handle} not found.`); continue; }
+    if (config.collections.some((s) => s.handle === handle && s.copy)) { errors.push(`copy_edits: ${handle} also has full copy in collections; use one or the other.`); continue; }
+    const before = { descriptionHtml: c.descriptionHtml, seoTitle: c.seoTitle, seoDescription: c.seoDescription };
+    const next = { ...before };
+    for (const e of edits) {
+      const k = fieldKey[e.field];
+      if (!k) { errors.push(`copy_edits: unknown field ${e.field}.`); continue; }
+      const cur = String(next[k] ?? '');
+      const n = cur.split(e.from).length - 1;
+      if (n > 0) {
+        next[k] = cur.split(e.from).join(e.to);
+        ops.push({ step: 2, kind: 'note', desc: `  ${handle}.${e.field}: "${e.from}" -> "${e.to}" (${n}x)` });
+      } else if (cur.includes(e.to)) notes.push(`copy_edits ${handle}.${e.field}: already done.`);
+      else errors.push(`copy_edits ${handle}.${e.field}: neither "${e.from}" nor "${e.to}" found; the copy changed, so not editing.`);
+    }
+    if (next.descriptionHtml !== before.descriptionHtml || next.seoTitle !== before.seoTitle || next.seoDescription !== before.seoDescription) {
+      ops.push({ step: 2, kind: 'collection.copy', id: c.id, handle, ...next, before, desc: `${handle} ("${c.title}"): edit existing copy` });
+    }
+  }
+  for (const c of copyChecks) {
+    if (c.seoTitle.length > 70) notes.push(`SEO title for ${c.handle} is ${c.seoTitle.length} chars (over 70).`);
+    if (c.seoDescription.length > 160) notes.push(`SEO description for ${c.handle} is ${c.seoDescription.length} chars (over 160).`);
+  }
+
+  // Step 3: menu (ordered by menu_order)
+  const menuItems = orderedMenu(errors);
   const menu = state.menus.find((m) => m.handle === config.menu.handle);
   if (!menu) errors.push(`Menu ${config.menu.handle} not found.`);
   const shape = (items) => (items ?? []).map((i) => ({ title: i.title, type: i.type, url: i.url, items: shape(i.items) }));
@@ -293,12 +426,12 @@ function plan(state) {
     ? { title: i.title, type: 'COLLECTION', url: `/collections/${i.collection}`, items: shape([]) }
     : { title: i.title, type: i.type, url: i.type === 'CATALOG' ? '/collections/all' : i.url, items: targetShape(i.items) });
   const menuCollections = (items) => (items ?? []).flatMap((i) => (i.collection ? [i.collection] : menuCollections(i.items)));
-  for (const h of menuCollections(config.menu.items)) {
+  for (const h of menuCollections(menuItems)) {
     const c = byHandle(h);
     if (!targetHandles.has(h) && (!c || deleting.has(c.id))) errors.push(`Menu links to ${h}, which will not exist.`);
   }
-  if (menu && JSON.stringify(shape(menu.items)) !== JSON.stringify(targetShape(config.menu.items))) {
-    ops.push({ step: 3, kind: 'menu.update', id: menu.id, desc: `Replace ${config.menu.handle} items`, before: shape(menu.items), after: targetShape(config.menu.items) });
+  if (menu && JSON.stringify(shape(menu.items)) !== JSON.stringify(targetShape(menuItems))) {
+    ops.push({ step: 3, kind: 'menu.update', id: menu.id, desc: `Replace ${config.menu.handle} items`, before: shape(menu.items), after: targetShape(menuItems) });
   }
 
   // Hard rules and do_not_touch
@@ -313,25 +446,23 @@ function plan(state) {
     const c = byHandle(h);
     notes.push(c ? `do_not_touch ${h}: no changes planned ("${c.title}", ${c.membership.productIds?.length ?? '?'} products, ${c.published ? 'published' : 'unpublished'}).` : `do_not_touch ${h}: not found.`);
   }
-  for (const path of config.do_not_touch.redirect_paths) {
-    const r = state.redirects.find((x) => x.path === path);
-    notes.push(`do_not_touch redirect ${path}: no changes planned (${r ? `currently -> ${r.target}` : 'does not exist'}).`);
-  }
   const deletes = ops.filter((o) => o.kind === 'collection.delete');
   notes.push(`Collection deletions: ${deletes.length}, all created on or after ${cutoff} and empty. Collection handle changes: none (the script cannot write handles). Product title changes: none (the script cannot write titles).`);
 
   // Projected visible counts per collection
   const projected = {};
-  const statusAfter = (p) => (hidden.has(p.id) && p.status !== 'ARCHIVED' ? config.hide_products.status : p.status);
   for (const c of state.collections) {
     if (deleting.has(c.id)) continue;
     const spec = config.collections.find((s) => s.handle === c.handle);
-    const members = spec ? desired.get(spec.handle).map((id) => byId.get(id)) : state.products.filter((p) => p.collections.includes(c.handle));
-    projected[c.handle] = { title: spec?.title ?? c.title, n: members.filter((p) => statusAfter(p) === 'ACTIVE').length };
+    let ids;
+    if (!spec) ids = state.products.filter((p) => p.collections.includes(c.handle)).map((p) => p.id);
+    else if ((spec.membership ?? 'exact') === 'add_only') ids = [...new Set([...(c.membership.productIds ?? []), ...desired.get(spec.handle)])];
+    else ids = desired.get(spec.handle);
+    projected[c.handle] = { title: spec?.title ?? c.title, n: ids.map((id) => byId.get(id)).filter((p) => p && statusAfter(p) === 'ACTIVE').length };
   }
   for (const spec of config.collections) if (!target.get(spec.handle)) projected[spec.handle] = { title: spec.title, n: desired.get(spec.handle).length };
 
-  return { errors, ops, notes, projected, activeAfter: activeAfter.size };
+  return { errors, ops, notes, projected, activeAfter: activeAfter.size, menuItems };
 }
 
 // ---------------------------------------------------------------- Apply
@@ -339,22 +470,23 @@ function plan(state) {
 const PUB = (state) => [{ publicationId: state.onlineStorePublicationId }];
 const manualSource = (ids) => ({ source: { title: 'Manual selection', targetType: 'PRODUCTS', inclusion: { selections: ids.map((productId) => ({ productId })) } } });
 
+function menuItemsInput(items, idByHandle) {
+  return items.map((i) => {
+    if (i.collection) {
+      const id = idByHandle(i.collection);
+      if (!id) die(`Collection ${i.collection} not found for the menu.`);
+      return { title: i.title, type: 'COLLECTION', resourceId: id };
+    }
+    return { title: i.title, type: i.type, ...(i.url ? { url: i.url } : {}), items: menuItemsInput(i.items ?? [], idByHandle) };
+  });
+}
+
 async function collectionIdByHandle(handle) {
   const d = await gql(`query($h: String!) { collectionByIdentifier(identifier: { handle: $h }) { id } }`, { h: handle });
-  if (!d.collectionByIdentifier) die(`Collection ${handle} not found while applying.`);
-  return d.collectionByIdentifier.id;
+  return d.collectionByIdentifier?.id ?? null;
 }
 
-async function menuItemsInput(items) {
-  const out = [];
-  for (const i of items) {
-    if (i.collection) out.push({ title: i.title, type: 'COLLECTION', resourceId: await collectionIdByHandle(i.collection) });
-    else out.push({ title: i.title, type: i.type, ...(i.url ? { url: i.url } : {}), items: await menuItemsInput(i.items ?? []) });
-  }
-  return out;
-}
-
-async function apply(op, state) {
+async function apply(op, state, menuItems) {
   switch (op.kind) {
     case 'product.status': {
       const d = await gql(`mutation($p: ProductUpdateInput!) { productUpdate(product: $p) { product { id status } userErrors { field message } } }`, { p: { id: op.id, status: op.status } });
@@ -372,6 +504,10 @@ async function apply(op, state) {
       const d = await gql(`mutation($r: UrlRedirectInput!) { urlRedirectCreate(urlRedirect: $r) { urlRedirect { id } userErrors { field message } } }`, { r: { path: op.path, target: op.target } });
       return checkUserErrors(op.desc, d.urlRedirectCreate);
     }
+    case 'redirect.update': {
+      const d = await gql(`mutation($id: ID!, $r: UrlRedirectInput!) { urlRedirectUpdate(id: $id, urlRedirect: $r) { urlRedirect { id } userErrors { field message } } }`, { id: op.id, r: { path: op.path, target: op.target } });
+      return checkUserErrors(op.desc, d.urlRedirectUpdate);
+    }
     case 'collection.create': {
       const input = { title: op.title, handle: op.handle, ...(op.add.length ? { sources: [manualSource(op.add)] } : {}) };
       const d = await gql(`mutation($c: CollectionCreateInput!) { collectionCreate(collection: $c) { collection { id handle } userErrors { field message } } }`, { c: input });
@@ -380,6 +516,12 @@ async function apply(op, state) {
     case 'collection.title': {
       // Title only. The handle is deliberately not part of the input.
       const d = await gql(`mutation($c: CollectionUpdateInput!) { collectionUpdate(collection: $c) { collection { id handle title } userErrors { field message } } }`, { c: { id: op.id, title: op.title } });
+      return checkUserErrors(op.desc, d.collectionUpdate);
+    }
+    case 'collection.copy': {
+      // SEO title and description are always sent together so neither is cleared.
+      const c = { id: op.id, descriptionHtml: op.descriptionHtml, seo: { title: op.seoTitle, description: op.seoDescription } };
+      const d = await gql(`mutation($c: CollectionUpdateInput!) { collectionUpdate(collection: $c) { collection { id } userErrors { field message } } }`, { c });
       return checkUserErrors(op.desc, d.collectionUpdate);
     }
     case 'collection.members': {
@@ -396,7 +538,9 @@ async function apply(op, state) {
       return checkUserErrors(op.desc, d.publishablePublish);
     }
     case 'menu.update': {
-      const items = await menuItemsInput(config.menu.items);
+      const ids = new Map();
+      for (const h of new Set(JSON.stringify(menuItems).match(/"collection":"[^"]+"/g).map((s) => s.slice(14, -1)))) ids.set(h, await collectionIdByHandle(h));
+      const items = menuItemsInput(menuItems, (h) => ids.get(h));
       const d = await gql(`mutation($id: ID!, $t: String!, $items: [MenuItemUpdateInput!]!) { menuUpdate(id: $id, title: $t, items: $items) { menu { id } userErrors { field message } } }`, { id: op.id, t: config.menu.title, items });
       return checkUserErrors(op.desc, d.menuUpdate);
     }
@@ -416,13 +560,34 @@ function printTree(items, depth = 0) {
   }
 }
 
+function printCopy(o) {
+  const show = (label, before, after) => {
+    if ((before ?? '') === (after ?? '')) return;
+    console.log(`      ${label} (${(after ?? '').length} chars)`);
+    console.log(`        before: ${before || '(empty)'}`);
+    console.log(`        after:  ${after}`);
+  };
+  show('intro (descriptionHtml)', o.before.descriptionHtml, o.descriptionHtml);
+  show('SEO title', o.before.seoTitle, o.seoTitle);
+  show('SEO description', o.before.seoDescription, o.seoDescription);
+}
+
+if (!stateArg) await checkScopes();
 const raw = stateArg ? JSON.parse(readFileSync(stateArg, 'utf8')) : await fetchRawState();
 const state = normalizeState(raw);
 const result = plan(state);
-const ORDER = [1, 0, 2, 3];
-const STEPS = { 0: 'Cleanup and redirects', 1: 'Step 1: hide products', 2: 'Step 2: collections', 3: 'Step 3: main menu' };
 
-console.log(`${DRY ? 'DRY RUN' : 'LIVE RUN'} against ${config.store} (state fetched ${raw.fetchedAt}${stateArg ? `, from ${stateArg}` : ''})`);
+if (PRINT_MENU) {
+  if (result.errors.length) die(result.errors.join('\n'));
+  const idByHandle = (h) => state.collections.find((c) => c.handle === h)?.id;
+  console.log(JSON.stringify(menuItemsInput(result.menuItems, idByHandle), null, 2));
+  process.exit(0);
+}
+
+const ORDER = [1, 0, 2, 3];
+const STEPS = { 0: 'Cleanup and redirects', 1: 'Step 1: hide products', 2: 'Step 2: collections and copy', 3: 'Step 3: main menu' };
+
+console.log(`${DRY ? 'DRY RUN' : 'LIVE RUN'} against ${STORE} (state fetched ${raw.fetchedAt}${stateArg ? `, from ${stateArg}` : ''})`);
 console.log(`Products: ${state.products.length} total, ${state.products.filter((p) => p.status === 'ACTIVE').length} active now`);
 
 if (result.errors.length) {
@@ -437,6 +602,7 @@ for (const step of ORDER) {
   if (!ops.length) console.log('  nothing to do');
   for (const o of ops) {
     console.log(o.kind === 'note' ? `  ${o.desc}` : `  [${o.kind}] ${o.desc}`);
+    if (o.kind === 'collection.copy') printCopy(o);
     if (o.kind === 'menu.update') {
       console.log('    before:'); printTree(o.before);
       console.log('    after:'); printTree(o.after);
@@ -468,7 +634,7 @@ console.log(`\nSnapshot saved: ${snap}`);
 
 for (const step of ORDER) {
   for (const op of result.ops.filter((o) => o.step === step && o.kind !== 'note')) {
-    await apply(op, state);
+    await apply(op, state, result.menuItems);
     console.log(`  done: ${op.desc}`);
   }
 }
