@@ -125,9 +125,7 @@ const MENUS_Q = `{ menus(first: 50) { nodes { id handle title
     items { id title type url resourceId
       items { id title type url resourceId } } } } } }`;
 
-const REDIRECTS_Q = `query($q: String!) { urlRedirects(first: 50, query: $q) { nodes { id path target } } }`;
-
-const redirectPaths = () => [...config.redirects.ensure.map((r) => r.path), ...config.do_not_touch.redirect_paths];
+const REDIRECTS_Q = `query($after: String) { urlRedirects(first: 250, after: $after) { pageInfo { hasNextPage endCursor } nodes { id path target } } }`;
 
 async function paginate(query, key, variables = {}) {
   const out = [];
@@ -147,12 +145,7 @@ async function fetchRawState() {
   const products = await paginate(PRODUCTS_Q, 'products');
   const collections = await paginate(COLLECTIONS_Q, 'collections', { pub: pub.id });
   const menus = (await gql(MENUS_Q)).menus.nodes;
-  const redirects = [];
-  for (const path of redirectPaths()) {
-    // The search is fuzzy, so keep exact path matches only.
-    const hits = (await gql(REDIRECTS_Q, { q: `path:${path}` })).urlRedirects.nodes.filter((r) => r.path === path);
-    redirects.push(...hits);
-  }
+  const redirects = await paginate(REDIRECTS_Q, 'urlRedirects');
   return { fetchedAt: new Date().toISOString(), onlineStorePublicationId: pub.id, products, collections, menus, redirects };
 }
 
@@ -340,9 +333,46 @@ function plan(state) {
     }
   }
 
+  // Redirects for hidden products: /products/<handle> -> their By Collection collection
+  const productRedirects = { created: [], ok: [], skipped: [] };
+  if (config.product_redirects) {
+    const seen = new Map();
+    for (const [targetPath, titles] of Object.entries(config.product_redirects)) {
+      if (targetPath.startsWith('_')) continue;
+      const th = targetPath.replace('/collections/', '');
+      const tc = byHandle(th);
+      if (!tc || deleting.has(tc.id) || !tc.published) errors.push(`product_redirects: target ${targetPath} is missing or unpublished.`);
+      for (const t of titles) {
+        const p = resolve(t);
+        if (!p) continue;
+        if (seen.has(p.id)) { errors.push(`product_redirects: "${t}" is listed under both ${seen.get(p.id)} and ${targetPath}.`); continue; }
+        seen.set(p.id, targetPath);
+        if (!hidden.has(p.id)) errors.push(`product_redirects: "${t}" is not in the hide list, so its page would still load and the redirect would never fire.`);
+        const path = `/products/${p.handle}`;
+        const existing = state.redirects.find((r) => r.path === path);
+        if (existing && existing.target === targetPath) productRedirects.ok.push(`${path} -> ${targetPath}`);
+        else if (existing) productRedirects.skipped.push(`${path} already redirects to ${existing.target}; left as is (wanted ${targetPath})`);
+        else {
+          productRedirects.created.push(path);
+          ops.push({ step: 0, kind: 'redirect.create', soft: true, path, target: targetPath, desc: `Redirect ${path} -> ${targetPath} (${p.title})` });
+        }
+      }
+    }
+    const uncovered = [...hidden].filter((id) => !seen.has(id)).map((id) => label(byId.get(id)));
+    if (uncovered.length) errors.push(`product_redirects: hidden products without a redirect: ${uncovered.join(', ')}.`);
+    notes.push(`Product redirects: ${productRedirects.created.length} to create, ${productRedirects.ok.length} already correct, ${productRedirects.skipped.length} skipped.`);
+    for (const s of productRedirects.skipped) notes.push(`  SKIPPED: ${s}`);
+    // Older redirects that point at a product being hidden now chain through the new redirect.
+    const hiddenPaths = new Map([...hidden].map((id) => [`/products/${byId.get(id).handle}`, seen.get(id)]));
+    for (const r of state.redirects) {
+      if (hiddenPaths.has(r.target)) notes.push(`  Chain: ${r.path} -> ${r.target} -> ${hiddenPaths.get(r.target)} (two hops; works, could be pointed straight at the collection later).`);
+    }
+  }
+
   // Step 2: collections (title, products, copy; handles never change)
   const target = new Map(config.collections.map((s) => [s.handle, byHandle(s.handle) ?? null]));
   const copyChecks = [];
+  const copyHeld = config.copy_on_hold?.hold === true;
   for (const spec of config.collections) {
     const c = target.get(spec.handle);
     const want = desired.get(spec.handle);
@@ -380,7 +410,7 @@ function plan(state) {
       const next = { descriptionHtml: spec.copy.description_html, seoTitle: spec.copy.seo_title, seoDescription: spec.copy.seo_description };
       copyChecks.push({ handle: spec.handle, ...next });
       const changed = !sameHtml(c.descriptionHtml, next.descriptionHtml) || c.seoTitle !== next.seoTitle || c.seoDescription !== next.seoDescription;
-      if (changed) ops.push({ step: 2, kind: 'collection.copy', id: c.id, handle: spec.handle, ...next, before: { descriptionHtml: c.descriptionHtml, seoTitle: c.seoTitle, seoDescription: c.seoDescription }, desc: `${spec.handle} ("${spec.title}"): set intro and SEO` });
+      if (changed) ops.push({ step: 2, kind: copyHeld ? 'held' : 'collection.copy', id: c.id, handle: spec.handle, ...next, before: { descriptionHtml: c.descriptionHtml, seoTitle: c.seoTitle, seoDescription: c.seoDescription }, desc: `${spec.handle} ("${spec.title}"): set intro and SEO${copyHeld ? ' (ON HOLD: copy_on_hold.hold is true, not written)' : ''}` });
     }
   }
 
@@ -438,7 +468,7 @@ function plan(state) {
   const guarded = new Set(config.do_not_touch.collections);
   const guardedIds = new Set(state.collections.filter((c) => guarded.has(c.handle)).map((c) => c.id));
   for (const o of ops) {
-    if (o.kind === 'note') continue;
+    if (o.kind === 'note' || o.kind === 'held') continue;
     if ((o.id && guardedIds.has(o.id)) || (o.handle && guarded.has(o.handle))) errors.push(`Planned change touches a do_not_touch collection: ${o.desc}`);
     if (o.path && config.do_not_touch.redirect_paths.includes(o.path)) errors.push(`Planned change touches a do_not_touch redirect: ${o.desc}`);
   }
@@ -502,6 +532,8 @@ async function apply(op, state, menuItems) {
     }
     case 'redirect.create': {
       const d = await gql(`mutation($r: UrlRedirectInput!) { urlRedirectCreate(urlRedirect: $r) { urlRedirect { id } userErrors { field message } } }`, { r: { path: op.path, target: op.target } });
+      // Product redirects are soft: a rejected one is reported and the run continues.
+      if (op.soft && d.urlRedirectCreate.userErrors.length) return { skipped: JSON.stringify(d.urlRedirectCreate.userErrors) };
       return checkUserErrors(op.desc, d.urlRedirectCreate);
     }
     case 'redirect.update': {
@@ -596,13 +628,16 @@ if (result.errors.length) {
   process.exit(1);
 }
 
+const isWrite = (o) => o.kind !== 'note' && o.kind !== 'held';
+
 for (const step of ORDER) {
   const ops = result.ops.filter((o) => o.step === step);
-  console.log(`\n${STEPS[step]} (${ops.filter((o) => o.kind !== 'note').length} changes)`);
+  const held = ops.filter((o) => o.kind === 'held').length;
+  console.log(`\n${STEPS[step]} (${ops.filter(isWrite).length} changes${held ? `, ${held} held` : ''})`);
   if (!ops.length) console.log('  nothing to do');
   for (const o of ops) {
     console.log(o.kind === 'note' ? `  ${o.desc}` : `  [${o.kind}] ${o.desc}`);
-    if (o.kind === 'collection.copy') printCopy(o);
+    if (o.kind === 'collection.copy' || o.kind === 'held') printCopy(o);
     if (o.kind === 'menu.update') {
       console.log('    before:'); printTree(o.before);
       console.log('    after:'); printTree(o.after);
@@ -617,9 +652,10 @@ console.log('\nVisible (ACTIVE) products per collection after run:');
 for (const [h, { title, n }] of Object.entries(result.projected).sort()) console.log(`  ${h.padEnd(24)} ${String(n).padStart(3)}  ${title}`);
 console.log(`\nUnassigned season (${config.unassigned_season.length}): ${config.unassigned_season.join(', ')}`);
 
-const writes = result.ops.filter((o) => o.kind !== 'note');
+const writes = result.ops.filter(isWrite);
+const heldCount = result.ops.filter((o) => o.kind === 'held').length;
 if (DRY) {
-  console.log(`\nDry run: ${writes.length} changes planned, none written.`);
+  console.log(`\nDry run: ${writes.length} changes planned${heldCount ? ` (+${heldCount} held)` : ''}, none written.`);
   process.exit(0);
 }
 if (!writes.length) {
@@ -632,18 +668,23 @@ const snap = join(HERE, 'snapshots', `${raw.fetchedAt.replace(/[:.]/g, '-')}.jso
 writeFileSync(snap, JSON.stringify(raw, null, 2));
 console.log(`\nSnapshot saved: ${snap}`);
 
+const softSkipped = [];
 for (const step of ORDER) {
-  for (const op of result.ops.filter((o) => o.step === step && o.kind !== 'note')) {
-    await apply(op, state, result.menuItems);
-    console.log(`  done: ${op.desc}`);
+  for (const op of result.ops.filter((o) => o.step === step && isWrite(o))) {
+    const res = await apply(op, state, result.menuItems);
+    if (res?.skipped) {
+      softSkipped.push(`${op.desc}: ${res.skipped}`);
+      console.log(`  SKIPPED: ${op.desc} (${res.skipped})`);
+    } else console.log(`  done: ${op.desc}`);
   }
 }
 
 // Verify by re-reading and re-planning: a correct run leaves nothing to do.
 const after = normalizeState(await fetchRawState());
 const recheck = plan(after);
-const left = recheck.ops.filter((o) => o.kind !== 'note');
-console.log(`\nAfter run: ${after.products.filter((p) => p.status === 'ACTIVE').length} active products; ${left.length} changes still pending.`);
+const left = recheck.ops.filter(isWrite);
+console.log(`\nAfter run: ${after.products.filter((p) => p.status === 'ACTIVE').length} active products; ${left.length} changes still pending; ${recheck.ops.filter((o) => o.kind === 'held').length} held.`);
+for (const s of softSkipped) console.log(`  skipped redirect: ${s}`);
 for (const e of recheck.errors) console.log(`  problem: ${e}`);
 for (const o of left) console.log(`  pending: ${o.desc}`);
 if (left.length || recheck.errors.length) process.exit(1);

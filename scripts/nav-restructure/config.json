@@ -191,6 +191,20 @@
     }
   ],
 
+  "copy_on_hold": {
+    "_note": "While hold is true, the intro and SEO under collections[].copy are printed but not written. Set to false once the family confirms: free delivery in Pakistan over Rs 30,000; pret dispatch 7 to 10 working days; formals 15 to 20 working days; a WhatsApp stylist. copy_edits below are approved and are not held.",
+    "hold": true
+  },
+
+  "product_redirects": {
+    "_note": "Redirects for the 22 hidden products, /products/<handle> -> the By Collection collection each one belongs to. Titles resolve through handle_pins and title_aliases. Every hidden product must appear exactly once. An existing redirect with a different target is skipped and reported, never changed.",
+    "/collections/pret": ["Smocked Serenity", "Mint Scroll", "Elara", "Black Leopard", "Saffron Check"],
+    "/collections/co-ord-sets": ["Diamond Lattice"],
+    "/collections/formals": ["Sea Mist", "Pistachio Rose", "Lace Jacket", "Motiya", "Vintage Coral", "Chantelle Lace Gold"],
+    "/collections/festive-wear": ["Berry Noir", "Peach Floret", "Flora Inlay", "Soft Petals", "Aura"],
+    "/collections/dinner-wear": ["Serenade Blue", "Serenade Beige", "Muted Iris", "Slate Whisper", "Wisteria"]
+  },
+
   "copy_edits": {
     "_note": "Exact text replacements in existing collection copy. Link targets stay /collections/pret. A replacement whose text is no longer found, and whose new text is not there either, stops the run.",
     "edits": [
