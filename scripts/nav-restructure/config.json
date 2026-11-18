@@ -1,0 +1,167 @@
+{
+  "store": "x1hna4-kw.myshopify.com",
+  "api_version": "2026-10",
+  "online_store_publication_title_contains": "Online Store",
+
+  "matching": {
+    "rule": "Config titles match Shopify product titles case-insensitively after trimming. A title that matches zero products, or more than one without a pin below, stops the run.",
+    "title_aliases": {
+      "Black Leopard": "Black Leopard - Shirt"
+    },
+    "handle_pins": {
+      "_note": "These titles exist twice in Shopify: one ACTIVE product plus an older DRAFT duplicate. Each pin selects the product that was ACTIVE on 2026-11-18.",
+      "Green Forest": "green-forest",
+      "Cape Set": "cape-set",
+      "Navy Scroll": "navy-scroll",
+      "Zebra Set": "zebra-set",
+      "Cobalt Charm": "cobalt-charm",
+      "Blue Forest": "blue-forest",
+      "Emerald Wrap": "emerald-wrap-1",
+      "Rust Scroll": "rust-scroll",
+      "Marrakech": "marrakech-1",
+      "Blue Roses": "blue-roses",
+      "Diamond Lattice": "diamond-lattice",
+      "Lace Jacket": "lace-jacket",
+      "Berry Noir": "berry-noir-1",
+      "Midnight Vintage": "midnight-vintage-1"
+    }
+  },
+
+  "hide_products": {
+    "_note": "Status set to DRAFT only. Existing collection memberships are kept, so un-hiding is a single status change.",
+    "status": "DRAFT",
+    "titles": [
+      "Vintage Coral", "Soft Petals", "Saffron Check", "Black Leopard", "Pistachio Rose",
+      "Sea Mist", "Serenade Beige", "Serenade Blue", "Elara", "Mint Scroll",
+      "Diamond Lattice", "Flora Inlay", "Wisteria", "Muted Iris", "Smocked Serenity",
+      "Berry Noir", "Aura", "Lace Jacket", "Motiya", "Chantelle Lace Gold",
+      "Slate Whisper", "Peach Floret"
+    ],
+    "expected_active_after": 46
+  },
+
+  "collections": [
+    {
+      "group": "by_collection",
+      "title": "Everyday Wear",
+      "handle": "everyday-wear",
+      "products": [
+        "Quiet Sage", "Quiet Ivory", "Stone Willow", "Misty Blue", "Desert Blush", "Ash Blue Wrap",
+        "Blue Haze", "Buttercream Wrap", "Soft Scallop", "Pearly Green", "Ivory Lattice", "Sand Stone"
+      ]
+    },
+    {
+      "group": "by_collection",
+      "title": "Matching Sets",
+      "handle": "matching-sets",
+      "products": [
+        "Pressed Fern", "Olive Ease Set", "Pink Ease Set", "Cape Set", "Green Forest", "Blue Forest",
+        "Rust Scroll", "Zebra Set", "Navy Scroll", "Riviera", "Marrakech", "Emerald Wrap",
+        "Vintage Blossom", "Cabana", "Saffron Ruffles"
+      ]
+    },
+    {
+      "group": "by_collection",
+      "title": "Occasion Wear",
+      "handle": "occasion-wear",
+      "products": ["Midnight Vintage", "Coral Dust", "Midnight Lace", "Teal Brocade", "Gold Heritage"]
+    },
+    {
+      "group": "by_collection",
+      "title": "Festive Wear",
+      "handle": "festive-wear",
+      "products": ["Ivory Shisha", "Ash Blossom", "Lali", "Lumina", "Fuchsia Angrakha"]
+    },
+    {
+      "group": "by_collection",
+      "title": "Dinner Wear",
+      "handle": "dinner-wear",
+      "products": [
+        "Black Boom", "Midnight Blossom", "Pressed Lilac", "Pine Pink", "Rose Blush",
+        "Blue Roses", "Sea Glass", "Cobalt Charm", "Taupe"
+      ]
+    },
+    {
+      "group": "by_season",
+      "title": "Winter",
+      "handle": "winter",
+      "products": [
+        "Riviera", "Blue Roses", "Marrakech", "Rust Scroll", "Emerald Wrap", "Cobalt Charm",
+        "Zebra Set", "Navy Scroll", "Saffron Ruffles", "Cabana", "Vintage Blossom", "Taupe",
+        "Blue Forest", "Green Forest", "Cape Set", "Pressed Fern"
+      ]
+    },
+    {
+      "group": "by_season",
+      "title": "Summer",
+      "handle": "summer",
+      "reuse_existing_handle": "summer-collection",
+      "redirect_from": "/collections/summer-collection",
+      "products": [
+        "Quiet Sage", "Quiet Ivory", "Stone Willow", "Misty Blue", "Desert Blush", "Ash Blue Wrap",
+        "Blue Haze", "Buttercream Wrap", "Soft Scallop", "Pearly Green", "Ivory Lattice", "Lali"
+      ]
+    },
+    {
+      "group": "by_season",
+      "title": "All Year Round",
+      "handle": "all-year-round",
+      "products": [
+        "Sea Glass", "Pine Pink", "Black Boom", "Pressed Lilac", "Sand Stone",
+        "Midnight Blossom", "Lumina", "Midnight Lace"
+      ]
+    }
+  ],
+
+  "assertions": {
+    "_note": "by_collection lists must cover the active products after hiding exactly once each. Season lists plus unassigned_season must do the same.",
+    "by_collection_covers_active_exactly_once": true,
+    "by_season_plus_unassigned_covers_active_exactly_once": true
+  },
+
+  "unassigned_season": [
+    "Midnight Vintage", "Teal Brocade", "Coral Dust", "Pink Ease Set", "Olive Ease Set",
+    "Fuchsia Angrakha", "Rose Blush", "Ivory Shisha", "Ash Blossom", "Gold Heritage"
+  ],
+
+  "cleanup": {
+    "_note": "Leftovers from an earlier attempt on 2026-11-18. A collection is deleted only if it has no products and is not the collection being reused for Summer. A menu is deleted only if it is not main-menu.",
+    "delete_empty_collections_by_handle": ["summer"],
+    "delete_menus_by_handle": ["main-menu-new"]
+  },
+
+  "menu": {
+    "handle": "main-menu",
+    "title": "Main menu",
+    "items": [
+      { "title": "NEW IN", "collection": "new-in" },
+      {
+        "title": "SHOP",
+        "type": "CATALOG",
+        "items": [
+          {
+            "title": "By Collection",
+            "type": "CATALOG",
+            "items": [
+              { "title": "Everyday Wear", "collection": "everyday-wear" },
+              { "title": "Matching Sets", "collection": "matching-sets" },
+              { "title": "Occasion Wear", "collection": "occasion-wear" },
+              { "title": "Festive Wear", "collection": "festive-wear" },
+              { "title": "Dinner Wear", "collection": "dinner-wear" }
+            ]
+          },
+          {
+            "title": "By Season",
+            "type": "CATALOG",
+            "items": [
+              { "title": "Winter", "collection": "winter" },
+              { "title": "Summer", "collection": "summer" },
+              { "title": "All Year Round", "collection": "all-year-round" }
+            ]
+          },
+          { "title": "Special Prices", "collection": "special-prices" }
+        ]
+      }
+    ]
+  }
+}
