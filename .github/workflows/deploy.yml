@@ -28,7 +28,7 @@ jobs:
         run: |
           set -o pipefail
           shopify theme push \
-            --theme 184572674359 \
+            --theme 192069992759 \
             --allow-live \
             --nodelete 2>&1 | tee push.log
 
