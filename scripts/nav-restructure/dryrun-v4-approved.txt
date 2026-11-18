@@ -1,0 +1,320 @@
+# Approved dry run v4 (2026-11-18). Compare a new dry run with: diff <(tail -n +3 dryrun-v4-approved.txt) <(tail -n +2 NEW.txt)
+DRY RUN against x1hna4-kw.myshopify.com (state fetched 2026-11-18T14:10:00Z (captured read-only via Shopify connector; unchanged since 10:52 UTC), from /private/tmp/claude-501/-Users-essaarshad-Downloads-Clients-Jannat-And-Sadaf-theme-export--jannatandsadaf-com-horizon--11FEB2026-0130am/ac8a8bd6-0abd-4aea-8729-8f7e13908af6/scratchpad/state-2026-11-18-v4.json)
+Products: 87 total, 68 active now
+
+Step 1: hide products (22 changes)
+  [product.status] Vintage Coral [vintage-coral]: ACTIVE -> DRAFT
+  [product.status] Soft Petals [soft-petals]: ACTIVE -> DRAFT
+  [product.status] Saffron Check [saffron-check]: ACTIVE -> DRAFT
+  [product.status] Black Leopard - Shirt [black-leopard]: ACTIVE -> DRAFT
+  [product.status] Pistachio rose [pistachio-rose]: ACTIVE -> DRAFT
+  [product.status] Sea Mist [sea-mist-panel]: ACTIVE -> DRAFT
+  [product.status] Serenade Beige [serenade-beige]: ACTIVE -> DRAFT
+  [product.status] Serenade Blue [serenade-blue]: ACTIVE -> DRAFT
+  [product.status] Elara [elara]: ACTIVE -> DRAFT
+  [product.status] Mint Scroll [mint-scroll]: ACTIVE -> DRAFT
+  [product.status] Diamond Lattice [diamond-lattice]: ACTIVE -> DRAFT
+  [product.status] Flora Inlay [flora-inlay]: ACTIVE -> DRAFT
+  [product.status] Wisteria [wisteria]: ACTIVE -> DRAFT
+  [product.status] Muted Iris [muted-iris]: ACTIVE -> DRAFT
+  [product.status] Smocked Serenity [smocked-serenity]: ACTIVE -> DRAFT
+  [product.status] Berry Noir [berry-noir-1]: ACTIVE -> DRAFT
+  [product.status] Aura [aura]: ACTIVE -> DRAFT
+  [product.status] Lace Jacket [lace-jacket]: ACTIVE -> DRAFT
+  [product.status] Motiya [motiya]: ACTIVE -> DRAFT
+  [product.status] Chantelle Lace Gold [chantelle-lace-gold]: ACTIVE -> DRAFT
+  [product.status] Slate Whisper [slate-whisper]: ACTIVE -> DRAFT
+  [product.status] Peach Floret [pink-floret-1]: ACTIVE -> DRAFT
+
+Cleanup and redirects (28 changes)
+  [menu.delete] Delete leftover menu "Main menu (new)" (main-menu-new)
+  [collection.delete] Delete empty collection "Everyday Wear" (everyday-wear, gid://shopify/Collection/578491318583, created 2026-11-18T10:52:30Z)
+  [collection.delete] Delete empty collection "Matching Sets" (matching-sets, gid://shopify/Collection/578491351351, created 2026-11-18T10:52:30Z)
+  [collection.delete] Delete empty collection "Occasion Wear" (occasion-wear, gid://shopify/Collection/578491384119, created 2026-11-18T10:52:30Z)
+  [redirect.create] Create redirect /collections/occasion-wear -> /collections/formals
+  [redirect.update] Repoint redirect /collections/summer-collection: /collections/pret -> /collections/summer
+  [redirect.create] Redirect /products/smocked-serenity -> /collections/pret (Smocked Serenity)
+  [redirect.create] Redirect /products/mint-scroll -> /collections/pret (Mint Scroll)
+  [redirect.create] Redirect /products/elara -> /collections/pret (Elara)
+  [redirect.create] Redirect /products/black-leopard -> /collections/pret (Black Leopard - Shirt)
+  [redirect.create] Redirect /products/saffron-check -> /collections/pret (Saffron Check)
+  [redirect.create] Redirect /products/diamond-lattice -> /collections/co-ord-sets (Diamond Lattice)
+  [redirect.create] Redirect /products/sea-mist-panel -> /collections/formals (Sea Mist)
+  [redirect.create] Redirect /products/pistachio-rose -> /collections/formals (Pistachio rose)
+  [redirect.create] Redirect /products/lace-jacket -> /collections/formals (Lace Jacket)
+  [redirect.create] Redirect /products/motiya -> /collections/formals (Motiya)
+  [redirect.create] Redirect /products/vintage-coral -> /collections/formals (Vintage Coral)
+  [redirect.create] Redirect /products/chantelle-lace-gold -> /collections/formals (Chantelle Lace Gold)
+  [redirect.create] Redirect /products/berry-noir-1 -> /collections/festive-wear (Berry Noir)
+  [redirect.create] Redirect /products/pink-floret-1 -> /collections/festive-wear (Peach Floret)
+  [redirect.create] Redirect /products/flora-inlay -> /collections/festive-wear (Flora Inlay)
+  [redirect.create] Redirect /products/soft-petals -> /collections/festive-wear (Soft Petals)
+  [redirect.create] Redirect /products/aura -> /collections/festive-wear (Aura)
+  [redirect.create] Redirect /products/serenade-blue -> /collections/dinner-wear (Serenade Blue)
+  [redirect.create] Redirect /products/serenade-beige -> /collections/dinner-wear (Serenade Beige)
+  [redirect.create] Redirect /products/muted-iris -> /collections/dinner-wear (Muted Iris)
+  [redirect.create] Redirect /products/slate-whisper -> /collections/dinner-wear (Slate Whisper)
+  [redirect.create] Redirect /products/wisteria -> /collections/dinner-wear (Wisteria)
+
+Step 2: collections and copy (15 changes, 8 held)
+  [collection.title] Rename "Pret" -> "Everyday Wear" (handle pret unchanged)
+    pret - Elara [elara] (being hidden)
+    pret - Blue Roses [blue-roses]
+    pret - Cobalt Charm [cobalt-charm]
+    pret - Sea Glass [sea-glasss]
+    pret - Rose Blush [rose-blush]
+    pret - Pine Pink [pine-pink]
+    pret - Black Boom [blackboom]
+    pret - Pressed Lilac [pressed-lilac]
+    pret - Smocked Serenity [smocked-serenity] (being hidden)
+    pret - Midnight Blossom [midnight-blossom]
+    pret - Saffron Check [saffron-check] (being hidden)
+    pret - Flora Inlay [flora-inlay] (being hidden)
+    pret - Mint Scroll [mint-scroll] (being hidden)
+    pret - Soft Petals [soft-petals] (being hidden)
+    pret - Serenade Beige [serenade-beige] (being hidden)
+    pret - Slate Whisper [slate-whisper] (being hidden)
+    pret - Serenade Blue [serenade-blue] (being hidden)
+    pret - Olive Whisper [olive-whisper] (DRAFT)
+  [collection.members] pret ("Everyday Wear", exact): add 0, remove 18 (result 12, 12 visible)
+  [held] pret ("Everyday Wear"): set intro and SEO (ON HOLD: copy_on_hold.hold is true, not written)
+      intro (descriptionHtml) (476 chars)
+        before: <p>Luxury pret from our Lahore atelier: ready-to-wear co-ord sets, tunics and kaftans in pure raw silk, premium linen and cotton silk, finished with hand embroidery and artisanal detailing. Every piece is crafted to order and dispatches in 7 to 10 working days, with free delivery across Pakistan on orders over Rs 30,000 and worldwide shipping available. New to linen? Read <a href="/blogs/journal/the-art-of-linen">The Art of Linen</a>, then explore <a href="/collections/block-print">block print</a> and <a href="/collections/hue">Hue</a>.</p>
+        after:  <p>Everyday wear from the Jannat and Sadaf atelier: tailored linen co-ord sets, easy shirts and tunics, and cotton silk pieces finished with hand embroidery. Every piece is made to order in Lahore and dispatches in 7 to 10 working days, with free delivery across Pakistan on orders over Rs 30,000. Read <a href="/blogs/journal/the-art-of-linen">The Art of Linen</a> for how to wear and care for it, or see the warm-weather edit in <a href="/collections/summer">Summer</a>.</p>
+      SEO title (50 chars)
+        before: Luxury Pret | Ready-to-Wear Pakistani Co-ord Sets & Tunics
+        after:  Everyday Wear | Linen Co-ord Sets, Shirts & Tunics
+      SEO description (152 chars)
+        before: Luxury pret made to order in Lahore: silk and linen co-ord sets, embroidered tunics and kaftans. Free delivery in Pakistan over Rs 30,000. Worldwide shipping.
+        after:  Everyday wear by Jannat and Sadaf: linen co-ords, shirts and tunics, made to order in Lahore. Free delivery in Pakistan over Rs 30,000. Ships worldwide.
+  [collection.title] Rename "Co-ord Sets" -> "Matching Sets" (handle co-ord-sets unchanged)
+    co-ord-sets + Riviera [riviera]
+    co-ord-sets + Marrakech [marrakech-1]
+    co-ord-sets + Emerald Wrap [emerald-wrap-1]
+    co-ord-sets + Vintage Blossom [vintage-blossom]
+    co-ord-sets + Cabana [cabana]
+    co-ord-sets + Saffron Ruffles [saffron-ruffles]
+  [collection.members] co-ord-sets ("Matching Sets", exact): add 6, remove 0 (result 15, 15 visible)
+  [held] co-ord-sets ("Matching Sets"): set intro and SEO (ON HOLD: copy_on_hold.hold is true, not written)
+      intro (descriptionHtml) (531 chars)
+        before: <p>Matching two-piece sets, cut from the same cloth and made to be worn together, so the outfit is decided before you are. Each set is made to order in our Lahore atelier, in fabrics from pure raw silk to premium linen, cotton silk and textured crepe. Prefer pattern? See our <a href="/collections/block-print">block print</a> co-ords. For more ready-to-wear, browse <a href="/collections/pret">luxury pret</a>, or see occasion pieces in <a href="/collections/formals">formals</a>.</p>
+        after:  <p>Matching sets from Jannat and Sadaf, cut from the same cloth and made to be worn together, so the outfit is decided before you are. The collection brings our hand block printed sets, from Marrakech and Emerald Wrap to the three-piece Cabana and Saffron Ruffles, together with silk, crepe and textured co-ords. Every set is made to order in Lahore; read how the printing is done in <a href="/blogs/journal/what-is-block-print">our journal</a>, or see every printed piece in <a href="/collections/block-print">block print</a>.</p>
+      SEO title (56 chars)
+        before: Co-ord Sets | Matching Two-Piece Pakistani Outfits
+        after:  Matching Sets | Block Print & Silk Pakistani Co-ord Sets
+      SEO description (159 chars)
+        before: Matching two-piece co-ord sets made to order in Lahore, from block print to luxury pret. Cut from the same cloth. Ships worldwide.
+        after:  Matching sets by Jannat and Sadaf: hand block printed co-ords and silk and crepe two-pieces, cut from the same cloth, made to order in Lahore. Ships worldwide.
+  [collection.title] Rename "Formals" -> "Occasion Wear" (handle formals unchanged)
+    formals + Gold Heritage [gold-heritage]
+    formals - Pistachio rose [pistachio-rose] (being hidden)
+    formals - Sea Mist [sea-mist-panel] (being hidden)
+    formals - Lace Jacket [lace-jacket-draft-old] (DRAFT)
+    formals - Lace Jacket [lace-jacket] (being hidden)
+    formals - Muted Iris [muted-iris] (being hidden)
+    formals - Midnight Vintage [midnight-vintage] (DRAFT)
+  [collection.members] formals ("Occasion Wear", exact): add 1, remove 6 (result 5, 5 visible)
+  [held] formals ("Occasion Wear"): set intro and SEO (ON HOLD: copy_on_hold.hold is true, not written)
+      intro (descriptionHtml) (463 chars)
+        before: <p>Formal wear for the occasions that matter: hand-embroidered ensembles in khaddi silk, organza, jacquard and Chantilly lace, worked with zardozi, mukesh, shisha and moti detailing by our karigars. Each formal piece is made to order over 15 to 20 working days, so it arrives crafted for you alone. Unsure what an occasion calls for? Message our stylist on WhatsApp for guidance.</p>
+        after:  <p>Occasion wear from the Jannat and Sadaf atelier: hand-embroidered jackets and ensembles in raw silk, jacquard and brocade, worked with gold handwork, mukesh and sequins for weddings, dinners and the evenings that matter. Each piece is made to order in Lahore over 15 to 20 working days, so it arrives crafted for you alone. For lighter celebrations, see <a href="/collections/festive-wear">Festive Wear</a>, or message our stylist on WhatsApp for guidance.</p>
+      SEO title (50 chars)
+        before: Pakistani Formal Wear | Hand-Embroidered Occasion Dresses
+        after:  Occasion Wear | Hand-Embroidered Pakistani Formals
+      SEO description (155 chars)
+        before: Hand-embroidered Pakistani formals: zardozi, mukesh and shisha work on silk and organza, made to order in Lahore. Styling help on WhatsApp. Ships worldwide.
+        after:  Occasion wear by Jannat and Sadaf: hand-embroidered jackets and ensembles with gold handwork, mukesh and brocade, made to order in Lahore. Ships worldwide.
+    festive-wear + Ivory Shisha [ivory-shisha]
+    festive-wear + Ash Blossom [ash-blossom]
+    festive-wear + Lali [lali]
+    festive-wear + Lumina [lumina]
+    festive-wear + Fuchsia Angrakha [fuschia-angrakha]
+  [collection.members] festive-wear ("Festive Wear", exact): add 5, remove 0 (result 5, 5 visible)
+  [held] festive-wear ("Festive Wear"): set intro and SEO (ON HOLD: copy_on_hold.hold is true, not written)
+      intro (descriptionHtml) (366 chars)
+        before: (empty)
+        after:  <p>Festive wear from Jannat and Sadaf for Eid, mehndis and family celebrations: shisha work on ivory, tonal hand embroidery on ash blue and ruby, lace on antique blush, and hand block print on fuchsia raw silk. Every piece is made to order in Lahore and finished by hand in our atelier. For grander evenings, see <a href="/collections/formals">Occasion Wear</a>.</p>
+      SEO title (61 chars)
+        before: (empty)
+        after:  Festive Wear | Embroidered Pakistani Outfits for Eid & Mehndi
+      SEO description (157 chars)
+        before: (empty)
+        after:  Festive wear by Jannat and Sadaf: shisha work, tonal hand embroidery, lace and hand block print for Eid and mehndi, made to order in Lahore. Ships worldwide.
+    dinner-wear + Black Boom [blackboom]
+    dinner-wear + Midnight Blossom [midnight-blossom]
+    dinner-wear + Pressed Lilac [pressed-lilac]
+    dinner-wear + Pine Pink [pine-pink]
+    dinner-wear + Rose Blush [rose-blush]
+    dinner-wear + Blue Roses [blue-roses]
+    dinner-wear + Sea Glass [sea-glasss]
+    dinner-wear + Cobalt Charm [cobalt-charm]
+    dinner-wear + Taupe [taupe]
+  [collection.members] dinner-wear ("Dinner Wear", exact): add 9, remove 0 (result 9, 9 visible)
+  [held] dinner-wear ("Dinner Wear"): set intro and SEO (ON HOLD: copy_on_hold.hold is true, not written)
+      intro (descriptionHtml) (419 chars)
+        before: (empty)
+        after:  <p>Dinner wear from Jannat and Sadaf: co-ord sets and three-piece suits with hand embroidery, in black, ocean blue, dusty rose, lilac and soft pastels, polished enough for an evening out and comfortable enough to wear all night. Layer Taupe, a silk jacket with metallic embroidery, over any of them. Every piece is made to order in Lahore; for bigger occasions, see <a href="/collections/formals">Occasion Wear</a>.</p>
+      SEO title (55 chars)
+        before: (empty)
+        after:  Dinner Wear | Embroidered Pakistani Co-ord Sets & Suits
+      SEO description (143 chars)
+        before: (empty)
+        after:  Dinner wear by Jannat and Sadaf: hand-embroidered co-ord sets and three-piece suits for evenings out, made to order in Lahore. Ships worldwide.
+    winter + Riviera [riviera]
+    winter + Blue Roses [blue-roses]
+    winter + Marrakech [marrakech-1]
+    winter + Rust Scroll [rust-scroll]
+    winter + Emerald Wrap [emerald-wrap-1]
+    winter + Cobalt Charm [cobalt-charm]
+    winter + Zebra Set [zebra-set]
+    winter + Navy Scroll [navy-scroll]
+    winter + Saffron Ruffles [saffron-ruffles]
+    winter + Cabana [cabana]
+    winter + Vintage Blossom [vintage-blossom]
+    winter + Taupe [taupe]
+    winter + Blue Forest [blue-forest]
+    winter + Green Forest [green-forest]
+    winter + Cape Set [cape-set]
+    winter + Pressed Fern [pressed-fern]
+  [collection.members] winter ("Winter", exact): add 16, remove 0 (result 16, 16 visible)
+  [held] winter ("Winter"): set intro and SEO (ON HOLD: copy_on_hold.hold is true, not written)
+      intro (descriptionHtml) (370 chars)
+        before: (empty)
+        after:  <p>The Jannat and Sadaf winter edit: hand block printed raw silk, silk and textured crepe co-ords in deeper colours, made for cooler days and long evenings. Every piece is made to order in Lahore, with the Cape Set and the Taupe jacket to layer when the temperature drops. Read how our prints are made in <a href="/blogs/journal/what-is-block-print">our journal</a>.</p>
+      SEO title (48 chars)
+        before: (empty)
+        after:  Winter | Block Print Raw Silk & Silk Co-ord Sets
+      SEO description (147 chars)
+        before: (empty)
+        after:  Winter by Jannat and Sadaf: hand block printed raw silk, silk and crepe co-ord sets and layering jackets, made to order in Lahore. Ships worldwide.
+    summer + Quiet sage [quiet-sage]
+    summer + Quiet Ivory [quiet-ivory]
+    summer + Stone Willow [stone-willow]
+    summer + Misty Blue [misty-blue]
+    summer + Desert Blush [desert-blush]
+    summer + Ash blue wrap [ash-blue-wrap]
+    summer + Blue Haze [blue-haze]
+    summer + Buttercream wrap [buttercream-wrap]
+    summer + Soft Scallop [soft-scallop]
+    summer + Pearly Green [pearly-green]
+    summer + Ivory Lattice [ivory-lattice]
+    summer + Lali [lali]
+  [collection.members] summer ("Summer", exact): add 12, remove 0 (result 12, 12 visible)
+  [held] summer ("Summer"): set intro and SEO (ON HOLD: copy_on_hold.hold is true, not written)
+      intro (descriptionHtml) (394 chars)
+        before: (empty)
+        after:  <p>Summer from Jannat and Sadaf: breathable linen co-ord sets, a lemon linen shirt and light cotton pieces in soft pastels, with Lali in ruby for contrast, all cut to stay composed in the heat. Every piece is made to order in Lahore. Read <a href="/blogs/journal/the-art-of-linen">The Art of Linen</a> for how to care for linen, or see more in <a href="/collections/pret">Everyday Wear</a>.</p>
+      SEO title (51 chars)
+        before: (empty)
+        after:  Summer | Linen Co-ord Sets & Shirts in Soft Pastels
+      SEO description (147 chars)
+        before: (empty)
+        after:  Summer by Jannat and Sadaf: breathable linen co-ord sets, shirts and light cotton pieces in soft pastels, made to order in Lahore. Ships worldwide.
+    all-year-round + Sea Glass [sea-glasss]
+    all-year-round + Pine Pink [pine-pink]
+    all-year-round + Black Boom [blackboom]
+    all-year-round + Pressed Lilac [pressed-lilac]
+    all-year-round + Sand Stone [sand-stone]
+    all-year-round + Midnight Blossom [midnight-blossom]
+    all-year-round + Lumina [lumina]
+    all-year-round + Midnight Lace [midnight-lace]
+  [collection.members] all-year-round ("All Year Round", exact): add 8, remove 0 (result 8, 8 visible)
+  [held] all-year-round ("All Year Round"): set intro and SEO (ON HOLD: copy_on_hold.hold is true, not written)
+      intro (descriptionHtml) (339 chars)
+        before: (empty)
+        after:  <p>Pieces from Jannat and Sadaf that work in any season: hand-embroidered sets in quiet tones, and two jackets, Lumina and Midnight Lace, to layer over them. Every piece is made to order in Lahore. For warm-weather linen see <a href="/collections/summer">Summer</a>, and for richer fabrics see <a href="/collections/winter">Winter</a>.</p>
+      SEO title (52 chars)
+        before: (empty)
+        after:  All Year Round | Embroidered Sets & Layering Jackets
+      SEO description (145 chars)
+        before: (empty)
+        after:  Pieces for every season by Jannat and Sadaf: hand-embroidered sets in quiet tones and jackets to layer, made to order in Lahore. Ships worldwide.
+    block-print + Zebra Set [zebra-set]
+    block-print + Navy Scroll [navy-scroll]
+    block-print + Black Leopard - Shirt [black-leopard] (DRAFT after Step 1)
+    block-print + Saffron Check [saffron-check] (DRAFT after Step 1)
+  [collection.members] block-print ("Block Print", add_only): add 4, remove 0 (result 12, 9 visible)
+    block-print.description_html: "<a href="/collections/pret">luxury pret</a>" -> "<a href="/collections/pret">everyday wear</a>" (1x)
+  [collection.copy] block-print ("Block Print"): edit existing copy
+      intro (descriptionHtml) (566 chars)
+        before: <p>Hand block printed pieces, made the slow way: patterns carved into wooden blocks and pressed onto pure raw silk one impression at a time. Because every length of fabric is printed by hand, no two pieces ever match exactly, and that is the point. Read about the craft in <a href="/blogs/journal/what-is-block-print">our journal</a>, or browse the collection of printed co-ords, angrakhas and kaftans below. Looking for something plainer or more occasion-led? See our <a href="/collections/pret">luxury pret</a> and <a href="/collections/formals">formals</a>.</p>
+        after:  <p>Hand block printed pieces, made the slow way: patterns carved into wooden blocks and pressed onto pure raw silk one impression at a time. Because every length of fabric is printed by hand, no two pieces ever match exactly, and that is the point. Read about the craft in <a href="/blogs/journal/what-is-block-print">our journal</a>, or browse the collection of printed co-ords, angrakhas and kaftans below. Looking for something plainer or more occasion-led? See our <a href="/collections/pret">everyday wear</a> and <a href="/collections/formals">formals</a>.</p>
+    new-in.description_html: "<a href="/collections/pret">luxury pret</a>" -> "<a href="/collections/pret">everyday wear</a>" (1x)
+    new-in.seo_description: "luxury pret, block print and formals" -> "everyday wear, block print and formals" (1x)
+  [collection.copy] new-in ("New In"): edit existing copy
+      intro (descriptionHtml) (297 chars)
+        before: <p>The eight newest pieces from our Lahore atelier, latest first. Every piece is made to order. Looking for something from an earlier launch? Browse <a href="/collections/pret">luxury pret</a>, <a href="/collections/block-print">block print</a> or <a href="/collections/formals">formals</a>.</p>
+        after:  <p>The eight newest pieces from our Lahore atelier, latest first. Every piece is made to order. Looking for something from an earlier launch? Browse <a href="/collections/pret">everyday wear</a>, <a href="/collections/block-print">block print</a> or <a href="/collections/formals">formals</a>.</p>
+      SEO description (147 chars)
+        before: The newest pieces from the Jannat and Sadaf atelier: luxury pret, block print and formals, made to order in Lahore. New arrivals land here first.
+        after:  The newest pieces from the Jannat and Sadaf atelier: everyday wear, block print and formals, made to order in Lahore. New arrivals land here first.
+    hue.description_html: "<a href="/collections/pret">luxury pret</a>" -> "<a href="/collections/pret">everyday wear</a>" (1x)
+  [collection.copy] hue ("Hue"): edit existing copy
+      intro (descriptionHtml) (478 chars)
+        before: <p>Hue brings together easy silhouettes, considered details and a mix of soft and bold colors for everyday dressing and occasions. Jackets, a jacket set, a shirt and co-ord sets, each made to order in Lahore. Start with <a href="/products/lumina">Lumina</a>, <a href="/products/taupe">Taupe</a> or <a href="/products/lali">Lali</a>, or see more ready-to-wear in <a href="/collections/pret">luxury pret</a> and occasion pieces in <a href="/collections/formals">formals</a>.</p>
+        after:  <p>Hue brings together easy silhouettes, considered details and a mix of soft and bold colors for everyday dressing and occasions. Jackets, a jacket set, a shirt and co-ord sets, each made to order in Lahore. Start with <a href="/products/lumina">Lumina</a>, <a href="/products/taupe">Taupe</a> or <a href="/products/lali">Lali</a>, or see more ready-to-wear in <a href="/collections/pret">everyday wear</a> and occasion pieces in <a href="/collections/formals">formals</a>.</p>
+
+Step 3: main menu (1 changes)
+  [menu.update] Replace main-menu items
+    before:
+    NEW IN  ->  /collections/new-in (COLLECTION)
+    SHOP  ->  /collections/all (CATALOG)
+      Block Print  ->  /collections/block-print (COLLECTION)
+      Pret  ->  /collections/pret (COLLECTION)
+      Co-ord Sets  ->  /collections/co-ord-sets (COLLECTION)
+      Formals  ->  /collections/formals (COLLECTION)
+      Wedding  ->  /collections/wedding (COLLECTION)
+      Special Prices  ->  /collections/special-prices (COLLECTION)
+    Collections  ->  /collections (COLLECTIONS)
+      Hue  ->  /collections/hue (COLLECTION)
+    after:
+    NEW IN  ->  /collections/new-in (COLLECTION)
+    SHOP  ->  /collections/all (CATALOG)
+      By Collection  ->  /collections/all (CATALOG)
+        Everyday Wear  ->  /collections/pret (COLLECTION)
+        Matching Sets  ->  /collections/co-ord-sets (COLLECTION)
+        Occasion Wear  ->  /collections/formals (COLLECTION)
+        Festive Wear  ->  /collections/festive-wear (COLLECTION)
+        Dinner Wear  ->  /collections/dinner-wear (COLLECTION)
+      By Season  ->  /collections/all (CATALOG)
+        Winter  ->  /collections/winter (COLLECTION)
+        All Year Round  ->  /collections/all-year-round (COLLECTION)
+        Summer  ->  /collections/summer (COLLECTION)
+      Special Prices  ->  /collections/special-prices (COLLECTION)
+
+Checks:
+  Block Print: "Black Leopard" is added but also hidden in Step 1, so it will not show until un-hidden.
+  Block Print: "Saffron Check" is added but also hidden in Step 1, so it will not show until un-hidden.
+  By Collection covers active products: OK (46 products, each once).
+  By Season + unassigned covers active products: OK (46 products, each once).
+  Redirect /collections/occasion-wear -> /collections/formals: does NOT exist now; planned to be created. Takes effect once occasion-wear is deleted.
+  Redirect /collections/summer-collection: currently -> /collections/pret; planned to point at /collections/summer. summer-collection is unpublished, so the path returns 404 and the redirect applies.
+  Product redirects: 22 to create, 0 already correct, 0 skipped.
+    Chain: /products/saffron-ruffles-copy -> /products/diamond-lattice -> /collections/co-ord-sets (two hops; works, could be pointed straight at the collection later).
+    Chain: /products/riviera-copy -> /products/elara -> /collections/pret (two hops; works, could be pointed straight at the collection later).
+    Chain: /products/midnight-lace-copy -> /products/lace-jacket -> /collections/formals (two hops; works, could be pointed straight at the collection later).
+  do_not_touch summer-collection: no changes planned ("Summer Collection", 5 products, unpublished).
+  Collection deletions: 3, all created on or after 2026-11-18T10:00:00Z and empty. Collection handle changes: none (the script cannot write handles). Product title changes: none (the script cannot write titles).
+  Active products after run: 46
+
+Visible (ACTIVE) products per collection after run:
+  all-year-round             8  All Year Round
+  block-print                9  Block Print
+  co-ord-sets               15  Matching Sets
+  dinner-wear                9  Dinner Wear
+  festive-wear               5  Festive Wear
+  formals                    5  Occasion Wear
+  frontpage                  0  Home page
+  hue                        3  Hue
+  independence-day-sale     34  Independence Day Sale
+  new-in                     6  New In
+  pret                      12  Everyday Wear
+  special-prices             4  Special Prices
+  summer                    12  Summer
+  summer-collection          4  Summer Collection
+  wedding                    1  Wedding
+  winter                    16  Winter
+
+Unassigned season (10): Midnight Vintage, Teal Brocade, Coral Dust, Pink Ease Set, Olive Ease Set, Fuchsia Angrakha, Rose Blush, Ivory Shisha, Ash Blossom, Gold Heritage
+
+Dry run: 66 changes planned (+8 held), none written.

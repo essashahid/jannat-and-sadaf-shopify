@@ -5,3 +5,6 @@ node_modules/
 .env
 .env.*
 J_S_Operations_Master_Updated.xlsx
+
+# nav-restructure run snapshots are full store dumps; the repo is public
+scripts/nav-restructure/snapshots/*.json
