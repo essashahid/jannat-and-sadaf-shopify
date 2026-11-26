@@ -75,9 +75,9 @@
 
 {% stylesheet %}
   /* The sale line stands in for the theme's plain price while it is showing.
-     Scoped to the details column that holds this block, so prices elsewhere on
-     the page — related products, the sticky bar — are untouched. */
-  .group-block-content:has(> .bf-price) > .group-block product-price {
+     Scoped to the details column that holds this block, so prices in other
+     sections (related products, cards) are untouched. */
+  .product-details:has(.bf-price) product-price {
     display: none;
   }
 

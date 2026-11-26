@@ -261,17 +261,56 @@
   {% endif %}
 {% endcapture %}
 
+{%- comment -%} Organization markup: full details on the homepage, short reference on other pages {%- endcomment -%}
+{%- if request.page_type == 'index' -%}
 <script type="application/ld+json">
   {
-    "@context": "http://schema.org",
+    "@context": "https://schema.org",
     "@type": "Organization",
-    "name": {{ shop.name | json }},
+    "@id": {{ request.origin | append: '/#organization' | json }},
+    "name": "Jannat and Sadaf",
+    "url": {{ request.origin | append: '/' | json }},
     {% if settings.logo %}
-      "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
+    "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
     {% endif %}
-    "url": {{ request.origin | append: page.url | json }}
+    "description": "Luxury Pakistani pret, block print and formals, handcrafted to order in Lahore.",
+    "email": "info@jannatandsadaf.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lahore",
+      "addressCountry": "PK"
+    },
+    "founder": [
+      {
+        "@type": "Person",
+        "name": "Jannat Shahid",
+        "jobTitle": "Co-founder",
+        "sameAs": ["https://www.linkedin.com/in/jannat-shahid-96a890298/"]
+      },
+      {
+        "@type": "Person",
+        "name": "Sadaf Aamir",
+        "jobTitle": "Co-founder"
+      }
+    ],
+    "sameAs": [
+      "https://www.instagram.com/jannatandsadaf",
+      "https://www.facebook.com/jannatarshad/"
+    ]
   }
 </script>
+{%- else -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": {{ request.origin | append: '/#organization' | json }},
+    "name": "Jannat and Sadaf",
+    "url": {{ request.origin | append: '/' | json }}
+  }
+</script>
+{%- endif -%}
+
 
 <header-component
   id="header-component"
@@ -287,7 +326,7 @@
   data-scroll-direction="none"
 >
   {%- if request.page_type == 'index' -%}
-    <h1 class="visually-hidden">{{ shop.name }}</h1>
+    <p class="visually-hidden">{{ shop.name }}</p>
   {%- endif -%}
   {% for row in rows %}
     {% liquid
