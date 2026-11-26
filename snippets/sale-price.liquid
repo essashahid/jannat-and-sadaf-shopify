@@ -7,7 +7,7 @@
   Keep the sale window and percent here in step with snippets/price.liquid.
 
   @param {product} product - The product to price
-  @param {string} [sale_class] - Class for the price being charged
+  @param {string} [sale_class] - Class for the price being charged, defaults to the theme's price style
   @param {string} [was_class] - Class for the struck original, defaults to the theme's compare-at style
 
   @example
@@ -22,6 +22,7 @@
 
 {%- liquid
   assign was_class = was_class | default: 'compare-at-price'
+  assign sale_class = sale_class | default: 'price'
 
   assign sale_percent = 10
   assign sale_starts_at = 1795673400
