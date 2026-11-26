@@ -315,7 +315,7 @@
             },
             "coord_offer": {
               "type": "product-coord-offer",
-              "name": "Co-ord Sets offer",
+              "name": "Sale price line",
               "settings": {
                 "padding-block-start": 6,
                 "padding-block-end": 6,
