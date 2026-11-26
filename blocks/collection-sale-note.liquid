@@ -1,10 +1,9 @@
 {%- liquid
-  # Independence Day sale banner for the Pret and Block Print collection
-  # pages. Same self-gating window as blocks/product-sale-note.liquid
-  # (Aug 12 00:00 - Aug 16 23:59 PKT, stored as UTC epochs), so it appears
-  # and disappears with the sale and needs no cleanup.
-  assign sale_starts_at = 1786474800
-  assign sale_ends_at = 1786906799
+  # Blessed Friday / 10K sale banner across collection pages. Self-gating on
+  # the sale window (26 Nov 11:10 - 30 Nov 23:59 PKT, stored as UTC epochs),
+  # so it appears and disappears with the sale and needs no cleanup.
+  assign sale_starts_at = 1795673400
+  assign sale_ends_at = 1796065199
   assign now_epoch = 'now' | date: '%s' | times: 1
 
   assign in_sale_window = false
@@ -12,13 +11,19 @@
     assign in_sale_window = true
   endif
 
-  # Pret contains Special Prices pieces that sit outside the discount, so its
-  # line carries the exclusion qualifier. Block Print is discounted in full.
+  # The discount covers every active piece except the already-reduced Special
+  # Prices ones, so that collection carries no banner at all. Collections that
+  # merely contain one of those pieces still get the banner, with a qualifier
+  # so the line is never a promise the cart will break.
+  assign sale_collection = closest.collection.handle
+  assign mixed_handles = 'pret,formals,festive-wear,summer' | split: ','
+
   assign sale_note_text = ''
-  if closest.collection.handle == 'block-print'
-    assign sale_note_text = '10% off this collection &mdash; applied automatically at checkout &middot; ends Sunday, Aug 16'
-  elsif closest.collection.handle == 'pret'
-    assign sale_note_text = '10% off &mdash; applied automatically at checkout &middot; ends Sunday, Aug 16 <span class="collection-sale-note__qualifier">(already-reduced pieces excluded)</span>'
+  if sale_collection != 'special-prices'
+    assign sale_note_text = '10% off everything &mdash; applied automatically at checkout &middot; ends Monday, Nov 30'
+    if mixed_handles contains sale_collection
+      assign sale_note_text = sale_note_text | append: ' <span class="collection-sale-note__qualifier">(already-reduced pieces excluded)</span>'
+    endif
   endif
 -%}
 
@@ -28,7 +33,7 @@
     style="{% render 'spacing-style', settings: block.settings %}"
     {{ block.shopify_attributes }}
   >
-    <span class="collection-sale-note__label">Independence Day Sale</span>
+    <span class="collection-sale-note__label">Blessed Friday</span>
     <span class="collection-sale-note__text">{{ sale_note_text }}</span>
   </p>
 {%- endif -%}
@@ -42,14 +47,14 @@
     font-size: 0.8125rem;
     letter-spacing: 0.03em;
     line-height: 1.6;
-    color: #2b5e43;
+    color: #5f574d;
   }
 
   .collection-sale-note__label {
     display: inline-block;
     margin-inline-end: 0.5em;
     padding: 0.25em 0.6em;
-    background: #2b5e43;
+    background: #2b2620;
     color: #f7f3ec;
     font-size: 0.66rem;
     font-weight: 600;

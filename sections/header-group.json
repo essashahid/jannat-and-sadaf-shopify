@@ -25,12 +25,28 @@
             "weight": "",
             "letter_spacing": "0.04em",
             "case": "none",
-            "duration": 0
+            "duration": 2
+          },
+          "blocks": {}
+        },
+        "announcement_blessedFri": {
+          "type": "_announcement",
+          "settings": {
+            "logo_width": 300,
+            "text": "Blessed Friday · 10% off everything, applied automatically at checkout · ends Monday",
+            "link": "shopify://collections/all",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "weight": "",
+            "letter_spacing": "0.04em",
+            "case": "none",
+            "duration": 6
           },
           "blocks": {}
         }
       },
       "block_order": [
+        "announcement_blessedFri",
         "announcement_BxgCk9"
       ],
       "name": "t:names.announcement_bar",
