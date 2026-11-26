@@ -20,14 +20,13 @@
 {%- enddoc -%}
 
 {%- liquid
-  # Blessed Friday / 10K sale: 10% off everything except already-reduced
+  # Storewide sale: 10% off everything except already-reduced
   # Special Prices pieces, matching the automatic discount in Shopify admin.
   # Window is 26 Nov 11:10 - 30 Nov 23:59 PKT, stored as UTC epochs.
   # Set offer_enabled to false to pull the line early; update the epochs,
   # percent and copy when the next offer runs.
   assign offer_enabled = true
   assign offer_percent = 10
-  assign offer_ends_text = 'ends Monday'
   assign sale_starts_at = 1795673400
   assign sale_ends_at = 1796065199
 
@@ -68,7 +67,7 @@
       <span class="bf-price__save">Save {{ offer_percent }}%</span>
     </p>
     <p class="bf-price__note">
-      {{ offer_percent }}% off applied automatically at checkout &middot; {{ offer_ends_text }}
+      {{ offer_percent }}% off applied automatically at checkout
     </p>
   </div>
 {%- endif -%}

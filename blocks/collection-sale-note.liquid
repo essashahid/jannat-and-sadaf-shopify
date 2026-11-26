@@ -1,7 +1,7 @@
 {%- liquid
-  # Blessed Friday / 10K sale banner across collection pages. Self-gating on
-  # the sale window (26 Nov 11:10 - 30 Nov 23:59 PKT, stored as UTC epochs),
-  # so it appears and disappears with the sale and needs no cleanup.
+  # Storewide sale line across collection pages. Self-gating on the sale
+  # window (stored as UTC epochs), so it appears and disappears with the sale
+  # and needs no cleanup.
   assign sale_starts_at = 1795673400
   assign sale_ends_at = 1796065199
   assign now_epoch = 'now' | date: '%s' | times: 1
@@ -12,15 +12,17 @@
   endif
 
   # The discount covers every active piece except the already-reduced Special
-  # Prices ones, so that collection carries no banner at all. Collections that
-  # merely contain one of those pieces still get the banner, with a qualifier
-  # so the line is never a promise the cart will break.
+  # Prices ones, so that collection carries no line at all. Collections that
+  # merely contain one of those pieces still get the line, with a qualifier so
+  # it is never a promise the cart will break.
   assign sale_collection = closest.collection.handle
   assign mixed_handles = 'pret,formals,festive-wear,summer' | split: ','
 
   assign sale_note_text = ''
-  if sale_collection != 'special-prices'
-    assign sale_note_text = '10% off everything &mdash; applied automatically at checkout &middot; ends Monday, Nov 30'
+  if sale_collection == 'special-prices'
+    assign sale_note_text = 'Already reduced &mdash; the 10% sale does not apply to these pieces'
+  else
+    assign sale_note_text = '10% off everything &mdash; applied automatically at checkout'
     if mixed_handles contains sale_collection
       assign sale_note_text = sale_note_text | append: ' <span class="collection-sale-note__qualifier">(already-reduced pieces excluded)</span>'
     endif
@@ -33,7 +35,6 @@
     style="{% render 'spacing-style', settings: block.settings %}"
     {{ block.shopify_attributes }}
   >
-    <span class="collection-sale-note__label">Blessed Friday</span>
     <span class="collection-sale-note__text">{{ sale_note_text }}</span>
   </p>
 {%- endif -%}
@@ -50,20 +51,6 @@
     color: #5f574d;
   }
 
-  .collection-sale-note__label {
-    display: inline-block;
-    margin-inline-end: 0.5em;
-    padding: 0.25em 0.6em;
-    background: #2b2620;
-    color: #f7f3ec;
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    line-height: 1.4;
-    vertical-align: middle;
-  }
-
   .collection-sale-note__qualifier {
     opacity: 0.75;
   }
@@ -76,7 +63,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Shows the running sale line at the top of collection pages during the sale window. Already-reduced Special Prices pieces are excluded, and mixed collections carry a qualifier. Dates, copy and the sale window live in blocks/collection-sale-note.liquid."
+      "content": "Shows the running sale line at the top of collection pages during the sale window. Special Prices says the sale does not apply, and mixed collections carry a qualifier. Dates, copy and the sale window live in blocks/collection-sale-note.liquid."
     },
     {
       "type": "header",

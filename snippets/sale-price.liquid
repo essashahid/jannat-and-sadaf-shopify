@@ -1,0 +1,51 @@
+{%- doc -%}
+  Renders a product price for the theme's own custom cards, applying the
+  running storewide sale the same way snippets/price.liquid does for the
+  theme's price blocks. The struck original comes first, then the price the
+  cart will charge.
+
+  Keep the sale window and percent here in step with snippets/price.liquid.
+
+  @param {product} product - The product to price
+  @param {string} [sale_class] - Class for the price being charged
+  @param {string} [was_class] - Class for the struck original, defaults to the theme's compare-at style
+
+  @example
+  <p class="sak-product__price">
+    {% render 'sale-price',
+      product: product,
+      sale_class: 'sak-product__price--sale',
+      was_class: 'sak-product__price--was'
+    %}
+  </p>
+{%- enddoc -%}
+
+{%- liquid
+  assign was_class = was_class | default: 'compare-at-price'
+
+  assign sale_percent = 10
+  assign sale_starts_at = 1795673400
+  assign sale_ends_at = 1796065199
+  assign sale_now = 'now' | date: '%s' | times: 1
+
+  assign now_price = product.price
+  assign was_price = product.compare_at_price
+
+  assign show_pair = false
+  if was_price > now_price
+    # Already carries its own markdown, so the sale is not applied on top.
+    assign show_pair = true
+  elsif now_price > 0 and sale_now >= sale_starts_at and sale_now <= sale_ends_at
+    assign sale_saving = now_price | times: sale_percent | divided_by: 100.0 | round
+    assign was_price = now_price
+    assign now_price = now_price | minus: sale_saving
+    assign show_pair = true
+  endif
+-%}
+
+{%- if show_pair -%}
+  <s class="{{ was_class }}">{{ was_price | money }}</s>
+  <span class="{{ sale_class }}">{{ now_price | money }}</span>
+{%- else -%}
+  {{ now_price | money }}
+{%- endif -%}

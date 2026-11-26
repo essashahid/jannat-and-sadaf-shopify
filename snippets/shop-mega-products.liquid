@@ -44,7 +44,7 @@
             {%- endif -%}
           </span>
           <span class="shop-mega__card-title">{{ product.title }}</span>
-          <span class="shop-mega__card-price">{{ product.price | money }}</span>
+          <span class="shop-mega__card-price">{% render 'sale-price', product: product %}</span>
         </a>
       </li>
     {%- endfor -%}

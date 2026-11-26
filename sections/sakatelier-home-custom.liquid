@@ -295,12 +295,7 @@
               <div class="sak-product__info">
                 <h3 class="sak-product__name">{{ product.title }}</h3>
                 <p class="sak-product__price">
-                  {%- if product.compare_at_price > product.price -%}
-                    <span class="sak-product__price--sale">{{ product.price | money }}</span>
-                    <s class="sak-product__price--was">{{ product.compare_at_price | money }}</s>
-                  {%- else -%}
-                    {{ product.price | money }}
-                  {%- endif -%}
+                  {% render 'sale-price', product: product, sale_class: 'sak-product__price--sale', was_class: 'sak-product__price--was' %}
                 </p>
               </div>
             </a>
@@ -364,12 +359,7 @@
           </h2>
           {%- unless spotlight_product.price == 0 -%}
             <p class="sak-spotlight__price">
-              {%- if spotlight_product.compare_at_price > spotlight_product.price -%}
-                <span class="sak-spotlight__price--sale">{{ spotlight_product.price | money }}</span>
-                <s class="sak-spotlight__price--strike">{{ spotlight_product.compare_at_price | money }}</s>
-              {%- else -%}
-                {{ spotlight_product.price | money }}
-              {%- endif -%}
+              {% render 'sale-price', product: spotlight_product, sale_class: 'sak-spotlight__price--sale', was_class: 'sak-spotlight__price--strike' %}
             </p>
           {%- endunless -%}
           {%- if section.settings.spotlight_body != blank -%}

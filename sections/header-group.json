@@ -33,7 +33,7 @@
           "type": "_announcement",
           "settings": {
             "logo_width": 300,
-            "text": "Blessed Friday · 10% off everything, applied automatically at checkout · ends Monday",
+            "text": "10% off everything · applied automatically at checkout",
             "link": "shopify://collections/all",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",

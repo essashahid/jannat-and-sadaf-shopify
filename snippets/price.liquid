@@ -48,6 +48,45 @@
     endif
   endif
 
+  # Storewide sale. Shopify applies the discount at checkout rather than as a
+  # compare-at price, so the markdown is worked out here and every price in the
+  # theme - cards, product pages, search, the sticky bar - shows what the cart
+  # will charge. The cart confirms the same figure as a line-level discount.
+  # A piece already carrying a compare-at markdown is left alone, so the two
+  # sale treatments never stack.
+  assign sale_percent = 10
+  assign sale_starts_at = 1795673400
+  assign sale_ends_at = 1796065199
+  assign sale_now = 'now' | date: '%s' | times: 1
+
+  assign sale_active = false
+  if product_resource != blank and show_compare_price == false and price > 0
+    if sale_now >= sale_starts_at and sale_now <= sale_ends_at
+      assign sale_active = true
+    endif
+  endif
+
+  if sale_active
+    assign sale_saving = price | times: sale_percent | divided_by: 100.0 | round
+    assign compare_at_price = price
+    assign price = price | minus: sale_saving
+    assign show_compare_price = true
+
+    # Lead with the struck original, then the sale price, matching the sale
+    # line on product pages. Ordering chosen in the theme editor is left
+    # untouched outside the sale window.
+    assign show_sale_price_first = false
+
+    if price_min
+      assign sale_saving_min = price_min | times: sale_percent | divided_by: 100.0 | round
+      assign price_min = price_min | minus: sale_saving_min
+    endif
+    if price_max
+      assign sale_saving_max = price_max | times: sale_percent | divided_by: 100.0 | round
+      assign price_max = price_max | minus: sale_saving_max
+    endif
+  endif
+
   # Determine if currency code should be shown
   assign use_currency = false
   if product.handle == product_resource.handle
