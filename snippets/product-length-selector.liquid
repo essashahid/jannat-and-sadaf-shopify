@@ -75,6 +75,12 @@
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
   {%- assign default_shirt_length = '32 (Standard)' -%}
   {%- assign default_bottom_length = '42 (Standard)' -%}
+{%- elsif product.handle == 'blush' -%}
+  {%- comment -%} Elongated tunic, so the shirt runs longer than the default set. {%- endcomment -%}
+  {%- assign shirt_lengths = '44,46,48' | split: ',' -%}
+  {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
+  {%- assign default_shirt_length = '46' -%}
+  {%- assign default_bottom_length = '42 (Standard)' -%}
 {%- else -%}
   {%- assign shirt_lengths = '28,30,32 (Standard),34' | split: ',' -%}
   {%- assign bottom_lengths = '38,40,42 (Standard),44' | split: ',' -%}
